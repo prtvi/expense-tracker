@@ -11,7 +11,8 @@ import (
 )
 
 // Global mongo collection connection
-var Collection mongo.Collection
+var Transactions mongo.Collection
+var CurrentStatus mongo.Collection
 
 // load env variables into the system env
 func LoadEnv() {
@@ -29,6 +30,8 @@ func EstablishConnection() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Println("Database connected")
 
-	Collection = *client.Database(os.Getenv("DB_NAME")).Collection(os.Getenv("COLLECTION_NAME"))
+	Transactions = *client.Database(os.Getenv("DB_NAME")).Collection(os.Getenv("TRANSACTIONS_COLL"))
+	CurrentStatus = *client.Database(os.Getenv("DB_NAME")).Collection(os.Getenv("CURRENT_STATUS_COLL"))
 }

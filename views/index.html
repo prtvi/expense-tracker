@@ -13,75 +13,132 @@
 		<div class="main-container">
 			<div class="container form-container">
 				<h2 class="form-heading">Add expense</h2>
-				<form action="" method="POST">
+				<form action="/add" method="POST">
+					<!-- (0) Date -->
+					<div class="form-element">
+						<label class="form-label" for="date">Date</label>
+						<input
+							class="form-input"
+							type="date"
+							name="date"
+							id="date"
+							required
+						/>
+					</div>
+
+					<!-- (1) Description -->
 					<div class="form-element">
 						<label class="form-label" for="desc">Description</label>
-						<input class="form-input" type="text" name="desc" id="desc" />
+						<input
+							class="form-input"
+							type="text"
+							name="desc"
+							id="desc"
+							value="lunch"
+							placeholder="Add your description"
+							required
+						/>
 					</div>
 
-					<div class="form-element">
-						<label class="form-label" for="to">Paid to</label>
-						<input class="form-input" type="text" name="to" id="to" />
-					</div>
-
+					<!-- (2) Amount -->
 					<div class="form-element">
 						<label class="form-label" for="amount">Amount</label>
-						<input class="form-input" type="number" name="amount" id="amount" />
+						<input
+							class="form-input"
+							type="number"
+							name="amount"
+							id="amount"
+							value="50"
+							placeholder="Enter the amount"
+							required
+						/>
 					</div>
 
+					<!-- (3) Paid to -->
+					<div class="form-element">
+						<label class="form-label" for="paid_to">Paid to</label>
+						<input
+							class="form-input"
+							type="text"
+							name="paid_to"
+							id="paid_to"
+							value="hotel"
+							placeholder="Paid to"
+							required
+						/>
+					</div>
+
+					<!-- (4) Mode -->
 					<div class="form-element">
 						<label class="form-label" for="mode">Mode</label>
-						<select class="form-input" name="mode" id="mode">
+						<select class="form-input" name="mode" id="mode" required>
 							<option class="form-input-option" value="PhonePe">PhonePe</option>
 							<option class="form-input-option" value="Google Pay">
 								Google Pay
 							</option>
 							<option class="form-input-option" value="Cash">Cash</option>
-							<option class="form-input-option" value="other">
-								Add other options if any
-							</option>
 						</select>
 					</div>
 
+					<!-- (5) Transaction type -->
 					<div class="form-element">
-						<label class="form-label" for="type">Type of transaction</label>
-						<select class="form-input" name="type" id="type">
-							<option class="form-input-option" value="incoming">Income</option>
-							<option class="form-input-option" value="outgoing">
-								Expense
-							</option>
-						</select>
+						<label class="form-label">Type of transaction</label>
+						<div class="form-input form-input-radio-group">
+							<div class="form-input-radio">
+								<input
+									type="radio"
+									value="Income"
+									name="type"
+									id="income"
+									checked
+									required
+								/>
+								<label for="income">Income</label>
+							</div>
+
+							<div class="form-input-radio">
+								<input
+									type="radio"
+									value="Expense"
+									name="type"
+									id="expense"
+									required
+								/>
+								<label for="expense">Expense</label>
+							</div>
+						</div>
 					</div>
 
-					<div class="form-element">
-						<label class="form-label" for="paidBy">Paid by</label>
-						<select class="form-input" name="paidBy" id="paidBy">
-							<option class="form-input-option" value="you">You</option>
-							<option class="form-input-option" value="you">
-								Someone else, add here
-							</option>
-						</select>
-					</div>
-
+					<!-- (6) Buttons -->
 					<div class="form-element btns">
-						<button class="btn btn-add-expense">Add expense</button>
-						<button class="btn btn-clear-expense">Clear all</button>
+						<button class="btn btn-add-expense" type="submit">
+							Add expense
+						</button>
+						<button class="btn btn-clear-expense" type="reset">
+							Clear all
+						</button>
 					</div>
 				</form>
 			</div>
 
 			<div class="container status-container">
-				<p class="status-text total-expense">
-					Total expense:
-					<span class="status-text-value total-expense-value">00000</span>
-				</p>
 				<p class="status-text total-income">
 					Total income:
-					<span class="status-text-value total-income-value">00000</span>
+					<span class="status-text-value total-income-value"
+						>{{ .totalIncome }}</span
+					>
+				</p>
+				<p class="status-text total-expense">
+					Total expense:
+					<span class="status-text-value total-expense-value"
+						>{{ .totalExpense }}</span
+					>
 				</p>
 				<p class="status-text current-balance">
 					Current balance:
-					<span class="status-text-value current-balance-value">00000</span>
+					<span class="status-text-value current-balance-value"
+						>{{ .currentBalance }}</span
+					>
 				</p>
 
 				<table class="transaction-list-table">
@@ -93,10 +150,12 @@
 						<th></th>
 					</tr>
 
+					{{ range .transactions }}
+
 					<tr class="transaction">
-						<td class="transaction-field transaction-type">Income</td>
-						<td class="transaction-field transaction-desc">desc</td>
-						<td class="transaction-field transaction-amount">00000</td>
+						<td class="transaction-field transaction-type">{{ .Type }}</td>
+						<td class="transaction-field transaction-desc">{{ .Desc }}</td>
+						<td class="transaction-field transaction-amount">{{ .Amount }}</td>
 						<td class="transaction-field edit-transaction">
 							<img
 								class="modify-transaction-icon edit-icon"
@@ -112,9 +171,13 @@
 							/>
 						</td>
 					</tr>
+
+					{{ end }}
 				</table>
 			</div>
 		</div>
+
+		<script src="/public/js/script.js"></script>
 	</body>
 </html>
 
