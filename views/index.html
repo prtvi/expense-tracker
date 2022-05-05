@@ -1,0 +1,121 @@
+{{define "index"}}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/public/css/global.css" />
+		<title>Expense</title>
+	</head>
+	<body>
+		<div class="main-container">
+			<div class="container form-container">
+				<h2 class="form-heading">Add expense</h2>
+				<form action="" method="POST">
+					<div class="form-element">
+						<label class="form-label" for="desc">Description</label>
+						<input class="form-input" type="text" name="desc" id="desc" />
+					</div>
+
+					<div class="form-element">
+						<label class="form-label" for="to">Paid to</label>
+						<input class="form-input" type="text" name="to" id="to" />
+					</div>
+
+					<div class="form-element">
+						<label class="form-label" for="amount">Amount</label>
+						<input class="form-input" type="number" name="amount" id="amount" />
+					</div>
+
+					<div class="form-element">
+						<label class="form-label" for="mode">Mode</label>
+						<select class="form-input" name="mode" id="mode">
+							<option class="form-input-option" value="PhonePe">PhonePe</option>
+							<option class="form-input-option" value="Google Pay">
+								Google Pay
+							</option>
+							<option class="form-input-option" value="Cash">Cash</option>
+							<option class="form-input-option" value="other">
+								Add other options if any
+							</option>
+						</select>
+					</div>
+
+					<div class="form-element">
+						<label class="form-label" for="type">Type of transaction</label>
+						<select class="form-input" name="type" id="type">
+							<option class="form-input-option" value="incoming">Income</option>
+							<option class="form-input-option" value="outgoing">
+								Expense
+							</option>
+						</select>
+					</div>
+
+					<div class="form-element">
+						<label class="form-label" for="paidBy">Paid by</label>
+						<select class="form-input" name="paidBy" id="paidBy">
+							<option class="form-input-option" value="you">You</option>
+							<option class="form-input-option" value="you">
+								Someone else, add here
+							</option>
+						</select>
+					</div>
+
+					<div class="form-element btns">
+						<button class="btn btn-add-expense">Add expense</button>
+						<button class="btn btn-clear-expense">Clear all</button>
+					</div>
+				</form>
+			</div>
+
+			<div class="container status-container">
+				<p class="status-text total-expense">
+					Total expense:
+					<span class="status-text-value total-expense-value">00000</span>
+				</p>
+				<p class="status-text total-income">
+					Total income:
+					<span class="status-text-value total-income-value">00000</span>
+				</p>
+				<p class="status-text current-balance">
+					Current balance:
+					<span class="status-text-value current-balance-value">00000</span>
+				</p>
+
+				<table class="transaction-list-table">
+					<tr>
+						<th>Type</th>
+						<th>Description</th>
+						<th>Amount</th>
+						<th></th>
+						<th></th>
+					</tr>
+
+					<tr class="transaction">
+						<td class="transaction-field transaction-type">Income</td>
+						<td class="transaction-field transaction-desc">desc</td>
+						<td class="transaction-field transaction-amount">00000</td>
+						<td class="transaction-field edit-transaction">
+							<img
+								class="modify-transaction-icon edit-icon"
+								src="/public/images/edit.png"
+								alt="edit icon"
+							/>
+						</td>
+						<td class="transaction-field delete-transaction">
+							<img
+								class="modify-transaction-icon delete-icon"
+								src="/public/images/delete.png"
+								alt="delete icon"
+							/>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
+
+{{end}}

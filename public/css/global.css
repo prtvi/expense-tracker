@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: #0d1116;
+	font-family: 'Poppins', sans-serif;
+	color: #c9d1d9;
+}
+
+/* main container */
+
+.main-container {
+	height: 600px;
+	width: 100%;
+}
+
+.container {
+	height: 600px;
+	padding: 6% 2% 2% 8%;
+}
+
+/* main container */
+
+/* form container */
+
+.form-heading {
+	padding-bottom: 5%;
+}
+
+.form-container {
+	float: left;
+	width: 30%;
+}
+
+.form-element {
+	display: block;
+	margin: 3% 0 3% 0;
+	height: 50px;
+}
+
+.form-label {
+	font-size: 1.1rem;
+	padding: 0 2% 0 2%;
+}
+
+.form-input {
+	float: right;
+	width: 40%;
+	height: 25px;
+	font-family: 'Poppins', sans-serif;
+}
+
+.btns {
+	text-align: center;
+}
+
+.btn {
+	font-family: 'Poppins', sans-serif;
+	width: 125px;
+	height: 75%;
+	border-radius: 8px;
+}
+
+/* form container */
+
+/* status container */
+
+.status-container {
+	padding: 8% 2% 2% 2%;
+	margin: 2% 2% 0 40%;
+	text-align: center;
+	overflow-y: auto;
+}
+
+.status-text {
+	display: inline;
+	margin: 0 3% 0 3%;
+	font-size: 1.1rem;
+}
+
+.transaction-list-table {
+	margin: 5% auto 0 auto;
+	width: 60%;
+}
+
+th,
+td {
+	padding: 8px;
+	text-align: center;
+}
+
+/* status container */
