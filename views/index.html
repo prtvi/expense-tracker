@@ -13,7 +13,8 @@
 		<div class="main-container">
 			<div class="container form-container">
 				<h2 class="form-heading">Add expense</h2>
-				<form action="/add" method="POST">
+
+				<form id="form">
 					<!-- (0) Date -->
 					<div class="form-element">
 						<label class="form-label" for="date">Date</label>
@@ -34,7 +35,8 @@
 							type="text"
 							name="desc"
 							id="desc"
-							value="lunch"
+							minlength="1"
+							maxlength="15"
 							placeholder="Add your description"
 							required
 						/>
@@ -48,7 +50,6 @@
 							type="number"
 							name="amount"
 							id="amount"
-							value="50"
 							placeholder="Enter the amount"
 							required
 						/>
@@ -62,7 +63,8 @@
 							type="text"
 							name="paid_to"
 							id="paid_to"
-							value="hotel"
+							minlength="1"
+							maxlength="10"
 							placeholder="Paid to"
 							required
 						/>
@@ -90,7 +92,6 @@
 									value="Income"
 									name="type"
 									id="income"
-									checked
 									required
 								/>
 								<label for="income">Income</label>
@@ -109,14 +110,14 @@
 						</div>
 					</div>
 
+					<div class="form-element error-insert hidden">
+						<p class="error-insert-text">Error inserting the transaction</p>
+					</div>
+
 					<!-- (6) Buttons -->
 					<div class="form-element btns">
-						<button class="btn btn-add-expense" type="submit">
-							Add expense
-						</button>
-						<button class="btn btn-clear-expense" type="reset">
-							Clear all
-						</button>
+						<button class="btn btn-add" type="submit">Add transaction</button>
+						<button class="btn btn-clear" type="reset">Clear all</button>
 					</div>
 				</form>
 			</div>
@@ -141,39 +142,62 @@
 					>
 				</p>
 
-				<table class="transaction-list-table">
-					<tr>
-						<th>Type</th>
-						<th>Description</th>
-						<th>Amount</th>
-						<th></th>
-						<th></th>
-					</tr>
+				{{ if .ifNoTransactions }}
 
-					{{ range .transactions }}
+				<div class="no-t">
+					<p class="no-t-text">
+						Come on don't be shy... add your first transaction
+					</p>
+				</div>
 
-					<tr class="transaction">
-						<td class="transaction-field transaction-type">{{ .Type }}</td>
-						<td class="transaction-field transaction-desc">{{ .Desc }}</td>
-						<td class="transaction-field transaction-amount">{{ .Amount }}</td>
-						<td class="transaction-field edit-transaction">
-							<img
-								class="modify-transaction-icon edit-icon"
-								src="/public/images/edit.png"
-								alt="edit icon"
-							/>
-						</td>
-						<td class="transaction-field delete-transaction">
-							<img
-								class="modify-transaction-icon delete-icon"
-								src="/public/images/delete.png"
-								alt="delete icon"
-							/>
-						</td>
-					</tr>
+				{{ else }}
 
-					{{ end }}
-				</table>
+				<div class="table-container">
+					<table class="t-table">
+						<tr class="table-header-row">
+							<th>Date</th>
+							<th>Description</th>
+							<th>Amount</th>
+							<th></th>
+							<th></th>
+						</tr>
+
+						{{ range .transactions }}
+
+						<!-- t_id will be later used to fetch the doc details and let the user edit that doc -->
+						<!-- <tr class="t" t_id="{{ .ID }}"> -->
+
+						<tr class="t">
+							<td class="t-field t-date">{{ .Date }}</td>
+							<td class="t-field t-desc">{{ .Desc }}</td>
+
+							{{ if eq .Type "Income" }}
+							<td class="t-field t-amount t-type-income">{{ .Amount }}</td>
+							{{ else }}
+							<td class="t-field t-amount t-type-expense">{{ .Amount }}</td>
+							{{ end }}
+
+							<td class="t-field edit-t">
+								<img
+									class="modify-t-icon edit-icon"
+									src="/public/images/edit.png"
+									alt="edit icon"
+								/>
+							</td>
+							<td class="t-field delete-t">
+								<img
+									class="modify-t-icon delete-icon"
+									src="/public/images/delete.png"
+									alt="delete icon"
+								/>
+							</td>
+						</tr>
+
+						{{ end }}
+					</table>
+				</div>
+
+				{{ end }}
 			</div>
 		</div>
 

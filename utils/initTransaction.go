@@ -7,20 +7,25 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// create & insert a new transaction document from form data
+// create & insert a new transaction document from request url data
 
-func InitTransaction(c echo.Context) bson.D {
+func InitTransaction(c echo.Context) (bson.D, error) {
 	transaction := bson.D{}
-	formValues, _ := c.FormParams()
 
-	for key, value := range formValues {
+	// fmt.Println(c.Request().URL)
+
+	for key, value := range c.QueryParams() {
 		if key != "amount" {
 			transaction = append(transaction, bson.E{Key: key, Value: value[0]})
 			continue
 		}
-		valueFloat, _ := strconv.ParseFloat(value[0], 32)
+
+		valueFloat, err := strconv.ParseFloat(value[0], 32)
+		if err != nil {
+			return bson.D{}, err
+		}
 		transaction = append(transaction, bson.E{Key: key, Value: valueFloat})
 	}
 
-	return transaction
+	return transaction, nil
 }

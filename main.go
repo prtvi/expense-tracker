@@ -19,7 +19,7 @@ func main() {
 	e.Static("/public", "public")
 
 	e.GET("/", Index)
-	e.POST("/add", InputData)
+	e.GET("/add", InputData)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
@@ -28,28 +28,39 @@ func Index(c echo.Context) error {
 	fmt.Println("hit: GET: /")
 
 	allTransactions := utils.GetTransactions()
-	currentStatus := utils.UpdateCurrentStatus(allTransactions)
+	summary := utils.UpdateSummary(allTransactions)
 
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
-		"totalExpense":   currentStatus.TotalExpense,
-		"totalIncome":    currentStatus.TotalIncome,
-		"currentBalance": currentStatus.CurrentBalance,
-		"transactions":   allTransactions,
+		"totalExpense":     summary.TotalExpense,
+		"totalIncome":      summary.TotalIncome,
+		"currentBalance":   summary.CurrentBalance,
+		"transactions":     allTransactions,
+		"ifNoTransactions": len(allTransactions) == 0,
 	})
 }
 
 func InputData(c echo.Context) error {
-	fmt.Println("hit: POST: /add")
+	fmt.Println("hit: GET: /add")
 
-	transaction := utils.InitTransaction(c)
-	utils.InsertTransaction(transaction)
-	allTransactions := utils.GetTransactions()
-	currentStatus := utils.UpdateCurrentStatus(allTransactions)
+	var message model.ResponseMsg
+	transaction, err := utils.InitTransaction(c)
+	if err != nil {
+		message.StatusCode = http.StatusBadRequest
+		message.Success = false
 
-	return c.Render(http.StatusOK, "index", map[string]interface{}{
-		"totalExpense":   currentStatus.TotalExpense,
-		"totalIncome":    currentStatus.TotalIncome,
-		"currentBalance": currentStatus.CurrentBalance,
-		"transactions":   allTransactions,
-	})
+		return c.JSON(http.StatusBadRequest, message)
+	}
+
+	err = utils.InsertTransaction(transaction)
+	if err != nil {
+		message.StatusCode = http.StatusBadRequest
+		message.Success = false
+
+		return c.JSON(http.StatusBadRequest, message)
+	}
+
+	message.StatusCode = http.StatusOK
+	message.Success = true
+
+	return c.JSON(http.StatusOK, message)
 }

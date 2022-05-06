@@ -2,7 +2,6 @@ package utils
 
 import (
 	"context"
-	"fmt"
 
 	config "webdev/config"
 
@@ -11,9 +10,10 @@ import (
 
 // insert transaction document to database
 
-func InsertTransaction(transaction bson.D) {
+func InsertTransaction(transaction bson.D) error {
 	_, err := config.Transactions.InsertOne(context.TODO(), transaction)
 	if err != nil {
-		fmt.Println(err.Error())
+		return err
 	}
+	return nil
 }

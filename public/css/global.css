@@ -6,9 +6,20 @@
 	font-family: 'Poppins', sans-serif;
 }
 
+:root {
+	--bg-color: #0d1116;
+	--text-color: #c9d1d9;
+
+	--color-income: #39d353;
+	--color-expense: #e16637;
+
+	--color-error: #f26524;
+	--color-error-text: #000;
+}
+
 body {
-	background-color: #0d1116;
-	color: #c9d1d9;
+	background-color: var(--bg-color);
+	color: var(--text-color);
 }
 
 /* main container */
@@ -47,7 +58,7 @@ body {
 	padding: 0 2% 0 2%;
 }
 
-/* to make select element the same width as other form elements */
+/* to make "select" element the same width as other form elements */
 input,
 select {
 	box-sizing: border-box;
@@ -72,7 +83,27 @@ select {
 	border-radius: 8px;
 }
 
+/* error-insert */
+
+.hidden {
+	display: none;
+}
+
+.error-insert {
+	background-color: var(--color-error);
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	border-radius: 5px;
+}
+
+.error-insert-text {
+	color: var(--color-error-text);
+}
+
 /* form container */
+
+/* ------------------------------------ */
 
 /* status container */
 
@@ -89,9 +120,23 @@ select {
 	font-size: 1.1rem;
 }
 
-.transaction-list-table {
+/* no transaction display message */
+
+.no-t {
+	margin-top: 10%;
+}
+
+/* to enable scrolling over the table */
+.table-container {
+	height: 500px;
+	overflow-y: auto;
+}
+
+/* t = transaction, globally over all class names */
+
+.t-table {
 	margin: 5% auto 0 auto;
-	width: 60%;
+	width: 80%;
 }
 
 th,
@@ -100,4 +145,24 @@ td {
 	text-align: center;
 }
 
+/* to make table headers sticky on scroll */
+table th {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: var(--bg-color);
+}
+
+/* to display transaction type with color */
+.t-type-income {
+	color: var(--color-income);
+}
+
+.t-type-expense {
+	color: var(--color-expense);
+}
+
 /* status container */
+
+/* ------------------------------------ */
