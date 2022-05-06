@@ -2,7 +2,6 @@ package utils
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 
 	config "webdev/config"
@@ -27,11 +26,7 @@ func GetTransactions() []model.Transaction {
 	allTransactions := make([]model.Transaction, len(results))
 
 	for i, resultItem := range results {
-		docByte, _ := json.Marshal(resultItem)
-		var transaction model.Transaction
-		json.Unmarshal(docByte, &transaction)
-
-		allTransactions[i] = transaction
+		allTransactions[i] = BsonDocToTransaction(resultItem)
 	}
 
 	return allTransactions

@@ -110,8 +110,8 @@
 						</div>
 					</div>
 
-					<div class="form-element error-insert hidden">
-						<p class="error-insert-text">Error inserting the transaction</p>
+					<div class="form-element error-div hidden">
+						<p class="error-text"></p>
 					</div>
 
 					<!-- (6) Buttons -->
@@ -165,9 +165,7 @@
 						{{ range .transactions }}
 
 						<!-- t_id will be later used to fetch the doc details and let the user edit that doc -->
-						<!-- <tr class="t" t_id="{{ .ID }}"> -->
-
-						<tr class="t">
+						<tr class="t" t_id="{{ .ID }}">
 							<td class="t-field t-date">{{ .Date }}</td>
 							<td class="t-field t-desc">{{ .Desc }}</td>
 

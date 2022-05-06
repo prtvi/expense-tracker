@@ -78,9 +78,10 @@ select {
 }
 
 .btn {
-	width: 125px;
+	width: fit-content;
 	height: 75%;
 	border-radius: 8px;
+	padding: 4px 8px 4px 8px;
 }
 
 /* error-insert */
@@ -89,7 +90,7 @@ select {
 	display: none;
 }
 
-.error-insert {
+.error-div {
 	background-color: var(--color-error);
 	height: 30px;
 	line-height: 30px;
@@ -97,7 +98,7 @@ select {
 	border-radius: 5px;
 }
 
-.error-insert-text {
+.error-text {
 	color: var(--color-error-text);
 }
 
