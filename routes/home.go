@@ -16,12 +16,13 @@ func Home(c echo.Context) error {
 
 	allTransactions := utils.GetTransactions()
 	summary := utils.UpdateSummary(allTransactions)
+	formattedTransactions := utils.FormatDateAndDesc(allTransactions)
 
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
 		"totalExpense":     summary.TotalExpense,
 		"totalIncome":      summary.TotalIncome,
 		"currentBalance":   summary.CurrentBalance,
-		"transactions":     allTransactions,
+		"transactions":     formattedTransactions,
 		"ifNoTransactions": len(allTransactions) == 0,
 	})
 }

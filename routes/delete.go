@@ -12,18 +12,11 @@ import (
 // "/edit" route, accessible by only javascript
 // updates the document with input form data
 
-func EditT(c echo.Context) error {
-	fmt.Println("hit: GET: /edit")
-
-	updatedTransaction, err := utils.InitTransaction(c)
-	if err != nil {
-		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
-		return c.JSON(http.StatusBadRequest, res)
-	}
-
+func DeleteT(c echo.Context) error {
+	fmt.Println("hit: GET: /del")
 	id := c.QueryParam("id")
 
-	err = utils.UpdateTransaction(id, updatedTransaction)
+	err := utils.DeleteTransaction(id)
 	if err != nil {
 		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
 		return c.JSON(http.StatusBadRequest, res)

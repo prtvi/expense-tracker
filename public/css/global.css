@@ -84,6 +84,15 @@ select {
 	padding: 4px 8px 4px 8px;
 }
 
+/* edit icons pseudo classes */
+.modify-t-icon:hover {
+	transform: scale(1.2);
+}
+
+.modify-t-icon:active {
+	transform: translateY(2px);
+}
+
 /* error-insert */
 
 .hidden {
@@ -144,6 +153,7 @@ th,
 td {
 	padding: 8px;
 	text-align: center;
+	border-radius: 4px;
 }
 
 /* to make table headers sticky on scroll */
@@ -162,6 +172,14 @@ table th {
 
 .t-type-expense {
 	color: var(--color-expense);
+}
+
+/* pseudo class for updated t */
+
+.updated-t {
+	background-color: #fff;
+	opacity: 0.8;
+	color: var(--bg-color);
 }
 
 /* status container */

@@ -17,16 +17,16 @@ func AddT(c echo.Context) error {
 
 	transaction, err := utils.InitTransaction(c)
 	if err != nil {
-		message := utils.CreateResponseMessage(http.StatusBadRequest, false)
-		return c.JSON(http.StatusBadRequest, message)
+		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
+		return c.JSON(http.StatusBadRequest, res)
 	}
 
 	err = utils.InsertTransaction(transaction)
 	if err != nil {
-		message := utils.CreateResponseMessage(http.StatusBadRequest, false)
-		return c.JSON(http.StatusBadRequest, message)
+		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
+		return c.JSON(http.StatusBadRequest, res)
 	}
 
-	message := utils.CreateResponseMessage(http.StatusOK, true)
-	return c.JSON(http.StatusOK, message)
+	res := utils.CreateResponseMessage(http.StatusOK, true, "Success")
+	return c.JSON(http.StatusOK, res)
 }

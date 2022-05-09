@@ -19,6 +19,7 @@ func main() {
 	e.GET("/get", routes.ReturnT)
 	e.GET("/add", routes.AddT)
 	e.GET("/edit", routes.EditT)
+	e.GET("/del", routes.DeleteT)
 
 	e.Logger.Fatal(e.Start(":1324"))
 }

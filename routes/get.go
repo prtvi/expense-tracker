@@ -19,8 +19,8 @@ func ReturnT(c echo.Context) error {
 
 	transaction, err := utils.GetDocumentById(id)
 	if err != nil {
-		message := utils.CreateResponseMessage(http.StatusBadRequest, false)
-		return c.JSON(http.StatusBadRequest, message)
+		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
+		return c.JSON(http.StatusBadRequest, res)
 	}
 
 	return c.JSON(http.StatusOK, transaction)

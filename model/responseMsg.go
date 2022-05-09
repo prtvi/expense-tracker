@@ -1,6 +1,7 @@
 package model
 
 type ResponseMsg struct {
-	StatusCode int  `bson:"status_code" json:"status_code"`
-	Success    bool `bson:"success" json:"success"`
+	StatusCode int    `bson:"status_code" json:"status_code"`
+	Success    bool   `bson:"success" json:"success"`
+	Message    string `bson:"message" json:"message"`
 }
