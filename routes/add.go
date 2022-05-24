@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 
 	utils "webdev/utils"
@@ -13,8 +12,6 @@ import (
 // adds a new transaction to the db
 
 func AddT(c echo.Context) error {
-	fmt.Println("hit: GET: /add")
-
 	transaction, err := utils.InitTransaction(c)
 	if err != nil {
 		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")

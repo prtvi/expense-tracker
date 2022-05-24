@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 
 	utils "webdev/utils"
@@ -13,8 +12,6 @@ import (
 // updates the document with input form data
 
 func EditT(c echo.Context) error {
-	fmt.Println("hit: GET: /edit")
-
 	updatedTransaction, err := utils.InitTransaction(c)
 	if err != nil {
 		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")

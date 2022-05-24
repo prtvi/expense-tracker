@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 
 	utils "webdev/utils"
@@ -12,8 +11,6 @@ import (
 // "/" route, gets all transactions and makes a summary to render on page
 
 func Home(c echo.Context) error {
-	fmt.Println("hit: GET: /")
-
 	allTransactions := utils.GetTransactions()
 	summary := utils.UpdateSummary(allTransactions)
 	formattedTransactions := utils.FormatDateAndDesc(allTransactions)

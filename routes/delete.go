@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 
 	utils "webdev/utils"
@@ -13,7 +12,6 @@ import (
 // updates the document with input form data
 
 func DeleteT(c echo.Context) error {
-	fmt.Println("hit: GET: /del")
 	id := c.QueryParam("id")
 
 	err := utils.DeleteTransaction(id)

@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 
 	utils "webdev/utils"
@@ -13,8 +12,6 @@ import (
 // returns a transaction by doc id
 
 func ReturnT(c echo.Context) error {
-	fmt.Println("hit: GET: /get")
-
 	id := c.QueryParam("id")
 
 	transaction, err := utils.GetDocumentById(id)

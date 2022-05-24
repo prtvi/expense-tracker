@@ -157,6 +157,7 @@
 							<th>Amount</th>
 							<th></th>
 							<th></th>
+							<th></th>
 						</tr>
 
 						{{ range .transactions }}
@@ -171,6 +172,13 @@
 							<td class="t-field t-amount t-type-expense">{{ .Amount }}</td>
 							{{ end }}
 
+							<td class="t-field view-t">
+								<img
+									class="modify-t-icon view-icon"
+									src="/public/images/view.png"
+									alt="view icon"
+								/>
+							</td>
 							<td class="t-field edit-t">
 								<img
 									class="modify-t-icon edit-icon"
@@ -192,11 +200,18 @@
 				</div>
 
 				{{ end }}
+
+				<!-- sort and stuff -->
+				<div class="rearrange-btns">
+					<button class="btn btn-sort">SORT</button>
+				</div>
 			</div>
 		</div>
 
+		<script src="/public/js/config.js"></script>
+		<script src="/public/js/dom.js"></script>
 		<script src="/public/js/utils.js"></script>
-		<script src="/public/js/script.js"></script>
+		<script src="/public/js/handlers.js"></script>
 	</body>
 </html>
 

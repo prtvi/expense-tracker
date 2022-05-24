@@ -25,12 +25,12 @@ body {
 /* main container */
 
 .main-container {
-	height: 600px;
+	height: 800px;
 	width: 100%;
 }
 
 .container {
-	height: 600px;
+	height: 500px;
 	padding: 6% 2% 2% 8%;
 }
 
@@ -45,6 +45,7 @@ body {
 .form-container {
 	float: left;
 	width: 30%;
+	margin: 2% 0 0 0;
 }
 
 .form-element {
@@ -73,7 +74,7 @@ select {
 }
 
 .btns {
-	margin-top: 8%;
+	margin-top: 10%;
 	text-align: center;
 }
 
@@ -121,7 +122,6 @@ select {
 	padding: 8% 2% 2% 2%;
 	margin: 2% 2% 0 40%;
 	text-align: center;
-	overflow-y: auto;
 }
 
 .status-text {
@@ -138,7 +138,7 @@ select {
 
 /* to enable scrolling over the table */
 .table-container {
-	height: 500px;
+	height: 450px;
 	overflow-y: auto;
 }
 
@@ -180,6 +180,22 @@ table th {
 	background-color: #fff;
 	opacity: 0.8;
 	color: var(--bg-color);
+}
+
+/* for deletion */
+
+.strike {
+	color: red;
+}
+
+.strike-text {
+	color: var(--text-color);
+}
+
+/* rearrange btns */
+
+.rearrange-btns {
+	margin: 4% 0 0 0;
 }
 
 /* status container */
