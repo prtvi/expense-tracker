@@ -15,6 +15,15 @@
 
 	--color-error: #f26524;
 	--color-error-text: #000;
+
+	--black-a: rgba(0, 0, 0, 0.4);
+	--black: #000;
+	--white: #fff;
+	--red: #ff0000;
+
+	--modal-bg-color: #fefefe;
+	--modal-border: #888;
+	--modal-close: #aaa;
 }
 
 body {
@@ -177,7 +186,7 @@ table th {
 /* pseudo class for updated t */
 
 .updated-t {
-	background-color: #fff;
+	background-color: var(--white);
 	opacity: 0.8;
 	color: var(--bg-color);
 }
@@ -185,7 +194,7 @@ table th {
 /* for deletion */
 
 .strike {
-	color: red;
+	color: var(--red);
 }
 
 .strike-text {
@@ -201,3 +210,64 @@ table th {
 /* status container */
 
 /* ------------------------------------ */
+
+/* modal for view -t */
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 2;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: var(--black);
+	background-color: var(--black-a);
+}
+
+.modal-container {
+	background-color: var(--modal-bg-color);
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid var(--modal-border);
+	border-radius: 5px;
+	width: 35%;
+}
+
+.close-modal {
+	color: var(--modal-close);
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+	color: var(--bg-color);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* for elements in modal */
+.modal-content {
+	color: var(--bg-color);
+}
+
+.modal-title {
+	margin: 0 2% 5% 0;
+}
+
+.modal-t-field-container {
+	margin: 1% 5% 1% 5%;
+}
+
+.modal-t-field {
+	color: var(--modal-border);
+}
+
+.modal-t-field-value {
+	display: inline;
+	float: right;
+	color: var(--bg-color);
+}

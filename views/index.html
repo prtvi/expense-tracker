@@ -43,7 +43,9 @@
 
 					<!-- (2) Amount -->
 					<div class="form-element">
-						<label class="form-label" for="amount">Amount</label>
+						<label class="form-label" for="amount"
+							>Amount ({{ .currency }})</label
+						>
 						<input
 							class="form-input"
 							type="number"
@@ -121,23 +123,35 @@
 				</form>
 			</div>
 
+			<div class="modal modal-whole-page">
+				<div class="modal-container">
+					<span class="close-modal">&times;</span>
+					<div class="modal-content">
+						<div class="modal-t-field-container">
+							<label class="modal-t-field">Date</label>
+							<p class="modal-t-field-value">Fri, 13 May 2022</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="container status-container">
 				<p class="status-text total-income">
 					Total income:
 					<span class="status-text-value total-income-value"
-						>{{ .totalIncome }}</span
+						>{{ .currency }} {{ .totalIncome }}</span
 					>
 				</p>
 				<p class="status-text total-expense">
 					Total expense:
 					<span class="status-text-value total-expense-value"
-						>{{ .totalExpense }}</span
+						>{{ .currency }} {{ .totalExpense }}</span
 					>
 				</p>
 				<p class="status-text current-balance">
 					Current balance:
 					<span class="status-text-value current-balance-value"
-						>{{ .currentBalance }}</span
+						>{{ .currency }} {{ .currentBalance }}</span
 					>
 				</p>
 
@@ -154,7 +168,7 @@
 						<tr class="table-header-row">
 							<th>Date</th>
 							<th>Description</th>
-							<th>Amount</th>
+							<th>Amount ({{ .currency }})</th>
 							<th></th>
 							<th></th>
 							<th></th>

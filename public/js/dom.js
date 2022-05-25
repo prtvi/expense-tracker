@@ -55,8 +55,38 @@ const onFailure = function (endpoint) {
 	if (endpoint === EDIT_ENDPOINT) showError('Error updating the transaction!');
 };
 
-const displayModal = function (tID, endpoint) {
-	console.log('diaplsy modal');
+const displayTModal = async function (tID, endpoint) {
+	const url = `${endpoint}?id=${tID}`;
+	const res = await makeFetchRequest(url);
+
+	if (!res.date) return showError('Error loading the transaction!');
+
+	let formattedDate = String(new Date(res.date)).slice(0, 16);
+	formattedDate = `${formattedDate.slice(0, 3)}, ${formattedDate.slice(4, -1)}`;
+
+	// TODO: add currency symbol here
+	const map = new Map([
+		['Date', formattedDate],
+		['Description', res.desc],
+		['Amount', res.amount],
+		['Mode', res.mode],
+		['Paid to', res.paid_to],
+		['Type', res.type],
+	]);
+
+	let fieldContainers = '';
+	map.forEach((value, key) => {
+		fieldContainers += `<div class="modal-t-field-container">
+	<label class="modal-t-field">${key}</label>
+	<p class="modal-t-field-value">${value}</p>
+	</div>`;
+	});
+
+	modalContent.innerHTML =
+		`<h3 class="modal-title">${res.desc} on ${formattedDate}</h3>` +
+		fieldContainers;
+
+	showModal();
 };
 
 // init

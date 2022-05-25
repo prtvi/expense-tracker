@@ -21,5 +21,6 @@ func Home(c echo.Context) error {
 		"currentBalance":   summary.CurrentBalance,
 		"transactions":     formattedTransactions,
 		"ifNoTransactions": len(allTransactions) == 0,
+		"currency":         "₹",
 	})
 }

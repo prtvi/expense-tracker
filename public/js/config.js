@@ -15,6 +15,11 @@ const modeEl = document.getElementById('mode');
 // btns
 const submitBtn = document.querySelector('.btn-add');
 
+// modal
+const modal = document.querySelector('.modal');
+const modalContent = document.querySelector('.modal-content');
+const modalClose = document.querySelector('.close-modal');
+
 // endpoints
 const GET_ENDPOINT = '/get';
 const ADD_ENDPOINT = '/add';

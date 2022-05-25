@@ -1,6 +1,8 @@
-// using event delegation to add event listener to the entire table rather than every transaction
 const tableEventListener = function (e) {
+	// using event delegation to add event listener to the entire table rather than every transaction
 	const tRow = e.target.closest('.t');
+	if (!tRow) return;
+
 	const tID = tRow.getAttribute('id');
 
 	// looking for edit event
@@ -12,7 +14,8 @@ const tableEventListener = function (e) {
 		initiateDeleteT(tRow, tID, DEL_ENDPOINT);
 
 	// view event
-	if (e.target.classList.contains('view-icon')) displayModal(tID, GET_ENDPOINT);
+	if (e.target.classList.contains('view-icon'))
+		displayTModal(tID, GET_ENDPOINT);
 };
 
 const formEventListener = function (e) {
@@ -32,7 +35,8 @@ const formEventListener = function (e) {
 	}
 };
 
-/*
+const updateProcessHandler = function (e) {
+	/*
 	UPDATE process
 	- event listener for the table checks if edit icon is clicked
 	- get the transaction id 
@@ -41,8 +45,6 @@ const formEventListener = function (e) {
 	- look for form submission, if the btn text is 'Update transaction' then send update_id and data and update the transaction
 	- use the stored tID to render the update
 */
-
-const updateProcessHandler = function (e) {
 	const tID = sessionStorage.getItem(UPDATE_TID);
 	const updateTrue = sessionStorage.getItem(UPDATE_TRUE);
 
@@ -57,3 +59,14 @@ const updateProcessHandler = function (e) {
 table && table.addEventListener('click', tableEventListener);
 form.addEventListener('submit', formEventListener);
 window.addEventListener('load', updateProcessHandler);
+
+// modal close event handlers
+window.addEventListener('click', e => {
+	if (e.target === modal && modal.style.display === 'block') hideModal();
+});
+
+window.addEventListener('keydown', e => {
+	if (e.key === 'Escape' && modal.style.display === 'block') hideModal();
+});
+
+modalClose.addEventListener('click', hideModal);

@@ -145,3 +145,6 @@ const highlightT = function (tID) {
 
 const getStrikeSpanMarkup = (currMarkup, spanClass) =>
 	`<s class="strike"><span class="${spanClass}">${currMarkup}</span></s>`;
+
+const showModal = () => (modal.style.display = 'block');
+const hideModal = () => (modal.style.display = 'none');
