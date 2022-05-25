@@ -20,7 +20,7 @@ func Home(c echo.Context) error {
 		"totalIncome":      summary.TotalIncome,
 		"currentBalance":   summary.CurrentBalance,
 		"transactions":     formattedTransactions,
-		"ifNoTransactions": len(allTransactions) == 0,
+		"ifNoTransactions": len(formattedTransactions) == 0,
 		"currency":         "₹",
 	})
 }

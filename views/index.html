@@ -1,4 +1,4 @@
-{{define "index"}}
+{{ define "index" }}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +11,7 @@
 	</head>
 	<body>
 		<div class="main-container">
+			<!-- form container -->
 			<div class="container form-container">
 				<h2 class="form-heading">Add expense</h2>
 
@@ -123,6 +124,7 @@
 				</form>
 			</div>
 
+			<!-- modal container -->
 			<div class="modal modal-whole-page">
 				<div class="modal-container">
 					<span class="close-modal">&times;</span>
@@ -135,6 +137,7 @@
 				</div>
 			</div>
 
+			<!-- status container -->
 			<div class="container status-container">
 				<p class="status-text total-income">
 					Total income:
@@ -213,20 +216,18 @@
 					</table>
 				</div>
 
-				{{ end }}
-
 				<!-- sort and stuff -->
 				<div class="rearrange-btns">
 					<button class="btn btn-sort">SORT</button>
 				</div>
+
+				{{ end }}
 			</div>
 		</div>
 
-		<script src="/public/js/config.js"></script>
-		<script src="/public/js/dom.js"></script>
-		<script src="/public/js/utils.js"></script>
+		<script src="/public/js/init.js"></script>
 		<script src="/public/js/handlers.js"></script>
 	</body>
 </html>
 
-{{end}}
+{{ end }}

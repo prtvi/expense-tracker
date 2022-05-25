@@ -20,5 +20,7 @@ func ReturnT(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, res)
 	}
 
-	return c.JSON(http.StatusOK, transaction)
+	transactionFormatted := utils.FormatTransaction(transaction)
+
+	return c.JSON(http.StatusOK, transactionFormatted)
 }

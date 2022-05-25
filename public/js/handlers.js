@@ -16,6 +16,9 @@ const tableEventListener = function (e) {
 	// view event
 	if (e.target.classList.contains('view-icon'))
 		displayTModal(tID, GET_ENDPOINT);
+
+	// double click event
+	if (e.type === 'dblclick') displayTModal(tID, GET_ENDPOINT);
 };
 
 const formEventListener = function (e) {
@@ -56,9 +59,11 @@ const updateProcessHandler = function (e) {
 	}
 };
 
-table && table.addEventListener('click', tableEventListener);
 form.addEventListener('submit', formEventListener);
 window.addEventListener('load', updateProcessHandler);
+
+table && table.addEventListener('click', tableEventListener);
+table && table.addEventListener('dblclick', tableEventListener);
 
 // modal close event handlers
 window.addEventListener('click', e => {
