@@ -16,9 +16,12 @@ func Home(c echo.Context) error {
 	formattedTransactions := utils.FormatDateAndDesc(allTransactions)
 
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
-		"totalExpense":     summary.TotalExpense,
-		"totalIncome":      summary.TotalIncome,
-		"currentBalance":   summary.CurrentBalance,
+		"totalIncome":  summary.TotalIncome,
+		"totalExpense": summary.TotalExpense,
+
+		"currentBalance":      summary.CurrentBalance,
+		"currentBalanceClass": utils.GetClassNameByValue(summary.CurrentBalance),
+
 		"transactions":     formattedTransactions,
 		"ifNoTransactions": len(formattedTransactions) == 0,
 		"currency":         "₹",

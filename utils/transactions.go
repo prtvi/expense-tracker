@@ -22,6 +22,8 @@ func InitTransaction(c echo.Context) (bson.D, error) {
 	transaction := bson.D{}
 
 	for key, value := range c.QueryParams() {
+		fmt.Println(key, value)
+
 		// to leave out _id field during update process
 		if key == "id" {
 			continue

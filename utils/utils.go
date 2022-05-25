@@ -4,18 +4,11 @@ import (
 	"encoding/json"
 	"time"
 
+	config "webdev/config"
 	model "webdev/model"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
-
-const MAX_DESC_LEN = 20
-
-// for format: 2022-05-25
-const FORMAT_DATE_STR_LEN = 10
-
-// for format: Wed, 25 May 2022
-const FORMAT_DATE_STR_LEN_LONG = 16
 
 // convert primitive.M to model.Transaction object
 
@@ -39,7 +32,7 @@ func FormatTransaction(t model.Transaction) model.TransactionFormatted {
 	// date object to format: 2022-05-25
 	return model.TransactionFormatted{
 		ID:     t.ID,
-		Date:   t.Date.String()[0:FORMAT_DATE_STR_LEN],
+		Date:   t.Date.String()[0:config.FORMAT_DATE_STR_LEN],
 		Desc:   t.Desc,
 		Amount: t.Amount,
 		Type:   t.Type,
@@ -57,15 +50,22 @@ func FormatDateAndDesc(allTransactions []model.Transaction) []model.TransactionF
 		T := FormatTransaction(t)
 
 		// truncating desc text (only when viewed inside table)
-		if len(t.Desc) > MAX_DESC_LEN {
-			T.Desc = t.Desc[0:MAX_DESC_LEN] + "..."
+		if len(t.Desc) > config.MAX_DESC_LEN {
+			T.Desc = t.Desc[0:config.MAX_DESC_LEN] + "..."
 		}
 
 		// to format into: Wed, 25 May 2022
-		T.Date = t.Date.Format(time.RFC1123Z)[0:FORMAT_DATE_STR_LEN_LONG]
+		T.Date = t.Date.Format(time.RFC1123Z)[0:config.FORMAT_DATE_STR_LEN_LONG]
 
 		formattedTransactions[i] = T
 	}
 
 	return formattedTransactions
+}
+
+func GetClassNameByValue(value float32) string {
+	if value >= 0 {
+		return config.ClassTTypeIncome
+	}
+	return config.ClassTTypeExpense
 }

@@ -1,7 +1,9 @@
+// main dom elements
 const form = document.getElementById('form');
+const table = document.querySelector('.t-table');
+
 const errDiv = document.querySelector('.error-div');
 const errText = document.querySelector('.error-text');
-const table = document.querySelector('.t-table');
 
 // form elements, except type
 const dateEl = document.getElementById('date');
@@ -12,11 +14,12 @@ const modeEl = document.getElementById('mode');
 
 // btns
 const submitBtn = document.querySelector('.btn-add');
+const viewBtn = document.querySelector('.btn-view');
 
 // modal
 const modal = document.querySelector('.modal');
 const modalContent = document.querySelector('.modal-content');
-const modalClose = document.querySelector('.close-modal');
+const modalClose = document.querySelector('.close-modal-span');
 
 // endpoints
 const GET_ENDPOINT = '/get';
@@ -28,12 +31,44 @@ const DEL_ENDPOINT = '/del';
 const UPDATE_TID = 'UPDATE_TID';
 const UPDATE_TRUE = 'UPDATE';
 
+// global class names
+const cHidden = 'hidden';
+
+const cStrike = 'strike';
+const cStrikeText = 'strike-text';
+
+const cTTypeIncome = 't-type-income';
+const cTTypeExpense = 't-type-expense';
+
+const cUpdatedT = 'updated-t';
+
+const cModalTitle = 'modal-title';
+const cModalTFieldDiv = 'modal-t-field-div';
+const cModalTFieldLabel = 'modal-t-field-label';
+const cModalTFieldValue = 'modal-t-field-value';
+
+const cT = 't';
+const cEditIcon = 'edit-icon';
+const cDeleteIcon = 'delete-icon';
+const cViewIcon = 'view-icon';
+
+// timeouts (ms)
+const errShowTimeout = 2500;
+const updateTTimeout = 500;
+const deleteTTimeout = 1000;
+
+// text (messages/errors)
+const errInsertT = 'Error inserting the transaction!';
+const errUpdateT = 'Error updating the transaction!';
+const errLoadT = 'Error loading the transaction!';
+const errDeleteT = 'Error deleting the transaction!';
+
+const btnTextAddT = 'Add transaction';
+const btnTextUpdateT = 'Update transaction';
+
 // functions
 
-/**
- * To keep the default date to "today"
- * @param {object} dateEl Date - input form element
- */
+//To keep the default date to "today"
 (function (dateEl) {
 	const newDate = new Date();
 	const year = newDate.getFullYear();
@@ -67,8 +102,8 @@ const UPDATE_TRUE = 'UPDATE';
  */
 const showError = function (errMsg) {
 	errText.textContent = errMsg;
-	errDiv.classList.remove('hidden');
-	setTimeout(() => errDiv.classList.add('hidden'), 2500);
+	errDiv.classList.remove(cHidden);
+	setTimeout(() => errDiv.classList.add(cHidden), errShowTimeout);
 };
 
 // on success event
@@ -79,8 +114,8 @@ const onSuccess = () => window.location.reload();
  * @param {string} endpoint Error based on endpoint
  */
 const onFailure = function (endpoint) {
-	if (endpoint === ADD_ENDPOINT) showError('Error inserting the transaction!');
-	if (endpoint === EDIT_ENDPOINT) showError('Error updating the transaction!');
+	if (endpoint === ADD_ENDPOINT) showError(errInsertT);
+	if (endpoint === EDIT_ENDPOINT) showError(errUpdateT);
 };
 
 /**
@@ -91,7 +126,7 @@ const onFailure = function (endpoint) {
  * @returns {string} New markup with strikethrough text
  */
 const getStrikeSpanMarkup = (currMarkup, spanClass) =>
-	`<s class="strike"><span class="${spanClass}">${currMarkup}</span></s>`;
+	`<s class="${cStrike}"><span class="${spanClass}">${currMarkup}</span></s>`;
 
 // self explanatory
 const showModal = () => (modal.style.display = 'block');
@@ -159,7 +194,7 @@ const getAndLoadTForEdit = async function (tID, endpoint) {
 	const url = `${endpoint}?id=${tID}`;
 	const res = await makeFetchRequest(url);
 
-	if (!res.date) return showError('Error loading the transaction!');
+	if (!res.date) return showError(errLoadT);
 
 	// load values to form
 	dateEl.value = res.date;
@@ -172,7 +207,7 @@ const getAndLoadTForEdit = async function (tID, endpoint) {
 	else document.getElementById('expense').checked = true;
 
 	// change btn text content
-	submitBtn.textContent = 'Update transaction';
+	submitBtn.textContent = btnTextUpdateT;
 
 	// storing the updated transaction id to sessionStorage to fetch later on reload for showing changes
 	sessionStorage.setItem(UPDATE_TID, res._id);
@@ -191,21 +226,21 @@ const initiateDeleteT = function (tRow, tID, endpoint) {
 		if (field.children.length > 0) return;
 
 		// to keep the amount text color same as the original
-		if (field.classList.contains('t-type-income'))
-			field.innerHTML = getStrikeSpanMarkup(field.innerHTML, 't-type-income');
-		else if (field.classList.contains('t-type-expense'))
-			field.innerHTML = getStrikeSpanMarkup(field.innerHTML, 't-type-expense');
-		else field.innerHTML = getStrikeSpanMarkup(field.innerHTML, 'strike-text');
+		if (field.classList.contains(cTTypeIncome))
+			field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cTTypeIncome);
+		else if (field.classList.contains(cTTypeExpense))
+			field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cTTypeExpense);
+		else field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cStrikeText);
 	});
 
 	// make ajax call to delete the transaction after a timeout
 	const reqUrl = `${endpoint}?id=${tID}`;
 	setTimeout(async () => {
 		const res = await makeFetchRequest(reqUrl);
-		if (!res.success) return showError('Error deleting transaction!');
+		if (!res.success) return showError(errDeleteT);
 
 		window.location.reload();
-	}, 1000);
+	}, deleteTTimeout);
 };
 
 /**
@@ -215,7 +250,7 @@ const initiateDeleteT = function (tRow, tID, endpoint) {
 const highlightT = function (tID) {
 	// local function for highlightT function
 	const callSetTimeoutForUpdate = (tds, ms) =>
-		setTimeout(() => tds.forEach(el => el.classList.toggle('updated-t')), ms);
+		setTimeout(() => tds.forEach(el => el.classList.toggle(cUpdatedT)), ms);
 
 	const tRow = document.getElementById(tID);
 
@@ -225,8 +260,10 @@ const highlightT = function (tID) {
 		if (field.children.length <= 0) tds.push(field);
 	});
 
-	callSetTimeoutForUpdate(tds, 500);
-	callSetTimeoutForUpdate(tds, 1000);
+	callSetTimeoutForUpdate(tds, updateTTimeout);
+	updateTTimeout += 500;
+	callSetTimeoutForUpdate(tds, updateTTimeout);
+	updateTTimeout = 500;
 };
 
 /**
@@ -254,7 +291,7 @@ const displayTModal = async function (tID, endpoint) {
 	const url = `${endpoint}?id=${tID}`;
 	const res = await makeFetchRequest(url);
 
-	if (!res.date) return showError('Error loading the transaction!');
+	if (!res.date) return showError(errLoadT);
 
 	// format date in readable format
 	const formattedDate = formatDate(res.date);
@@ -273,15 +310,15 @@ const displayTModal = async function (tID, endpoint) {
 	// generate dom for modal content
 	let fieldContainers = '';
 	map.forEach((value, key) => {
-		fieldContainers += `<div class="modal-t-field-container">
-	<label class="modal-t-field">${key}</label>
-	<p class="modal-t-field-value">${value}</p>
+		fieldContainers += `<div class="${cModalTFieldDiv}">
+	<label class="${cModalTFieldLabel}">${key}</label>
+	<p class="${cModalTFieldValue}">${value}</p>
 	</div>`;
 	});
 
 	// attach title & modal content
 	modalContent.innerHTML =
-		`<h3 class="modal-title">${res.desc} on ${formattedDate}</h3>` +
+		`<h3 class="${cModalTitle}">${res.desc} on ${formattedDate}</h3>` +
 		fieldContainers;
 
 	// display modal

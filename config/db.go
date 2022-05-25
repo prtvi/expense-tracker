@@ -10,10 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// Global mongo collection connection
-var Transactions mongo.Collection
-var Summary mongo.Collection
-
 // load env variables into the system env
 func LoadEnv() {
 	err := godotenv.Load(".env")

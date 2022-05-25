@@ -31,7 +31,11 @@ body {
 	color: var(--text-color);
 }
 
-/* main container */
+/* t = transaction, globally over all class names */
+
+/* -------------------------------- */
+
+/* MAIN CONTAINER */
 
 .main-container {
 	height: 800px;
@@ -43,13 +47,11 @@ body {
 	padding: 6% 2% 2% 8%;
 }
 
-/* main container */
+/* MAIN CONTAINER */
 
-/* form container */
+/* -------------------------------- */
 
-.form-heading {
-	padding-bottom: 5%;
-}
+/* FORM CONTAINER */
 
 .form-container {
 	float: left;
@@ -57,13 +59,17 @@ body {
 	margin: 2% 0 0 0;
 }
 
-.form-element {
+.form-heading {
+	padding-bottom: 5%;
+}
+
+.form-element-div {
 	display: block;
 	margin: 3% 0 3% 0;
 	height: 50px;
 }
 
-.form-label {
+.form-element-label {
 	font-size: 1.1rem;
 	padding: 0 2% 0 2%;
 }
@@ -82,7 +88,7 @@ select {
 	height: 30px;
 }
 
-.btns {
+.btns-div {
 	margin-top: 10%;
 	text-align: center;
 }
@@ -94,20 +100,11 @@ select {
 	padding: 4px 8px 4px 8px;
 }
 
-/* edit icons pseudo classes */
-.modify-t-icon:hover {
-	transform: scale(1.2);
-}
-
-.modify-t-icon:active {
-	transform: translateY(2px);
-}
-
-/* error-insert */
-
 .hidden {
 	display: none;
 }
+
+/* error on insert/update */
 
 .error-div {
 	background-color: var(--color-error);
@@ -121,11 +118,77 @@ select {
 	color: var(--color-error-text);
 }
 
-/* form container */
+/* FORM CONTAINER */
 
 /* ------------------------------------ */
 
-/* status container */
+/* MODAL CONTAINER */
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 2;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: var(--black);
+	background-color: var(--black-a);
+}
+
+/* to only contain the cross for closing the modal */
+.modal-container {
+	background-color: var(--modal-bg-color);
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid var(--modal-border);
+	border-radius: 5px;
+	width: 35%;
+}
+
+.close-modal-span {
+	color: var(--modal-close);
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close-modal-span:hover,
+.close-modal-span:focus {
+	color: var(--bg-color);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* main container for changing and holding content inside the modal */
+.modal-content {
+	color: var(--bg-color);
+}
+
+.modal-title {
+	margin: 0 2% 5% 0;
+}
+
+.modal-t-field-div {
+	margin: 1% 5% 1% 5%;
+}
+
+.modal-t-field-label {
+	color: var(--modal-border);
+}
+
+.modal-t-field-value {
+	display: inline;
+	float: right;
+	color: var(--bg-color);
+}
+
+/* MODAL CONTAINER */
+
+/* ------------------------------------ */
+
+/* STATUS CONTAINER */
 
 .status-container {
 	padding: 8% 2% 2% 2%;
@@ -139,19 +202,25 @@ select {
 	font-size: 1.1rem;
 }
 
-/* no transaction display message */
+/* to display transaction type with color */
+.t-type-income {
+	color: var(--color-income);
+}
 
-.no-t {
+.t-type-expense {
+	color: var(--color-expense);
+}
+
+/* no transaction display message */
+.no-t-div {
 	margin-top: 10%;
 }
 
-/* to enable scrolling over the table */
 .table-container {
-	height: 450px;
+	max-height: 450px;
+	/* to enable scrolling over the table */
 	overflow-y: auto;
 }
-
-/* t = transaction, globally over all class names */
 
 .t-table {
 	margin: 5% auto 0 auto;
@@ -174,17 +243,18 @@ table th {
 	background-color: var(--bg-color);
 }
 
-/* to display transaction type with color */
-.t-type-income {
-	color: var(--color-income);
+/* view btns */
+.view-all-t-btns {
+	margin: 4% 0 0 0;
 }
 
-.t-type-expense {
-	color: var(--color-expense);
-}
+/* STATUS CONTAINER */
+
+/* ------------------------------------ */
+
+/* PSEUDO CLASSES */
 
 /* pseudo class for updated t */
-
 .updated-t {
 	background-color: var(--white);
 	opacity: 0.8;
@@ -192,7 +262,6 @@ table th {
 }
 
 /* for deletion */
-
 .strike {
 	color: var(--red);
 }
@@ -201,73 +270,15 @@ table th {
 	color: var(--text-color);
 }
 
-/* rearrange btns */
-
-.rearrange-btns {
-	margin: 4% 0 0 0;
+/* edit icons */
+.modify-t-icon:hover {
+	transform: scale(1.2);
 }
 
-/* status container */
+.modify-t-icon:active {
+	transform: translateY(2px);
+}
+
+/* PSEUDO CLASSES */
 
 /* ------------------------------------ */
-
-/* modal for view -t */
-
-.modal {
-	display: none;
-	position: fixed;
-	z-index: 2;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: var(--black);
-	background-color: var(--black-a);
-}
-
-.modal-container {
-	background-color: var(--modal-bg-color);
-	margin: 15% auto;
-	padding: 20px;
-	border: 1px solid var(--modal-border);
-	border-radius: 5px;
-	width: 35%;
-}
-
-.close-modal {
-	color: var(--modal-close);
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-}
-
-.close-modal:hover,
-.close-modal:focus {
-	color: var(--bg-color);
-	text-decoration: none;
-	cursor: pointer;
-}
-
-/* for elements in modal */
-.modal-content {
-	color: var(--bg-color);
-}
-
-.modal-title {
-	margin: 0 2% 5% 0;
-}
-
-.modal-t-field-container {
-	margin: 1% 5% 1% 5%;
-}
-
-.modal-t-field {
-	color: var(--modal-border);
-}
-
-.modal-t-field-value {
-	display: inline;
-	float: right;
-	color: var(--bg-color);
-}

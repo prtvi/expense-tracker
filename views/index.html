@@ -17,8 +17,8 @@
 
 				<form id="form">
 					<!-- (0) Date -->
-					<div class="form-element">
-						<label class="form-label" for="date">Date</label>
+					<div class="form-element-div">
+						<label class="form-element-label" for="date">Date</label>
 						<input
 							class="form-input"
 							type="date"
@@ -29,22 +29,23 @@
 					</div>
 
 					<!-- (1) Description -->
-					<div class="form-element">
-						<label class="form-label" for="desc">Description</label>
+					<div class="form-element-div">
+						<label class="form-element-label" for="desc">Description</label>
 						<input
 							class="form-input"
 							type="text"
 							name="desc"
 							id="desc"
 							minlength="1"
+							maxlength="25"
 							placeholder="Add your description"
 							required
 						/>
 					</div>
 
 					<!-- (2) Amount -->
-					<div class="form-element">
-						<label class="form-label" for="amount"
+					<div class="form-element-div">
+						<label class="form-element-label" for="amount"
 							>Amount ({{ .currency }})</label
 						>
 						<input
@@ -58,8 +59,8 @@
 					</div>
 
 					<!-- (3) Paid to -->
-					<div class="form-element">
-						<label class="form-label" for="paid_to">Paid to</label>
+					<div class="form-element-div">
+						<label class="form-element-label" for="paid_to">Paid to</label>
 						<input
 							class="form-input"
 							type="text"
@@ -73,8 +74,8 @@
 					</div>
 
 					<!-- (4) Mode -->
-					<div class="form-element">
-						<label class="form-label" for="mode">Mode</label>
+					<div class="form-element-div">
+						<label class="form-element-label" for="mode">Mode</label>
 						<select class="form-input" name="mode" id="mode" required>
 							<option class="form-input-option" value="PhonePe">PhonePe</option>
 							<option class="form-input-option" value="Google Pay">
@@ -85,8 +86,8 @@
 					</div>
 
 					<!-- (5) Transaction type -->
-					<div class="form-element">
-						<label class="form-label">Type of transaction</label>
+					<div class="form-element-div">
+						<label class="form-element-label">Type of transaction</label>
 						<div class="form-input form-input-radio-group">
 							<div class="form-input-radio">
 								<input
@@ -112,12 +113,12 @@
 						</div>
 					</div>
 
-					<div class="form-element error-div hidden">
+					<div class="form-element-div error-div hidden">
 						<p class="error-text"></p>
 					</div>
 
 					<!-- (6) Buttons -->
-					<div class="form-element btns">
+					<div class="form-element-div btns-div">
 						<button class="btn btn-add" type="submit">Add transaction</button>
 						<button class="btn btn-clear" type="reset">Clear all</button>
 					</div>
@@ -127,10 +128,12 @@
 			<!-- modal container -->
 			<div class="modal modal-whole-page">
 				<div class="modal-container">
-					<span class="close-modal">&times;</span>
+					<span class="close-modal-span">&times;</span>
+
 					<div class="modal-content">
-						<div class="modal-t-field-container">
-							<label class="modal-t-field">Date</label>
+						<h3 class="modal-title">Title</h3>
+						<div class="modal-t-field-div">
+							<label class="modal-t-field-label">Date</label>
 							<p class="modal-t-field-value">Fri, 13 May 2022</p>
 						</div>
 					</div>
@@ -141,26 +144,28 @@
 			<div class="container status-container">
 				<p class="status-text total-income">
 					Total income:
-					<span class="status-text-value total-income-value"
+					<span class="status-text-value total-income-value t-type-income"
 						>{{ .currency }} {{ .totalIncome }}</span
 					>
 				</p>
 				<p class="status-text total-expense">
 					Total expense:
-					<span class="status-text-value total-expense-value"
+					<span class="status-text-value total-expense-value t-type-expense"
 						>{{ .currency }} {{ .totalExpense }}</span
 					>
 				</p>
+
 				<p class="status-text current-balance">
 					Current balance:
-					<span class="status-text-value current-balance-value"
+					<span
+						class="status-text-value current-balance-value {{ .currentBalanceClass }}"
 						>{{ .currency }} {{ .currentBalance }}</span
 					>
 				</p>
 
 				{{ if .ifNoTransactions }}
 
-				<div class="no-t">
+				<div class="no-t-div">
 					<p class="no-t-text">Come on don't be shy... add a transaction!</p>
 				</div>
 
@@ -217,8 +222,8 @@
 				</div>
 
 				<!-- sort and stuff -->
-				<div class="rearrange-btns">
-					<button class="btn btn-sort">SORT</button>
+				<div class="view-all-t-btns">
+					<button class="btn btn-view">VIEW</button>
 				</div>
 
 				{{ end }}

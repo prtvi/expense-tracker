@@ -1,21 +1,20 @@
 const tableEventListener = function (e) {
 	// using event delegation to add event listener to the entire table rather than every transaction
-	const tRow = e.target.closest('.t');
+	const tRow = e.target.closest(`.${cT}`);
 	if (!tRow) return;
 
 	const tID = tRow.getAttribute('id');
 
 	// looking for edit event
-	if (e.target.classList.contains('edit-icon'))
+	if (e.target.classList.contains(cEditIcon))
 		getAndLoadTForEdit(tID, GET_ENDPOINT);
 
 	// delete event
-	if (e.target.classList.contains('delete-icon'))
+	if (e.target.classList.contains(cDeleteIcon))
 		initiateDeleteT(tRow, tID, DEL_ENDPOINT);
 
 	// view event
-	if (e.target.classList.contains('view-icon'))
-		displayTModal(tID, GET_ENDPOINT);
+	if (e.target.classList.contains(cViewIcon)) displayTModal(tID, GET_ENDPOINT);
 
 	// double click event
 	if (e.type === 'dblclick') displayTModal(tID, GET_ENDPOINT);
@@ -25,8 +24,7 @@ const formEventListener = function (e) {
 	e.preventDefault();
 
 	// if btn text-content is for adding transaction then send form data wo update options
-	if (submitBtn.textContent === 'Add transaction')
-		sendFormData(form, ADD_ENDPOINT);
+	if (submitBtn.textContent === btnTextAddT) sendFormData(form, ADD_ENDPOINT);
 	// else send UPDATE_TID
 	else {
 		// to check on reload if update transaction btn was clicked or page was reloaded
@@ -34,7 +32,7 @@ const formEventListener = function (e) {
 		const tID = sessionStorage.getItem(UPDATE_TID);
 
 		if (tID) sendFormData(form, EDIT_ENDPOINT, true, tID);
-		else showError('Error updating the transaction');
+		else showError(errUpdateT);
 	}
 };
 
