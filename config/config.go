@@ -36,14 +36,26 @@ var Modes = []string{"PhonePe", "Google Pay", "Cash", "PayTM"}
 const TypeIncomeID = "income"
 const TypeExpenseID = "expense"
 
-// sort-form
+// sort-form ids
+const SortInputID = "sort"
+const CustomDateStartID = "date_start"
+const CustomDateEndID = "date_end"
+
+// sort-form select option element values
+const SortAllValue = "1_all"
+const SortLast7DaysValue = "2_last_seven"
+const SortLast30DaysValue = "3_last_thirty"
+const SortThisMonthValue = "4_this_month"
+const SortLastMonthValue = "5_last_month"
+const SortCustomValue = "6_custom"
 
 // numbers given to sort them according to preference
 var SortOptions map[string]string = map[string]string{
-	"1_all":        "All",
-	"2_seven":      "Last 7 days",
-	"3_thirty":     "Last 30 days",
-	"4_this_month": "This month",
-	"5_last_month": "Last month",
-	"6_custom":     "Custom",
+	// select option element value : text shown on elements on UI
+	SortAllValue:        "All",
+	SortLast7DaysValue:  "Last 7 days",
+	SortLast30DaysValue: "Last 30 days",
+	SortThisMonthValue:  "This month",
+	SortLastMonthValue:  "Last month",
+	SortCustomValue:     "Custom",
 }

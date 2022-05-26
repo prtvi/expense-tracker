@@ -229,16 +229,31 @@ table th {
 	background-color: var(--bg-color);
 }
 
-/* SORT TRANSACTIONS */
+/* SORT TRANSACTIONS SECTION */
 
 .sort-div {
 	margin: 5% 0 0 0;
 }
 
 .sort-form-element-div {
-	margin: 0 0 4% 0;
-	display: block;
+	margin: 2%;
+	display: inline;
 }
+
+.sort-form-element-label {
+	margin: 0 2% 0 2%;
+}
+
+.sort-form-input-select {
+	width: 150px;
+	height: 30px;
+}
+
+.custom-dates-container {
+	margin: 3% 0 0 0;
+}
+
+/* SORT TRANSACTIONS SECTION */
 
 /* --------- STATUS CONTAINER ----------- */
 

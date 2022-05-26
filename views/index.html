@@ -228,12 +228,19 @@
 					</table>
 				</div>
 
-				<!-- sort and stuff -->
+				<!-- sort container -->
 				<div class="sort-div">
 					<form class="form" id="sort-form">
 						<div class="sort-form-element-div">
-							<label class="sort-label" for="sort">View transactions</label>
-							<select class="sort" name="sort" id="sort" required>
+							<label class="sort-form-element-label" for="{{ .SortInputID }}"
+								>View</label
+							>
+							<select
+								class="sort-form-input sort-form-input-select"
+								name="{{ .SortInputID }}"
+								id="{{ .SortInputID }}"
+								required
+							>
 								{{ range $key, $value := .SortOptions }}
 								<option class="sort-option" value="{{ $key }}">
 									{{ $value }}
@@ -243,6 +250,37 @@
 						</div>
 
 						<button class="btn btn-sort" type="submit">SORT</button>
+
+						<!-- custom dates container -->
+						<div class="custom-dates-container hidden">
+							<div class="sort-form-element-div">
+								<label
+									class="sort-form-element-label"
+									for="{{ .CustomDateStartID }}"
+									>Start</label
+								>
+								<input
+									class="sort-form-input"
+									type="date"
+									name="{{ .CustomDateStartID }}"
+									id="{{ .CustomDateStartID }}"
+								/>
+							</div>
+
+							<div class="sort-form-element-div">
+								<label
+									class="sort-form-element-label"
+									for="{{ .CustomDateEndID }}"
+									>End</label
+								>
+								<input
+									class="sort-form-input"
+									type="date"
+									name="{{ .CustomDateEndID }}"
+									id="{{ .CustomDateEndID }}"
+								/>
+							</div>
+						</div>
 					</form>
 				</div>
 

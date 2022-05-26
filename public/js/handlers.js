@@ -73,3 +73,16 @@ window.addEventListener('keydown', e => {
 });
 
 modalClose.addEventListener('click', hideModal);
+
+// TODO
+// sort-form
+sortForm.addEventListener('submit', e => {
+	e.preventDefault();
+
+	sendFormData(sortForm, SORT_ENDPOINT);
+});
+
+sortInputEl.addEventListener('input', e => {
+	if (sortInputEl.value === sortCustomValue) enableCustomDatesContainer(true);
+	else enableCustomDatesContainer(false);
+});

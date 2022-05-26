@@ -21,6 +21,7 @@ func main() {
 	e.GET("/add", routes.AddT, middleware.Logger)
 	e.GET("/edit", routes.EditT, middleware.Logger)
 	e.GET("/del", routes.DeleteT, middleware.Logger)
+	e.GET("/sort", routes.Sort, middleware.Logger)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

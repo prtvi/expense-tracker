@@ -49,6 +49,9 @@ func Home(c echo.Context) error {
 		"TypeExpenseID": config.TypeExpenseID,
 
 		// sort-form options
-		"SortOptions": config.SortOptions,
+		"SortOptions":       config.SortOptions,
+		"SortInputID":       config.SortInputID,
+		"CustomDateStartID": config.CustomDateStartID,
+		"CustomDateEndID":   config.CustomDateEndID,
 	})
 }

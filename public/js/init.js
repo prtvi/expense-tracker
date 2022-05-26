@@ -1,14 +1,11 @@
 // main dom elements
 const tForm = document.getElementById('t-form');
-const sortForm = document.getElementById('sort-form');
-
 const table = document.querySelector('.t-table');
 
 const errDiv = document.querySelector('.error-div');
 const errText = document.querySelector('.error-text');
 
-// element ids
-// t-form
+// t-form element ids
 const dateID = 'date'; //             date
 const descID = 'desc'; //             text
 const amountID = 'amount'; //         number
@@ -27,7 +24,7 @@ const amountEl = document.getElementById(amountID);
 const modeEl = document.getElementById(modeID);
 const paidToEl = document.getElementById(paidToID);
 
-// for type (income & expense)
+// t-form type elements (income & expense)
 const typeIncomeEl = document.getElementById(typeIncomeID);
 const typeExpenseEl = document.getElementById(typeExpenseID);
 
@@ -40,11 +37,34 @@ const modal = document.querySelector('.modal');
 const modalContent = document.querySelector('.modal-content');
 const modalClose = document.querySelector('.close-modal-span');
 
+// sort-form
+const sortForm = document.getElementById('sort-form');
+
+// sort-form select option element values
+const sortAllValue = '1_all';
+const sortLast7DaysValue = '2_last_seven';
+const sortLast30DaysValue = '3_last_thirty';
+const sortThisMonthValue = '4_this_month';
+const sortLastMonthValue = '5_last_month';
+const sortCustomValue = '6_custom';
+
+// sort-form element ids
+const sortInputID = 'sort';
+const customDateStartID = 'date_start';
+const customDateEndID = 'date_end';
+
+// sort-form elements
+const customDatesContainer = document.querySelector('.custom-dates-container');
+const sortInputEl = document.getElementById(sortInputID);
+const customDateStartEl = document.getElementById(customDateStartID);
+const customDateEndEl = document.getElementById(customDateEndID);
+
 // endpoints
 const GET_ENDPOINT = '/get';
 const ADD_ENDPOINT = '/add';
 const EDIT_ENDPOINT = '/edit';
 const DEL_ENDPOINT = '/del';
+const SORT_ENDPOINT = '/sort';
 
 // keys for session storage
 const UPDATE_TID = 'UPDATE_TID';
@@ -184,9 +204,10 @@ const sendFormData = async function (
 	let reqUrl = `${endpoint}?`;
 
 	// generate query with form data
-	Array.from(formData.keys()).forEach(
-		key => (reqUrl += `${key}=${formData.get(key)}&`)
-	);
+	Array.from(formData.keys()).forEach(key => {
+		if (!formData.get(key)) return;
+		reqUrl += `${key}=${formData.get(key)}&`;
+	});
 
 	// if update then append id to query
 	if (update) reqUrl += `id=${tID}`;
@@ -343,4 +364,23 @@ const displayTModal = async function (tID, endpoint) {
 
 	// display modal
 	showModal();
+};
+
+/**
+ * If enable is true, then unhides the custom dates container and adds required attribute to start & end date inputs, if false, then reverses the same operation
+ *
+ * @param {boolean} enable True if custom dates container is to be revealed
+ */
+const enableCustomDatesContainer = function (enable) {
+	if (enable) {
+		customDatesContainer.classList.remove(cHidden);
+
+		customDateStartEl.setAttribute('required', 'true');
+		customDateEndEl.setAttribute('required', 'true');
+	} else {
+		customDateStartEl.removeAttribute('required');
+		customDateEndEl.removeAttribute('required');
+
+		customDatesContainer.classList.add(cHidden);
+	}
 };
