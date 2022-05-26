@@ -22,15 +22,13 @@ func InitTransaction(c echo.Context) (bson.D, error) {
 	transaction := bson.D{}
 
 	for key, value := range c.QueryParams() {
-		fmt.Println(key, value)
-
 		// to leave out _id field during update process
 		if key == "id" {
 			continue
 		}
 
 		// to convert amount to number
-		if key == "amount" {
+		if key == config.AmountID {
 			valueFloat, err := strconv.ParseFloat(value[0], 32)
 			if err != nil {
 				return bson.D{}, err
@@ -41,7 +39,7 @@ func InitTransaction(c echo.Context) (bson.D, error) {
 		}
 
 		// to enter time.Date object into db
-		if key == "date" {
+		if key == config.DateID {
 			dateParts := strings.Split(value[0], "-")
 			datePartsInt := make([]int, len(dateParts))
 

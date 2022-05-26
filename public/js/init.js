@@ -1,20 +1,39 @@
 // main dom elements
-const form = document.getElementById('form');
+const tForm = document.getElementById('t-form');
+const sortForm = document.getElementById('sort-form');
+
 const table = document.querySelector('.t-table');
 
 const errDiv = document.querySelector('.error-div');
 const errText = document.querySelector('.error-text');
 
-// form elements, except type
-const dateEl = document.getElementById('date');
-const descEl = document.getElementById('desc');
-const amountEl = document.getElementById('amount');
-const paidToEl = document.getElementById('paid_to');
-const modeEl = document.getElementById('mode');
+// element ids
+// t-form
+const dateID = 'date'; //             date
+const descID = 'desc'; //             text
+const amountID = 'amount'; //         number
+const modeID = 'mode'; //             select dropdown
+const typeInputGroupName = 'type'; // radio group
+const paidToID = 'paid_to'; //        text
+
+// t-form "type" (5) ids & values
+const typeIncomeID = 'income';
+const typeExpenseID = 'expense';
+
+// t-form elements, except type
+const dateEl = document.getElementById(dateID);
+const descEl = document.getElementById(descID);
+const amountEl = document.getElementById(amountID);
+const modeEl = document.getElementById(modeID);
+const paidToEl = document.getElementById(paidToID);
+
+// for type (income & expense)
+const typeIncomeEl = document.getElementById(typeIncomeID);
+const typeExpenseEl = document.getElementById(typeExpenseID);
 
 // btns
 const submitBtn = document.querySelector('.btn-add');
-const viewBtn = document.querySelector('.btn-view');
+const sortBtn = document.querySelector('.btn-sort');
 
 // modal
 const modal = document.querySelector('.modal');
@@ -55,6 +74,7 @@ const cViewIcon = 'view-icon';
 // timeouts (ms)
 const errShowTimeout = 2500;
 const updateTTimeout = 500;
+const updateTTimeout2 = 1000;
 const deleteTTimeout = 1000;
 
 // text (messages/errors)
@@ -85,15 +105,13 @@ const btnTextUpdateT = 'Update transaction';
 	const mode = Math.random() > 0.5 ? true : false;
 	const type = Math.random() > 0.5 ? true : false;
 
-	document.getElementById('desc').value = desc;
-	document.getElementById('amount').value = amount;
-	document.getElementById('paid_to').value = paidTo;
-	mode
-		? (document.getElementById('mode').value = 'PhonePe')
-		: (document.getElementById('mode').value = 'Google Pay');
-	type
-		? (document.getElementById('income').checked = true)
-		: (document.getElementById('expense').checked = true);
+	descEl.value = desc;
+	amountEl.value = amount;
+	paidToEl.value = paidTo;
+
+	mode ? (modeEl.value = 'PhonePe') : (modeEl.value = 'Google Pay');
+
+	type ? (typeIncomeEl.checked = true) : (typeExpenseEl.checked = true);
 })();
 
 /**
@@ -200,11 +218,11 @@ const getAndLoadTForEdit = async function (tID, endpoint) {
 	dateEl.value = res.date;
 	descEl.value = res.desc;
 	amountEl.value = res.amount;
-	paidToEl.value = res.paid_to;
 	modeEl.value = res.mode;
+	paidToEl.value = res.paid_to;
 
-	if (res.type === 'Income') document.getElementById('income').checked = true;
-	else document.getElementById('expense').checked = true;
+	if (res.type === typeIncomeID) typeIncomeEl.checked = true;
+	else typeExpenseEl.checked = true;
 
 	// change btn text content
 	submitBtn.textContent = btnTextUpdateT;
@@ -261,9 +279,7 @@ const highlightT = function (tID) {
 	});
 
 	callSetTimeoutForUpdate(tds, updateTTimeout);
-	updateTTimeout += 500;
-	callSetTimeoutForUpdate(tds, updateTTimeout);
-	updateTTimeout = 500;
+	callSetTimeoutForUpdate(tds, updateTTimeout2);
 };
 
 /**
@@ -298,18 +314,22 @@ const displayTModal = async function (tID, endpoint) {
 
 	// TODO: add currency symbol here
 	// TODO: truncated desc
-	const map = new Map([
+
+	const typeUpper = res.type.slice(0, 1).toUpperCase() + res.type.slice(1);
+
+	// map to create modal content
+	const modalContentMap = new Map([
 		['Date', formattedDate],
 		['Description', res.desc],
 		['Amount', res.amount],
 		['Mode', res.mode],
+		['Type of transaction', typeUpper],
 		['Paid to', res.paid_to],
-		['Type', res.type],
 	]);
 
 	// generate dom for modal content
 	let fieldContainers = '';
-	map.forEach((value, key) => {
+	modalContentMap.forEach((value, key) => {
 		fieldContainers += `<div class="${cModalTFieldDiv}">
 	<label class="${cModalTFieldLabel}">${key}</label>
 	<p class="${cModalTFieldValue}">${value}</p>

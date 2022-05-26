@@ -20,18 +20,18 @@ const tableEventListener = function (e) {
 	if (e.type === 'dblclick') displayTModal(tID, GET_ENDPOINT);
 };
 
-const formEventListener = function (e) {
+const tFormEventListener = function (e) {
 	e.preventDefault();
 
 	// if btn text-content is for adding transaction then send form data wo update options
-	if (submitBtn.textContent === btnTextAddT) sendFormData(form, ADD_ENDPOINT);
+	if (submitBtn.textContent === btnTextAddT) sendFormData(tForm, ADD_ENDPOINT);
 	// else send UPDATE_TID
 	else {
 		// to check on reload if update transaction btn was clicked or page was reloaded
 		sessionStorage.setItem(UPDATE_TRUE, 'true');
 		const tID = sessionStorage.getItem(UPDATE_TID);
 
-		if (tID) sendFormData(form, EDIT_ENDPOINT, true, tID);
+		if (tID) sendFormData(tForm, EDIT_ENDPOINT, true, tID);
 		else showError(errUpdateT);
 	}
 };
@@ -57,7 +57,7 @@ const updateProcessHandler = function (e) {
 	}
 };
 
-form.addEventListener('submit', formEventListener);
+tForm.addEventListener('submit', tFormEventListener);
 window.addEventListener('load', updateProcessHandler);
 
 table && table.addEventListener('click', tableEventListener);

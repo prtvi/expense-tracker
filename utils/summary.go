@@ -18,7 +18,7 @@ func UpdateSummary(allTransactions []model.Transaction) model.Summary {
 	var summary model.Summary
 
 	for _, transaction := range allTransactions {
-		if transaction.Type == "Income" {
+		if transaction.Type == config.TypeIncomeID {
 			summary.CurrentBalance += transaction.Amount
 			summary.TotalIncome += transaction.Amount
 		} else {

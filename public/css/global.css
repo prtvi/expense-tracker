@@ -33,9 +33,7 @@ body {
 
 /* t = transaction, globally over all class names */
 
-/* -------------------------------- */
-
-/* MAIN CONTAINER */
+/* --------- MAIN CONTAINER ----------- */
 
 .main-container {
 	height: 800px;
@@ -47,29 +45,25 @@ body {
 	padding: 6% 2% 2% 8%;
 }
 
-/* MAIN CONTAINER */
+/* --------- FORM CONTAINER ----------- */
 
-/* -------------------------------- */
-
-/* FORM CONTAINER */
-
-.form-container {
+.t-form-container {
 	float: left;
 	width: 30%;
 	margin: 2% 0 0 0;
 }
 
-.form-heading {
+.t-form-heading {
 	padding-bottom: 5%;
 }
 
-.form-element-div {
+.t-form-element-div {
 	display: block;
 	margin: 3% 0 3% 0;
 	height: 50px;
 }
 
-.form-element-label {
+.t-form-element-label {
 	font-size: 1.1rem;
 	padding: 0 2% 0 2%;
 }
@@ -82,13 +76,13 @@ select {
 	-webkit-box-sizing: border-box;
 }
 
-.form-input {
+.t-form-input {
 	float: right;
 	width: 40%;
 	height: 30px;
 }
 
-.btns-div {
+.t-btns-div {
 	margin-top: 10%;
 	text-align: center;
 }
@@ -98,10 +92,6 @@ select {
 	height: 75%;
 	border-radius: 8px;
 	padding: 4px 8px 4px 8px;
-}
-
-.hidden {
-	display: none;
 }
 
 /* error on insert/update */
@@ -118,11 +108,9 @@ select {
 	color: var(--color-error-text);
 }
 
-/* FORM CONTAINER */
+/* --------- FORM CONTAINER ----------- */
 
-/* ------------------------------------ */
-
-/* MODAL CONTAINER */
+/* --------- MODAL CONTAINER ----------- */
 
 .modal {
 	display: none;
@@ -184,11 +172,9 @@ select {
 	color: var(--bg-color);
 }
 
-/* MODAL CONTAINER */
+/* --------- MODAL CONTAINER ----------- */
 
-/* ------------------------------------ */
-
-/* STATUS CONTAINER */
+/* --------- STATUS CONTAINER ----------- */
 
 .status-container {
 	padding: 8% 2% 2% 2%;
@@ -243,16 +229,24 @@ table th {
 	background-color: var(--bg-color);
 }
 
-/* view btns */
-.view-all-t-btns {
-	margin: 4% 0 0 0;
+/* SORT TRANSACTIONS */
+
+.sort-div {
+	margin: 5% 0 0 0;
 }
 
-/* STATUS CONTAINER */
+.sort-form-element-div {
+	margin: 0 0 4% 0;
+	display: block;
+}
 
-/* ------------------------------------ */
+/* --------- STATUS CONTAINER ----------- */
 
-/* PSEUDO CLASSES */
+/* --------- PSEUDO CLASSES ----------- */
+
+.hidden {
+	display: none;
+}
 
 /* pseudo class for updated t */
 .updated-t {
@@ -279,6 +273,6 @@ table th {
 	transform: translateY(2px);
 }
 
-/* PSEUDO CLASSES */
+/* --------- PSEUDO CLASSES ----------- */
 
-/* ------------------------------------ */
+/* --------- MAIN CONTAINER ----------- */

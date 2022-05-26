@@ -12,113 +12,120 @@
 	<body>
 		<div class="main-container">
 			<!-- form container -->
-			<div class="container form-container">
-				<h2 class="form-heading">Add expense</h2>
+			<div class="container t-form-container">
+				<h2 class="t-form-heading">Add expense</h2>
 
-				<form id="form">
-					<!-- (0) Date -->
-					<div class="form-element-div">
-						<label class="form-element-label" for="date">Date</label>
+				<form class="form" id="t-form">
+					<!-- (1) Date -->
+					<div class="t-form-element-div">
+						<label class="t-form-element-label" for="{{ .DateID }}">Date</label>
 						<input
-							class="form-input"
+							class="t-form-input"
 							type="date"
-							name="date"
-							id="date"
+							name="{{ .DateID }}"
+							id="{{ .DateID }}"
 							required
 						/>
 					</div>
 
-					<!-- (1) Description -->
-					<div class="form-element-div">
-						<label class="form-element-label" for="desc">Description</label>
-						<input
-							class="form-input"
-							type="text"
-							name="desc"
-							id="desc"
-							minlength="1"
-							maxlength="25"
-							placeholder="Add your description"
-							required
-						/>
-					</div>
-
-					<!-- (2) Amount -->
-					<div class="form-element-div">
-						<label class="form-element-label" for="amount"
-							>Amount ({{ .currency }})</label
+					<!-- (2) Description -->
+					<div class="t-form-element-div">
+						<label class="t-form-element-label" for="{{ .DescID }}"
+							>Description</label
 						>
 						<input
-							class="form-input"
+							class="t-form-input"
+							type="text"
+							name="{{ .DescID }}"
+							id="{{ .DescID }}"
+							placeholder="Add your description"
+							minlength="1"
+							maxlength="25"
+							required
+						/>
+					</div>
+
+					<!-- (3) Amount -->
+					<div class="t-form-element-div">
+						<label class="t-form-element-label" for="{{ .AmountID }}"
+							>Amount ({{ .Currency }})</label
+						>
+						<input
+							class="t-form-input"
 							type="number"
-							name="amount"
-							id="amount"
+							name="{{ .AmountID }}"
+							id="{{ .AmountID }}"
 							placeholder="Enter the amount"
 							required
 						/>
 					</div>
 
-					<!-- (3) Paid to -->
-					<div class="form-element-div">
-						<label class="form-element-label" for="paid_to">Paid to</label>
-						<input
-							class="form-input"
-							type="text"
-							name="paid_to"
-							id="paid_to"
-							minlength="1"
-							maxlength="15"
-							placeholder="Paid to"
+					<!-- (4) Mode of payment -->
+					<div class="t-form-element-div">
+						<label class="t-form-element-label" for="{{ .ModeID }}">Mode</label>
+						<select
+							class="t-form-input"
+							name="{{ .ModeID }}"
+							id="{{ .ModeID }}"
 							required
-						/>
-					</div>
-
-					<!-- (4) Mode -->
-					<div class="form-element-div">
-						<label class="form-element-label" for="mode">Mode</label>
-						<select class="form-input" name="mode" id="mode" required>
-							<option class="form-input-option" value="PhonePe">PhonePe</option>
-							<option class="form-input-option" value="Google Pay">
-								Google Pay
-							</option>
-							<option class="form-input-option" value="Cash">Cash</option>
+						>
+							{{ range .Modes }}
+							<option class="form-input-option" value="{{ . }}">{{ . }}</option>
+							{{ end }}
 						</select>
 					</div>
 
 					<!-- (5) Transaction type -->
-					<div class="form-element-div">
-						<label class="form-element-label">Type of transaction</label>
-						<div class="form-input form-input-radio-group">
+					<div class="t-form-element-div">
+						<label class="t-form-element-label">Type of transaction</label>
+						<div class="t-form-input form-input-radio-group">
 							<div class="form-input-radio">
 								<input
 									type="radio"
-									value="Income"
-									name="type"
-									id="income"
+									name="{{ .TypeInputGroupName }}"
+									id="{{ .TypeIncomeID }}"
+									value="{{ .TypeIncomeID }}"
 									required
 								/>
-								<label for="income">Income</label>
+								<label for="{{ .TypeIncomeID }}">Income</label>
 							</div>
 
 							<div class="form-input-radio">
 								<input
 									type="radio"
-									value="Expense"
-									name="type"
-									id="expense"
+									name="{{ .TypeInputGroupName }}"
+									id="{{ .TypeExpenseID }}"
+									value="{{ .TypeExpenseID }}"
 									required
 								/>
-								<label for="expense">Expense</label>
+								<label for="{{ .TypeExpenseID }}">Expense</label>
 							</div>
 						</div>
 					</div>
 
-					<div class="form-element-div error-div hidden">
+					<!-- (6) Paid to -->
+					<div class="t-form-element-div">
+						<label class="t-form-element-label" for="{{ .PaidToID }}"
+							>Paid to</label
+						>
+						<input
+							class="t-form-input"
+							type="text"
+							name="{{ .PaidToID }}"
+							id="{{ .PaidToID }}"
+							placeholder="Paid to"
+							minlength="1"
+							maxlength="20"
+							required
+						/>
+					</div>
+
+					<div class="t-form-element-div error-div hidden">
 						<p class="error-text"></p>
 					</div>
 
-					<!-- (6) Buttons -->
-					<div class="form-element-div btns-div">
+					<!-- Buttons -->
+					<div class="t-form-element-div t-btns-div">
 						<button class="btn btn-add" type="submit">Add transaction</button>
 						<button class="btn btn-clear" type="reset">Clear all</button>
 					</div>
@@ -145,25 +152,25 @@
 				<p class="status-text total-income">
 					Total income:
 					<span class="status-text-value total-income-value t-type-income"
-						>{{ .currency }} {{ .totalIncome }}</span
+						>{{ .Currency }} {{ .TotalIncome }}</span
 					>
 				</p>
 				<p class="status-text total-expense">
 					Total expense:
 					<span class="status-text-value total-expense-value t-type-expense"
-						>{{ .currency }} {{ .totalExpense }}</span
+						>{{ .Currency }} {{ .TotalExpense }}</span
 					>
 				</p>
 
 				<p class="status-text current-balance">
 					Current balance:
 					<span
-						class="status-text-value current-balance-value {{ .currentBalanceClass }}"
-						>{{ .currency }} {{ .currentBalance }}</span
+						class="status-text-value current-balance-value {{ .CurrentBalanceClass }}"
+						>{{ .Currency }} {{ .CurrentBalance }}</span
 					>
 				</p>
 
-				{{ if .ifNoTransactions }}
+				{{ if .IfNoTransactions }}
 
 				<div class="no-t-div">
 					<p class="no-t-text">Come on don't be shy... add a transaction!</p>
@@ -176,19 +183,19 @@
 						<tr class="table-header-row">
 							<th>Date</th>
 							<th>Description</th>
-							<th>Amount ({{ .currency }})</th>
+							<th>Amount ({{ .Currency }})</th>
 							<th></th>
 							<th></th>
 							<th></th>
 						</tr>
 
-						{{ range .transactions }}
+						{{ range .Transactions }}
 
 						<tr class="t" id="{{ .ID }}">
 							<td class="t-field t-date">{{ .Date }}</td>
 							<td class="t-field t-desc">{{ .Desc }}</td>
 
-							{{ if eq .Type "Income" }}
+							{{ if eq .Type "income" }}
 							<td class="t-field t-amount t-type-income">{{ .Amount }}</td>
 							{{ else }}
 							<td class="t-field t-amount t-type-expense">{{ .Amount }}</td>
@@ -222,8 +229,21 @@
 				</div>
 
 				<!-- sort and stuff -->
-				<div class="view-all-t-btns">
-					<button class="btn btn-view">VIEW</button>
+				<div class="sort-div">
+					<form class="form" id="sort-form">
+						<div class="sort-form-element-div">
+							<label class="sort-label" for="sort">View transactions</label>
+							<select class="sort" name="sort" id="sort" required>
+								{{ range $key, $value := .SortOptions }}
+								<option class="sort-option" value="{{ $key }}">
+									{{ $value }}
+								</option>
+								{{ end }}
+							</select>
+						</div>
+
+						<button class="btn btn-sort" type="submit">SORT</button>
+					</form>
 				</div>
 
 				{{ end }}

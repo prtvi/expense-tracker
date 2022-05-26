@@ -26,7 +26,14 @@ func CreateResponseMessage(statusCode int, success bool, message string) model.R
 	return model.ResponseMsg{StatusCode: statusCode, Success: success, Message: message}
 }
 
-// convert model.Transaction to model.TransactionFormatted
+func GetClassNameByValue(value float32) string {
+	if value >= 0 {
+		return config.ClassTTypeIncome
+	}
+	return config.ClassTTypeExpense
+}
+
+// converts a single transaction from model.Transaction to model.TransactionFormatted (not for view, to be loaded on t-form)
 
 func FormatTransaction(t model.Transaction) model.TransactionFormatted {
 	// date object to format: 2022-05-25
@@ -35,37 +42,38 @@ func FormatTransaction(t model.Transaction) model.TransactionFormatted {
 		Date:   t.Date.String()[0:config.FORMAT_DATE_STR_LEN],
 		Desc:   t.Desc,
 		Amount: t.Amount,
-		Type:   t.Type,
 		Mode:   t.Mode,
+		Type:   t.Type,
 		PaidTo: t.PaidTo,
 	}
 }
 
-// specifically for "/get" route, to format model.Transaction to model.TransactionFormatted, truncate desc text to MAX_DESC_LEN & format date to format: Wed, 25 May 2022
+// formats a single transaction for view, model.Traansaction to model.TransactionFormatted (format for view)
+// truncate desc text to MAX_DESC_LEN & format date to format: Wed, 25 May 2022
+// to view only on table and modal
 
-func FormatDateAndDesc(allTransactions []model.Transaction) []model.TransactionFormatted {
+func FormatTransactionForView(t model.Transaction) model.TransactionFormatted {
+	T := FormatTransaction(t)
+
+	// 1. format date to format into: Wed, 25 May 2022
+	T.Date = t.Date.Format(time.RFC1123Z)[0:config.FORMAT_DATE_STR_LEN_LONG]
+
+	// 2. truncating desc text
+	if len(t.Desc) > config.MAX_DESC_LEN {
+		T.Desc = t.Desc[0:config.MAX_DESC_LEN] + "..."
+	}
+
+	return T
+}
+
+// specifically for "/get" route, to format an array of model.Transaction to array of model.TransactionFormatted, format for view
+
+func FormatTransactionsForView(allTransactions []model.Transaction) []model.TransactionFormatted {
 	formattedTransactions := make([]model.TransactionFormatted, len(allTransactions))
 
 	for i, t := range allTransactions {
-		T := FormatTransaction(t)
-
-		// truncating desc text (only when viewed inside table)
-		if len(t.Desc) > config.MAX_DESC_LEN {
-			T.Desc = t.Desc[0:config.MAX_DESC_LEN] + "..."
-		}
-
-		// to format into: Wed, 25 May 2022
-		T.Date = t.Date.Format(time.RFC1123Z)[0:config.FORMAT_DATE_STR_LEN_LONG]
-
-		formattedTransactions[i] = T
+		formattedTransactions[i] = FormatTransactionForView(t)
 	}
 
 	return formattedTransactions
-}
-
-func GetClassNameByValue(value float32) string {
-	if value >= 0 {
-		return config.ClassTTypeIncome
-	}
-	return config.ClassTTypeExpense
 }

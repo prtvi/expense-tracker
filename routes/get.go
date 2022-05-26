@@ -9,7 +9,7 @@ import (
 )
 
 // "/get" route, accessible by only javascript
-// returns a transaction by doc id
+// returns a single formatted transaction by doc_id (formatted not for view)
 
 func ReturnT(c echo.Context) error {
 	id := c.QueryParam("id")
@@ -20,6 +20,7 @@ func ReturnT(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, res)
 	}
 
+	// format transaction to be loaded on t-form (not for view)
 	transactionFormatted := utils.FormatTransaction(transaction)
 
 	return c.JSON(http.StatusOK, transactionFormatted)

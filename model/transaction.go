@@ -12,7 +12,8 @@ type Transaction struct {
 	PaidTo string    `bson:"paid_to" json:"paid_to"`
 }
 
-// for returning a formatted transaction with date object converted to string
+// for returning a formatted transaction with date object converted to string to format: 2022-05-25, (formatting not for view)
+
 type TransactionFormatted struct {
 	ID     string  `bson:"_id" json:"_id"`
 	Date   string  `bson:"date" json:"date"`
