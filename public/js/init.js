@@ -54,17 +54,17 @@ const customDateStartID = 'date_start';
 const customDateEndID = 'date_end';
 
 // sort-form elements
-const customDatesContainer = document.querySelector('.custom-dates-container');
 const sortInputEl = document.getElementById(sortInputID);
+const customDatesContainer = document.querySelector('.custom-dates-container');
 const customDateStartEl = document.getElementById(customDateStartID);
 const customDateEndEl = document.getElementById(customDateEndID);
 
 // endpoints
+const HOME_ENDPOINT = '/';
 const GET_ENDPOINT = '/get';
 const ADD_ENDPOINT = '/add';
 const EDIT_ENDPOINT = '/edit';
 const DEL_ENDPOINT = '/del';
-const SORT_ENDPOINT = '/sort';
 
 // keys for session storage
 const UPDATE_TID = 'UPDATE_TID';
@@ -144,14 +144,20 @@ const showError = function (errMsg) {
 	setTimeout(() => errDiv.classList.add(cHidden), errShowTimeout);
 };
 
-// on success event
-const onSuccess = () => window.location.reload();
+/**
+ * On success event from form submission
+ *
+ * @param {boolean} reload If true, then reload page
+ */
+const onFormSubmitSuccess = reload => {
+	reload ? window.location.reload() : console.log('debugging (no reload)');
+};
 
 /**
  * Render error on form submission failure
  * @param {string} endpoint Error based on endpoint
  */
-const onFailure = function (endpoint) {
+const onFormSubmitFailure = function (endpoint) {
 	if (endpoint === ADD_ENDPOINT) showError(errInsertT);
 	if (endpoint === EDIT_ENDPOINT) showError(errUpdateT);
 };
@@ -163,8 +169,9 @@ const onFailure = function (endpoint) {
  * @param {string} spanClass Class name of the span class that will be added to the new markup
  * @returns {string} New markup with strikethrough text
  */
-const getStrikeSpanMarkup = (currMarkup, spanClass) =>
-	`<s class="${cStrike}"><span class="${spanClass}">${currMarkup}</span></s>`;
+const getStrikeSpanMarkup = (currMarkup, spanClass) => {
+	return `<s class="${cStrike}"><span class="${spanClass}">${currMarkup}</span></s>`;
+};
 
 // self explanatory
 const showModal = () => (modal.style.display = 'block');
@@ -185,6 +192,27 @@ const makeFetchRequest = async function (url) {
 };
 
 /**
+ * Function to generate request URL from form data
+ *
+ * @param {object} form Form element from which request URL is to be generated
+ * @param {string} endpoint Endpoint to which the params will be appended
+ * @returns {string} The generated request URL
+ */
+const generateQueryUrl = function (form, endpoint) {
+	const formData = new FormData(form);
+	let reqUrl = `${endpoint}?`;
+
+	// generate query with form data
+	Array.from(formData.keys()).forEach(key => {
+		if (!formData.get(key)) return;
+		reqUrl += `${key}=${formData.get(key)}&`;
+	});
+
+	// remove the last '&' from query string
+	return reqUrl.slice(0, -1);
+};
+
+/**
  * Send current form data to backend
  * if update === false, then sends form data for insert transaction operation
  * if update === true, then sends tID & current form data to update the edited transaction
@@ -200,26 +228,17 @@ const sendFormData = async function (
 	update = false,
 	tID = null
 ) {
-	const formData = new FormData(form);
-	let reqUrl = `${endpoint}?`;
+	let reqUrl = generateQueryUrl(form, endpoint);
 
-	// generate query with form data
-	Array.from(formData.keys()).forEach(key => {
-		if (!formData.get(key)) return;
-		reqUrl += `${key}=${formData.get(key)}&`;
-	});
-
-	// if update then append id to query
-	if (update) reqUrl += `id=${tID}`;
-	// else remove the last '&' from query
-	else reqUrl = reqUrl.slice(0, -1);
+	// if update true then append id to query
+	if (update) reqUrl += `&id=${tID}`;
 
 	const res = await makeFetchRequest(reqUrl);
 
 	// if success then reload window to reload transactions
-	if (res.success) onSuccess();
+	if (res.success) onFormSubmitSuccess(true);
 	// else render errors accordingly
-	else onFailure(endpoint);
+	else onFormSubmitFailure(endpoint);
 };
 
 /**
@@ -307,7 +326,7 @@ const highlightT = function (tID) {
  * Format date: 2022-05-25 => Wed, 25 May 2022
  *
  * @param {string} dateStr Date string of format "2022-05-25"
- * @returns Date string of format "Wed, 25 May 2022"
+ * @returns {string} Date string of format "Wed, 25 May 2022"
  */
 const formatDate = function (dateStr) {
 	const [weekday, month, date, year] = String(new Date(dateStr))

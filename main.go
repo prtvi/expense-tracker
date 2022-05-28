@@ -16,12 +16,11 @@ func main() {
 	e.Renderer = model.T
 	e.Static("/public", "public")
 
-	e.GET("/", routes.Home, middleware.Logger)
+	e.GET("/", routes.Home, middleware.Logger, middleware.Sort)
 	e.GET("/get", routes.ReturnT, middleware.Logger)
 	e.GET("/add", routes.AddT, middleware.Logger)
 	e.GET("/edit", routes.EditT, middleware.Logger)
 	e.GET("/del", routes.DeleteT, middleware.Logger)
-	e.GET("/sort", routes.Sort, middleware.Logger)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

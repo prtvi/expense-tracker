@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 
 	"webdev/config"
@@ -12,6 +13,11 @@ import (
 // "/" route, gets all transactions (formatted for view) and makes a summary to render on page
 
 func Home(c echo.Context) error {
+
+	if url := c.Get(config.SortUrlKey); url != "" {
+		fmt.Println(url)
+	}
+
 	// fetch all transactions
 	allTransactions := utils.GetTransactions()
 
@@ -28,8 +34,8 @@ func Home(c echo.Context) error {
 		"CurrentBalance":      summary.CurrentBalance,
 		"CurrentBalanceClass": utils.GetClassNameByValue(summary.CurrentBalance),
 
-		"Transactions":     formattedTransactions,
 		"IfNoTransactions": len(formattedTransactions) == 0,
+		"Transactions":     formattedTransactions,
 		"Currency":         "₹",
 
 		// element ids

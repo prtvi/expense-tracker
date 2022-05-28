@@ -57,32 +57,60 @@ const updateProcessHandler = function (e) {
 	}
 };
 
-tForm.addEventListener('submit', tFormEventListener);
-window.addEventListener('load', updateProcessHandler);
+const hideModalOnClick = function (e) {
+	// modal here is the bg that is darkened
+	if (e.target === modal && modal.style.display === 'block') hideModal();
+};
 
+const hideModalOnKeydown = function (e) {
+	// looking for escape key pressed to hide modal
+	if (e.key === 'Escape' && modal.style.display === 'block') hideModal();
+};
+
+const sortFormEventListener = function (e) {
+	// submit form by adding the form params into url rather than making a request to "/" route
+	// this is done to use sort middleware rather than making a get request to a route and waiting for content to arrive on that route
+	// here the middleware picks the request params from the url and renders the page using only "/" route
+	e.preventDefault();
+	window.location.href = generateQueryUrl(sortForm, HOME_ENDPOINT);
+};
+
+const sortInputChangeListener = function (e) {
+	// enable or disable custom dates container based on sortInput selection
+	if (sortInputEl.value === sortCustomValue) enableCustomDatesContainer(true);
+	else enableCustomDatesContainer(false);
+};
+
+const sortParamsLoader = function (e) {
+	// on sort-form submission preserve the sort option and display the same
+	const sortParams = new URLSearchParams(window.location.search);
+
+	// set the sortInput element value
+	sortInputEl.value = sortParams.get(sortInputID) || sortAllValue;
+
+	// if sortParam is not custom then return
+	if (sortParams.get(sortInputID) !== sortCustomValue) return;
+
+	// else enable the custom dates container & set the corresponding values from sortParams
+	enableCustomDatesContainer(true);
+	customDateStartEl.value = sortParams.get(customDateStartID);
+	customDateEndEl.value = sortParams.get(customDateEndID);
+};
+
+// table
 table && table.addEventListener('click', tableEventListener);
 table && table.addEventListener('dblclick', tableEventListener);
 
+// t-form
+tForm.addEventListener('submit', tFormEventListener);
+window.addEventListener('load', updateProcessHandler);
+
 // modal close event handlers
-window.addEventListener('click', e => {
-	if (e.target === modal && modal.style.display === 'block') hideModal();
-});
-
-window.addEventListener('keydown', e => {
-	if (e.key === 'Escape' && modal.style.display === 'block') hideModal();
-});
-
+window.addEventListener('click', hideModalOnClick);
+window.addEventListener('keydown', hideModalOnKeydown);
 modalClose.addEventListener('click', hideModal);
 
-// TODO
 // sort-form
-sortForm.addEventListener('submit', e => {
-	e.preventDefault();
-
-	sendFormData(sortForm, SORT_ENDPOINT);
-});
-
-sortInputEl.addEventListener('input', e => {
-	if (sortInputEl.value === sortCustomValue) enableCustomDatesContainer(true);
-	else enableCustomDatesContainer(false);
-});
+sortForm.addEventListener('submit', sortFormEventListener);
+sortInputEl.addEventListener('input', sortInputChangeListener);
+window.addEventListener('load', sortParamsLoader);

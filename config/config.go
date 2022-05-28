@@ -49,6 +49,9 @@ const SortThisMonthValue = "4_this_month"
 const SortLastMonthValue = "5_last_month"
 const SortCustomValue = "6_custom"
 
+// key for passing data between middlewares
+const SortUrlKey = "sort_by"
+
 // numbers given to sort them according to preference
 var SortOptions map[string]string = map[string]string{
 	// select option element value : text shown on elements on UI
