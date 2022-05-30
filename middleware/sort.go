@@ -1,9 +1,10 @@
 package middleware
 
 import (
-	"fmt"
+	"time"
 
 	config "webdev/config"
+	"webdev/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -13,40 +14,58 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		sortParam := c.QueryParam(config.SortInputID)
 
-		c.Set(config.SortUrlKey, sortParam)
+		// end date (today date)
+		var sortEndDate time.Time = time.Now()
+		// start from date (past)
+		var sortStartDate time.Time
 
 		switch sortParam {
-		// all
-		case config.SortAllValue:
-			fmt.Println(config.SortAllValue)
-
 		// 7
 		case config.SortLast7DaysValue:
-			fmt.Println(config.SortLast7DaysValue)
+			sortStartDate = sortEndDate.AddDate(0, 0, -7)
 
 		// 30
 		case config.SortLast30DaysValue:
-			fmt.Println(config.SortLast30DaysValue)
+			sortStartDate = sortEndDate.AddDate(0, 0, -30)
 
 		// this month
 		case config.SortThisMonthValue:
-			fmt.Println(config.SortThisMonthValue)
+			now := time.Now()
+			currentYear, currentMonth, _ := now.Date()
+			currentLocation := now.Location()
+
+			firstOfMonth := time.Date(currentYear, currentMonth, 1, 0, 0, 0, 0, currentLocation)
+			lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
+
+			sortStartDate = firstOfMonth
+			sortEndDate = lastOfMonth
 
 		// last month
 		case config.SortLastMonthValue:
-			fmt.Println(config.SortLastMonthValue)
+			now := time.Now()
+			currentYear, currentMonth, _ := now.Date()
+			currentLocation := now.Location()
+
+			firstOfMonth := time.Date(currentYear, currentMonth-1, 1, 0, 0, 0, 0, currentLocation)
+			lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
+
+			sortStartDate = firstOfMonth
+			sortEndDate = lastOfMonth
 
 		// custom
 		case config.SortCustomValue:
-			fmt.Println(config.SortCustomValue)
-
 			dateStart, dateEnd := c.QueryParam(config.CustomDateStartID), c.QueryParam(config.CustomDateEndID)
 
-			fmt.Println(dateStart, dateEnd)
+			sortStartDate = utils.DateStringToDateObj(dateStart)
+			sortEndDate = utils.DateStringToDateObj(dateEnd)
 
+		// all
+		case config.SortAllValue:
 		default:
-			fmt.Println(config.SortAllValue)
 		}
+
+		c.Set(config.SortEndDate, sortEndDate)
+		c.Set(config.SortStartDate, sortStartDate)
 
 		return next(c)
 	}

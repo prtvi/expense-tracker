@@ -2,6 +2,8 @@ package utils
 
 import (
 	"encoding/json"
+	"strconv"
+	"strings"
 	"time"
 
 	config "webdev/config"
@@ -76,4 +78,19 @@ func FormatTransactionsForView(allTransactions []model.Transaction) []model.Tran
 	}
 
 	return formattedTransactions
+}
+
+// convert 2022-05-30 string to date obj
+func DateStringToDateObj(dateStr string) time.Time {
+	dateParts := strings.Split(dateStr, "-")
+	datePartsInt := make([]int, len(dateParts))
+
+	for i, value := range dateParts {
+		intValue, _ := strconv.Atoi(value)
+		datePartsInt[i] = intValue
+	}
+
+	year, month, day := datePartsInt[0], time.Month(datePartsInt[1]), datePartsInt[2]
+
+	return time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
 }

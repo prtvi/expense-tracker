@@ -3,6 +3,7 @@ package routes
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"webdev/config"
 	utils "webdev/utils"
@@ -13,15 +14,16 @@ import (
 // "/" route, gets all transactions (formatted for view) and makes a summary to render on page
 
 func Home(c echo.Context) error {
+	sortStartDate, sortEndDate := c.Get(config.SortStartDate).(time.Time), c.Get(config.SortEndDate).(time.Time)
 
-	if url := c.Get(config.SortUrlKey); url != "" {
-		fmt.Println(url)
-	}
+	sortedTransactions := utils.GetTransactionsByDate(sortStartDate, sortEndDate)
+
+	fmt.Println(sortedTransactions)
 
 	// fetch all transactions
 	allTransactions := utils.GetTransactions()
 
-	// update the summary of transactions
+	// update the summary of transactions (also in db)
 	summary := utils.UpdateSummary(allTransactions)
 
 	// format the transactions for view (to display on UI)

@@ -50,7 +50,8 @@ const SortLastMonthValue = "5_last_month"
 const SortCustomValue = "6_custom"
 
 // key for passing data between middlewares
-const SortUrlKey = "sort_by"
+const SortStartDate = "sort_start_date"
+const SortEndDate = "sort_end_date"
 
 // numbers given to sort them according to preference
 var SortOptions map[string]string = map[string]string{

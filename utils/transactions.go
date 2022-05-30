@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
 
 	config "webdev/config"
@@ -40,17 +39,7 @@ func InitTransaction(c echo.Context) (bson.D, error) {
 
 		// to enter time.Date object into db
 		if key == config.DateID {
-			dateParts := strings.Split(value[0], "-")
-			datePartsInt := make([]int, len(dateParts))
-
-			for i, value := range dateParts {
-				intValue, _ := strconv.Atoi(value)
-				datePartsInt[i] = intValue
-			}
-
-			year, month, day := datePartsInt[0], time.Month(datePartsInt[1]), datePartsInt[2]
-
-			date := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+			date := DateStringToDateObj(value[0])
 
 			transaction = append(transaction, bson.E{Key: key, Value: date})
 			continue
@@ -149,4 +138,33 @@ func DeleteTransaction(id string) error {
 	}
 
 	return nil
+}
+
+// get transactions within date range
+
+func GetTransactionsByDate(startDate, endDate time.Time) []model.Transaction {
+
+	filter := bson.M{}
+
+	if startDate.Year() != 0001 {
+		filter = bson.M{"date": bson.M{"$gte": startDate, "$lte": endDate}}
+	}
+
+	cursor, err := config.Transactions.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	var results []bson.M
+	if err = cursor.All(context.TODO(), &results); err != nil {
+		fmt.Println(err.Error())
+	}
+
+	allTransactions := make([]model.Transaction, len(results))
+
+	for i, resultItem := range results {
+		allTransactions[i] = BsonDocToTransaction(resultItem)
+	}
+
+	return allTransactions
 }
