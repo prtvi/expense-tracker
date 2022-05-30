@@ -149,27 +149,6 @@
 
 			<!-- status container -->
 			<div class="container status-container">
-				<p class="status-text total-income">
-					Total income:
-					<span class="status-text-value total-income-value t-type-income"
-						>{{ .Currency }} {{ .TotalIncome }}</span
-					>
-				</p>
-				<p class="status-text total-expense">
-					Total expense:
-					<span class="status-text-value total-expense-value t-type-expense"
-						>{{ .Currency }} {{ .TotalExpense }}</span
-					>
-				</p>
-
-				<p class="status-text current-balance">
-					Current balance:
-					<span
-						class="status-text-value current-balance-value {{ .CurrentBalanceClass }}"
-						>{{ .Currency }} {{ .CurrentBalance }}</span
-					>
-				</p>
-
 				{{ if .IfNoTransactions }}
 
 				<div class="no-t-div">
@@ -177,6 +156,28 @@
 				</div>
 
 				{{ else }}
+
+				<div class="main-summary">
+					<p class="status-text total-income">
+						Total income:
+						<span class="status-text-value total-income-value t-type-income"
+							>{{ .Currency }} {{ .TotalIncome }}</span
+						>
+					</p>
+					<p class="status-text total-expense">
+						Total expense:
+						<span class="status-text-value total-expense-value t-type-expense"
+							>{{ .Currency }} {{ .TotalExpense }}</span
+						>
+					</p>
+					<p class="status-text current-balance">
+						Current balance:
+						<span
+							class="status-text-value current-balance-value {{ .CurrentBalanceClass }}"
+							>{{ .Currency }} {{ .CurrentBalance }}</span
+						>
+					</p>
+				</div>
 
 				<div class="table-container">
 					<table class="t-table">
@@ -228,7 +229,41 @@
 					</table>
 				</div>
 
-				<!-- sort container -->
+				<div class="summary-container">
+					<div class="sort-dates-container">
+						<p>
+							Showing results from {{ .ShowingFromDate }} - {{ .ShowingToDate }}
+						</p>
+					</div>
+
+					{{ if .IfSubSummary }}
+
+					<div class="sub-summary">
+						<p class="status-text total-income">
+							Total income:
+							<span class="status-text-value total-income-value t-type-income"
+								>{{ .Currency }} {{ .SubTotalIncome }}</span
+							>
+						</p>
+						<p class="status-text total-expense">
+							Total expense:
+							<span class="status-text-value total-expense-value t-type-expense"
+								>{{ .Currency }} {{ .SubTotalExpense }}</span
+							>
+						</p>
+						<p class="status-text current-balance">
+							Difference:
+							<span
+								class="status-text-value current-balance-value {{ .SubDifferenceClass }}"
+								>{{ .Currency }} {{ .SubDifference }}</span
+							>
+						</p>
+					</div>
+
+					{{ end }}
+				</div>
+
+				<!-- sort form container -->
 				<div class="sort-div">
 					<form class="form" id="sort-form">
 						<div class="sort-form-element-div">

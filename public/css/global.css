@@ -188,6 +188,15 @@ select {
 	font-size: 1.1rem;
 }
 
+.main-summary {
+	margin: 20px 0 20px 0;
+}
+
+.sub-summary {
+	margin: 20px 0 20px 0;
+	transform: scale(0.9);
+}
+
 /* to display transaction type with color */
 .t-type-income {
 	color: var(--color-income);
@@ -206,10 +215,11 @@ select {
 	max-height: 450px;
 	/* to enable scrolling over the table */
 	overflow-y: auto;
+	margin: 0 0 4% 0;
 }
 
 .t-table {
-	margin: 5% auto 0 auto;
+	margin: 1% auto 0 auto;
 	width: 80%;
 }
 

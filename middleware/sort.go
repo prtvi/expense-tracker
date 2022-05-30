@@ -61,7 +61,10 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// all
 		case config.SortAllValue:
+			fallthrough
+
 		default:
+			sortStartDate, sortEndDate = utils.GetNewestAndOldestTDates()
 		}
 
 		c.Set(config.SortEndDate, sortEndDate)

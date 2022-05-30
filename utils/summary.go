@@ -15,17 +15,7 @@ import (
 // loops over all transactions and returns a model.Summary object with transaction summary
 
 func UpdateSummary(allTransactions []model.Transaction) model.Summary {
-	var summary model.Summary
-
-	for _, transaction := range allTransactions {
-		if transaction.Type == config.TypeIncomeID {
-			summary.CurrentBalance += transaction.Amount
-			summary.TotalIncome += transaction.Amount
-		} else {
-			summary.CurrentBalance -= transaction.Amount
-			summary.TotalExpense += transaction.Amount
-		}
-	}
+	summary := GetSummary(allTransactions)
 
 	// create filter, update and options for querying
 	filter := bson.M{}
@@ -49,4 +39,16 @@ func UpdateSummary(allTransactions []model.Transaction) model.Summary {
 	}
 
 	return summary
+}
+
+func FetchSummary() model.Summary {
+	cursor := config.Summary.FindOne(context.TODO(), bson.M{})
+
+	fetchedDoc := bson.M{}
+	decodeErr := cursor.Decode(&fetchedDoc)
+	if decodeErr != nil {
+		fmt.Println("error")
+	}
+
+	return BsonDocToSummary(fetchedDoc)
 }

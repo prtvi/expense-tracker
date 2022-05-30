@@ -144,13 +144,13 @@ func DeleteTransaction(id string) error {
 
 func GetTransactionsByDate(startDate, endDate time.Time) []model.Transaction {
 
-	filter := bson.M{}
+	filter := bson.M{"date": bson.M{"$gte": startDate, "$lte": endDate}}
 
-	if startDate.Year() != 0001 {
-		filter = bson.M{"date": bson.M{"$gte": startDate, "$lte": endDate}}
-	}
+	findOptions := options.Find()
+	findOptions.SetSort(bson.M{"date": 1})
+	// findOptions.SetSort(bson.M{"date": -1}) // descending
 
-	cursor, err := config.Transactions.Find(context.TODO(), filter)
+	cursor, err := config.Transactions.Find(context.TODO(), filter, findOptions)
 	if err != nil {
 		fmt.Println(err.Error())
 	}

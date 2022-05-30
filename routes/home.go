@@ -1,11 +1,11 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
-	"webdev/config"
+	config "webdev/config"
+	model "webdev/model"
 	utils "webdev/utils"
 
 	"github.com/labstack/echo/v4"
@@ -16,25 +16,45 @@ import (
 func Home(c echo.Context) error {
 	sortStartDate, sortEndDate := c.Get(config.SortStartDate).(time.Time), c.Get(config.SortEndDate).(time.Time)
 
-	sortedTransactions := utils.GetTransactionsByDate(sortStartDate, sortEndDate)
+	var allTs []model.Transaction
+	var allTSummary model.Summary
 
-	fmt.Println(sortedTransactions)
+	var tsForView []model.Transaction
+	var tsForViewSummary model.Summary
 
-	// fetch all transactions
-	allTransactions := utils.GetTransactions()
+	if sortStartDate.Year() == 0001 {
+		// fetch all transactions & update the summary of transactions (also in db)
+		allTs = utils.GetTransactions()
+		allTSummary = utils.UpdateSummary(allTs)
 
-	// update the summary of transactions (also in db)
-	summary := utils.UpdateSummary(allTransactions)
+		tsForView = allTs
+	} else {
+		tsForView = utils.GetTransactionsByDate(sortStartDate, sortEndDate)
+		tsForViewSummary = utils.GetSummary(tsForView)
+
+		allTSummary = utils.FetchSummary()
+	}
 
 	// format the transactions for view (to display on UI)
-	formattedTransactions := utils.FormatTransactionsForView(allTransactions)
+	formattedTransactions := utils.FormatTransactionsForView(tsForView)
 
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
-		"TotalIncome":  summary.TotalIncome,
-		"TotalExpense": summary.TotalExpense,
+		// overall summary options
+		"TotalIncome":         allTSummary.TotalIncome,
+		"TotalExpense":        allTSummary.TotalExpense,
+		"CurrentBalance":      allTSummary.CurrentBalance,
+		"CurrentBalanceClass": utils.GetClassNameByValue(allTSummary.CurrentBalance),
 
-		"CurrentBalance":      summary.CurrentBalance,
-		"CurrentBalanceClass": utils.GetClassNameByValue(summary.CurrentBalance),
+		// for sorted, dates
+		"ShowingFromDate": utils.FormatDateLong(sortStartDate),
+		"ShowingToDate":   utils.FormatDateLong(sortEndDate),
+
+		// sub-summary (for sorted transaction options)
+		"IfSubSummary":       len(allTs) != len(tsForView),
+		"SubTotalIncome":     tsForViewSummary.TotalIncome,
+		"SubTotalExpense":    tsForViewSummary.TotalExpense,
+		"SubDifference":      tsForViewSummary.CurrentBalance,
+		"SubDifferenceClass": utils.GetClassNameByValue(tsForViewSummary.CurrentBalance),
 
 		"IfNoTransactions": len(formattedTransactions) == 0,
 		"Transactions":     formattedTransactions,
