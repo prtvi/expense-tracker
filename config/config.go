@@ -9,10 +9,10 @@ var Summary mongo.Collection
 // for date formatting
 const MAX_DESC_LEN = 20
 
-// for format: 2022-05-25
+// for format: 2022-05-25 (short date)
 const FORMAT_DATE_STR_LEN = 10
 
-// for format: Wed, 25 May 2022
+// for format: Wed, 25 May 2022 (long date)
 const FORMAT_DATE_STR_LEN_LONG = 16
 
 // class names
@@ -29,27 +29,44 @@ const TypeInputGroupName = "type" // 5. t-type, income|expense (type radio group
 const PaidToID = "paid_to"        // 6. amount paid to         (type text)
 
 // t-form "mode" (4) input values & text
-var Modes = []string{"PhonePe", "Google Pay", "Cash", "PayTM"}
+var Modes = []string{"PhonePe", "Google Pay", "Cash", "PayTM", "Card"}
 
 // t-form "type" (5) ids & values
 // if changed, then gotta change the value for line with content "{{ if eq .Type "income" }}" in index.html
 const TypeIncomeID = "income"
 const TypeExpenseID = "expense"
 
+//
+//
+//
+//
+
+// sort-form
 // sort-form ids
-const SortInputID = "sort"
+const SortForID = "sort_for"
+
+// for when sort_for element is chosen as "custom"
 const CustomDateStartID = "date_start"
 const CustomDateEndID = "date_end"
 
 // sort-form select option element values
-const SortAllValue = "1_all"
-const SortLast7DaysValue = "2_last_seven"
-const SortLast30DaysValue = "3_last_thirty"
-const SortThisMonthValue = "4_this_month"
-const SortLastMonthValue = "5_last_month"
-const SortCustomValue = "6_custom"
+const SortAllValue = "1"
+const SortLast7DaysValue = "2"
+const SortLast30DaysValue = "3"
+const SortThisMonthValue = "4"
+const SortLastMonthValue = "5"
+const SortCustomValue = "6"
 
-// key for passing data between middlewares
+// type select
+const SortByID = "sort_by"
+
+// id and values
+const SortByAscID = "asc"
+const SortByDesID = "des"
+
+// keys for passing data between middlewares
+const SortFor = SortForID
+const SortBy = SortByID
 const SortStartDate = "sort_start_date"
 const SortEndDate = "sort_end_date"
 

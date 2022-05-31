@@ -42,7 +42,7 @@ body {
 
 .container {
 	height: 500px;
-	padding: 6% 2% 2% 8%;
+	padding: 2% 2% 2% 8%;
 }
 
 /* --------- FORM CONTAINER ----------- */
@@ -50,7 +50,6 @@ body {
 .t-form-container {
 	float: left;
 	width: 30%;
-	margin: 2% 0 0 0;
 }
 
 .t-form-heading {
@@ -177,7 +176,7 @@ select {
 /* --------- STATUS CONTAINER ----------- */
 
 .status-container {
-	padding: 8% 2% 2% 2%;
+	padding: 2%;
 	margin: 2% 2% 0 40%;
 	text-align: center;
 }
@@ -186,6 +185,10 @@ select {
 	display: inline;
 	margin: 0 3% 0 3%;
 	font-size: 1.1rem;
+}
+
+.sort-dates-container {
+	margin: 10% 0 0 0;
 }
 
 .main-summary {
@@ -241,7 +244,7 @@ table th {
 
 /* SORT TRANSACTIONS SECTION */
 
-.sort-div {
+.sort-form-container {
 	margin: 5% 0 0 0;
 }
 
@@ -290,11 +293,11 @@ table th {
 }
 
 /* edit icons */
-.modify-t-icon:hover {
+.icon:hover {
 	transform: scale(1.2);
 }
 
-.modify-t-icon:active {
+.icon:active {
 	transform: translateY(2px);
 }
 

@@ -85,11 +85,16 @@ const sortParamsLoader = function (e) {
 	// on sort-form submission preserve the sort option and display the same
 	const sortParams = new URLSearchParams(window.location.search);
 
+	// sort by options
+	// set the sortBy input element
+	if (sortParams.get(sortByID) === sortByAscID) sortBy.value = sortByAscID;
+	else if (sortParams.get(sortByID) === sortByDesID) sortBy.value = sortByDesID;
+
 	// set the sortInput element value
-	sortInputEl.value = sortParams.get(sortInputID) || sortAllValue;
+	sortInputEl.value = sortParams.get(sortForID) || sortAllValue;
 
 	// if sortParam is not custom then return
-	if (sortParams.get(sortInputID) !== sortCustomValue) return;
+	if (sortParams.get(sortForID) !== sortCustomValue) return;
 
 	// else enable the custom dates container & set the corresponding values from sortParams
 	enableCustomDatesContainer(true);

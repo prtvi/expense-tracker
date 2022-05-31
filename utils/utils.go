@@ -133,11 +133,10 @@ func GetSummary(ts []model.Transaction) model.Summary {
 	return summary
 }
 
-func GetNewestAndOldestTDates() (time.Time, time.Time) {
-
+func GetNewestAndOldestTDates() (time.Time, time.Time, error) {
 	// for oldest
 	findOptions := options.Find()
-	findOptions.SetSort(bson.M{"date": 1})
+	findOptions.SetSort(bson.M{config.DateID: 1})
 	findOptions.SetLimit(1)
 
 	cursor, err := config.Transactions.Find(context.TODO(), bson.M{}, findOptions)
@@ -158,7 +157,7 @@ func GetNewestAndOldestTDates() (time.Time, time.Time) {
 
 	// for newest
 
-	findOptions.SetSort(bson.M{"date": -1})
+	findOptions.SetSort(bson.M{config.DateID: -1})
 	findOptions.SetLimit(1)
 
 	cursor, err = config.Transactions.Find(context.TODO(), bson.M{}, findOptions)
@@ -176,5 +175,9 @@ func GetNewestAndOldestTDates() (time.Time, time.Time) {
 		newestT[i] = BsonDocToTransaction(resultItem)
 	}
 
-	return oldestT[0].Date, newestT[0].Date
+	if len(oldestT) == 0 || len(newestT) == 0 {
+		return time.Time{}, time.Time{}, fmt.Errorf("No documents found")
+	}
+
+	return oldestT[0].Date, newestT[0].Date, nil
 }

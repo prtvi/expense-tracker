@@ -12,14 +12,25 @@ import (
 // will set the range of dates to sort from
 func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		sortParam := c.QueryParam(config.SortInputID)
+		sortFor := c.QueryParam(config.SortFor)
+
+		// asc/des option
+		sortBy := c.QueryParam(config.SortBy)
+		c.Set(config.SortBy, sortBy)
+
+		// if sortFor is empty, then set it to sortAllValue
+		if sortFor == "" {
+			c.Set(config.SortFor, config.SortAllValue)
+		} else {
+			c.Set(config.SortFor, sortFor)
+		}
 
 		// end date (today date)
 		var sortEndDate time.Time = time.Now()
 		// start from date (past)
 		var sortStartDate time.Time
 
-		switch sortParam {
+		switch sortFor {
 		// 7
 		case config.SortLast7DaysValue:
 			sortStartDate = sortEndDate.AddDate(0, 0, -7)
@@ -64,7 +75,11 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 			fallthrough
 
 		default:
-			sortStartDate, sortEndDate = utils.GetNewestAndOldestTDates()
+			var err error
+			sortStartDate, sortEndDate, err = utils.GetNewestAndOldestTDates()
+			if err != nil {
+				break
+			}
 		}
 
 		c.Set(config.SortEndDate, sortEndDate)

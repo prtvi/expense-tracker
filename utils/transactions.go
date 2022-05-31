@@ -69,10 +69,25 @@ func GetDocumentById(id string) (model.Transaction, error) {
 	return transaction, nil
 }
 
+// get sort options obj based on asc/des sort
+func getSortOptions(sortBy string) *options.FindOptions {
+	findOptions := options.Find()
+
+	if sortBy == config.SortByDesID {
+		findOptions.SetSort(bson.M{config.DateID: -1}) // descending
+	} else {
+		findOptions.SetSort(bson.M{config.DateID: 1}) // ascending (by default)
+	}
+
+	return findOptions
+}
+
 // returns an array of model.Transaction from database
 
-func GetTransactions() []model.Transaction {
-	cursor, err := config.Transactions.Find(context.TODO(), bson.D{})
+func GetAllTransactions(sortBy string) []model.Transaction {
+	findOptions := getSortOptions(sortBy)
+
+	cursor, err := config.Transactions.Find(context.TODO(), bson.D{}, findOptions)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -142,13 +157,9 @@ func DeleteTransaction(id string) error {
 
 // get transactions within date range
 
-func GetTransactionsByDate(startDate, endDate time.Time) []model.Transaction {
-
-	filter := bson.M{"date": bson.M{"$gte": startDate, "$lte": endDate}}
-
-	findOptions := options.Find()
-	findOptions.SetSort(bson.M{"date": 1})
-	// findOptions.SetSort(bson.M{"date": -1}) // descending
+func GetTransactionsByDate(startDate, endDate time.Time, sortBy string) []model.Transaction {
+	filter := bson.M{config.DateID: bson.M{"$gte": startDate, "$lte": endDate}}
+	findOptions := getSortOptions(sortBy)
 
 	cursor, err := config.Transactions.Find(context.TODO(), filter, findOptions)
 	if err != nil {

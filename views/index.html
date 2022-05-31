@@ -151,12 +151,14 @@
 			<div class="container status-container">
 				{{ if .IfNoTransactions }}
 
+				<!-- no transactions div -->
 				<div class="no-t-div">
 					<p class="no-t-text">Come on don't be shy... add a transaction!</p>
 				</div>
 
 				{{ else }}
 
+				<!-- main summary div -->
 				<div class="main-summary">
 					<p class="status-text total-income">
 						Total income:
@@ -179,6 +181,7 @@
 					</p>
 				</div>
 
+				<!-- table container -->
 				<div class="table-container">
 					<table class="t-table">
 						<tr class="table-header-row">
@@ -204,21 +207,21 @@
 
 							<td class="t-field view-t">
 								<img
-									class="modify-t-icon view-icon"
+									class="icon modify-t-icon view-icon"
 									src="/public/images/view.png"
 									alt="view icon"
 								/>
 							</td>
 							<td class="t-field edit-t">
 								<img
-									class="modify-t-icon edit-icon"
+									class="icon modify-t-icon edit-icon"
 									src="/public/images/edit.png"
 									alt="edit icon"
 								/>
 							</td>
 							<td class="t-field delete-t">
 								<img
-									class="modify-t-icon delete-icon"
+									class="icon modify-t-icon delete-icon"
 									src="/public/images/delete.png"
 									alt="delete icon"
 								/>
@@ -229,51 +232,53 @@
 					</table>
 				</div>
 
-				<div class="summary-container">
-					<div class="sort-dates-container">
-						<p>
-							Showing results from {{ .ShowingFromDate }} - {{ .ShowingToDate }}
-						</p>
-					</div>
-
-					{{ if .IfSubSummary }}
-
-					<div class="sub-summary">
-						<p class="status-text total-income">
-							Total income:
-							<span class="status-text-value total-income-value t-type-income"
-								>{{ .Currency }} {{ .SubTotalIncome }}</span
-							>
-						</p>
-						<p class="status-text total-expense">
-							Total expense:
-							<span class="status-text-value total-expense-value t-type-expense"
-								>{{ .Currency }} {{ .SubTotalExpense }}</span
-							>
-						</p>
-						<p class="status-text current-balance">
-							Difference:
-							<span
-								class="status-text-value current-balance-value {{ .SubDifferenceClass }}"
-								>{{ .Currency }} {{ .SubDifference }}</span
-							>
-						</p>
-					</div>
-
-					{{ end }}
+				<!-- sort-dates- text container -->
+				<div class="sort-dates-container">
+					<p>
+						Showing results from
+						<strong> {{ .ShowingFromDate }} </strong> -
+						<strong> {{ .ShowingToDate }} </strong>
+					</p>
 				</div>
 
+				{{ if .IfSubSummary }}
+
+				<!-- sorted summary -->
+				<div class="sub-summary">
+					<p class="status-text total-income">
+						Total income:
+						<span class="status-text-value total-income-value t-type-income"
+							>{{ .Currency }} {{ .SubTotalIncome }}</span
+						>
+					</p>
+					<p class="status-text total-expense">
+						Total expense:
+						<span class="status-text-value total-expense-value t-type-expense"
+							>{{ .Currency }} {{ .SubTotalExpense }}</span
+						>
+					</p>
+					<p class="status-text current-balance">
+						Difference:
+						<span
+							class="status-text-value current-balance-value {{ .SubDifferenceClass }}"
+							>{{ .Currency }} {{ .SubDifference }}</span
+						>
+					</p>
+				</div>
+
+				{{ end }}
+
 				<!-- sort form container -->
-				<div class="sort-div">
+				<div class="sort-form-container">
 					<form class="form" id="sort-form">
 						<div class="sort-form-element-div">
-							<label class="sort-form-element-label" for="{{ .SortInputID }}"
-								>View</label
+							<label class="sort-form-element-label" for="{{ .SortForID }}"
+								>Filter</label
 							>
 							<select
 								class="sort-form-input sort-form-input-select"
-								name="{{ .SortInputID }}"
-								id="{{ .SortInputID }}"
+								name="{{ .SortForID }}"
+								id="{{ .SortForID }}"
 								required
 							>
 								{{ range $key, $value := .SortOptions }}
@@ -281,6 +286,33 @@
 									{{ $value }}
 								</option>
 								{{ end }}
+							</select>
+						</div>
+
+						<div class="sort-form-element-div">
+							<label for="{{ .SortByID }}" class="sort-form-element-label"
+								>Sort by</label
+							>
+							<select
+								class="sort-form-input sort-form-input-select"
+								name="{{ .SortByID }}"
+								id="{{ .SortByID }}"
+								required
+							>
+								<option
+									class="sort-option"
+									value="{{ .SortByAscID }}"
+									id="{{ .SortByAscID }}"
+								>
+									Oldest first
+								</option>
+								<option
+									class="sort-option"
+									value="{{ .SortByDesID }}"
+									id="{{ .SortByDesID }}"
+								>
+									Newest first
+								</option>
 							</select>
 						</div>
 

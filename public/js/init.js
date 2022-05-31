@@ -24,40 +24,50 @@ const amountEl = document.getElementById(amountID);
 const modeEl = document.getElementById(modeID);
 const paidToEl = document.getElementById(paidToID);
 
-// t-form type elements (income & expense)
+// t-form type options (income & expense)
 const typeIncomeEl = document.getElementById(typeIncomeID);
 const typeExpenseEl = document.getElementById(typeExpenseID);
 
-// btns
-const submitBtn = document.querySelector('.btn-add');
-const sortBtn = document.querySelector('.btn-sort');
-
-// modal
-const modal = document.querySelector('.modal');
-const modalContent = document.querySelector('.modal-content');
-const modalClose = document.querySelector('.close-modal-span');
+//
+//
+//
+//
 
 // sort-form
 const sortForm = document.getElementById('sort-form');
 
-// sort-form select option element values
-const sortAllValue = '1_all';
-const sortLast7DaysValue = '2_last_seven';
-const sortLast30DaysValue = '3_last_thirty';
-const sortThisMonthValue = '4_this_month';
-const sortLastMonthValue = '5_last_month';
-const sortCustomValue = '6_custom';
-
 // sort-form element ids
-const sortInputID = 'sort';
+const sortForID = 'sort_for';
+
+// for when sort_for element is chosen as "custom"
 const customDateStartID = 'date_start';
 const customDateEndID = 'date_end';
 
+// sort-form select option element values
+const sortAllValue = '1';
+const sortLast7DaysValue = '2';
+const sortLast30DaysValue = '3';
+const sortThisMonthValue = '4';
+const sortLastMonthValue = '5';
+const sortCustomValue = '6';
+
+// type select
+const sortByID = 'sort_by';
+
+// id and values
+const sortByAscID = 'asc';
+const sortByDesID = 'des';
+
 // sort-form elements
-const sortInputEl = document.getElementById(sortInputID);
+const sortInputEl = document.getElementById(sortForID);
 const customDatesContainer = document.querySelector('.custom-dates-container');
 const customDateStartEl = document.getElementById(customDateStartID);
 const customDateEndEl = document.getElementById(customDateEndID);
+
+// sort by asc/des option
+const sortBy = document.getElementById(sortByID);
+const sortByAscEl = document.getElementById(sortByAscID);
+const sortByDesEl = document.getElementById(sortByDesID);
 
 // endpoints
 const HOME_ENDPOINT = '/';
@@ -106,6 +116,15 @@ const errDeleteT = 'Error deleting the transaction!';
 const btnTextAddT = 'Add transaction';
 const btnTextUpdateT = 'Update transaction';
 
+// btns
+const submitBtn = document.querySelector('.btn-add');
+const sortBtn = document.querySelector('.btn-sort');
+
+// modal
+const modal = document.querySelector('.modal');
+const modalContent = document.querySelector('.modal-content');
+const modalClose = document.querySelector('.close-modal-span');
+
 // functions
 
 //To keep the default date to "today"
@@ -133,6 +152,13 @@ const btnTextUpdateT = 'Update transaction';
 
 	type ? (typeIncomeEl.checked = true) : (typeExpenseEl.checked = true);
 })();
+
+const clearUrl = function () {
+	setTimeout(() => {
+		window.location.href = '/';
+		console.log('clearing url');
+	}, 5000);
+};
 
 /**
  * Render error poput with given "errMsg"

@@ -5,7 +5,6 @@ import (
 	"time"
 
 	config "webdev/config"
-	model "webdev/model"
 	utils "webdev/utils"
 
 	"github.com/labstack/echo/v4"
@@ -16,22 +15,20 @@ import (
 func Home(c echo.Context) error {
 	sortStartDate, sortEndDate := c.Get(config.SortStartDate).(time.Time), c.Get(config.SortEndDate).(time.Time)
 
-	var allTs []model.Transaction
-	var allTSummary model.Summary
+	sortBy := c.Get(config.SortByID).(string)
+	sortFor := c.Get(config.SortFor)
 
-	var tsForView []model.Transaction
-	var tsForViewSummary model.Summary
+	// init all arrays
 
-	if sortStartDate.Year() == 0001 {
-		// fetch all transactions & update the summary of transactions (also in db)
-		allTs = utils.GetTransactions()
-		allTSummary = utils.UpdateSummary(allTs)
+	allTs := utils.GetAllTransactions(sortBy)
+	allTSummary := utils.UpdateSummary(allTs)
 
+	tsForView := utils.GetTransactionsByDate(sortStartDate, sortEndDate, sortBy)
+	tsForViewSummary := utils.GetSummary(tsForView)
+
+	if sortFor == config.SortAllValue {
 		tsForView = allTs
 	} else {
-		tsForView = utils.GetTransactionsByDate(sortStartDate, sortEndDate)
-		tsForViewSummary = utils.GetSummary(tsForView)
-
 		allTSummary = utils.FetchSummary()
 	}
 
@@ -39,27 +36,6 @@ func Home(c echo.Context) error {
 	formattedTransactions := utils.FormatTransactionsForView(tsForView)
 
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
-		// overall summary options
-		"TotalIncome":         allTSummary.TotalIncome,
-		"TotalExpense":        allTSummary.TotalExpense,
-		"CurrentBalance":      allTSummary.CurrentBalance,
-		"CurrentBalanceClass": utils.GetClassNameByValue(allTSummary.CurrentBalance),
-
-		// for sorted, dates
-		"ShowingFromDate": utils.FormatDateLong(sortStartDate),
-		"ShowingToDate":   utils.FormatDateLong(sortEndDate),
-
-		// sub-summary (for sorted transaction options)
-		"IfSubSummary":       len(allTs) != len(tsForView),
-		"SubTotalIncome":     tsForViewSummary.TotalIncome,
-		"SubTotalExpense":    tsForViewSummary.TotalExpense,
-		"SubDifference":      tsForViewSummary.CurrentBalance,
-		"SubDifferenceClass": utils.GetClassNameByValue(tsForViewSummary.CurrentBalance),
-
-		"IfNoTransactions": len(formattedTransactions) == 0,
-		"Transactions":     formattedTransactions,
-		"Currency":         "₹",
-
 		// element ids
 		// t-form
 		"DateID":             config.DateID,             // 1
@@ -76,10 +52,40 @@ func Home(c echo.Context) error {
 		"TypeIncomeID":  config.TypeIncomeID,
 		"TypeExpenseID": config.TypeExpenseID,
 
+		"Currency": "₹",
+
+		// is true if there are no transactions in the entire db
+		"IfNoTransactions": len(allTs) == 0 && len(tsForView) == 0,
+
+		// main summary
+		"TotalIncome":         allTSummary.TotalIncome,
+		"TotalExpense":        allTSummary.TotalExpense,
+		"CurrentBalance":      allTSummary.CurrentBalance,
+		"CurrentBalanceClass": utils.GetClassNameByValue(allTSummary.CurrentBalance),
+
+		// transactions to show
+		"Transactions": formattedTransactions,
+
+		// for sorted, dates
+		"ShowingFromDate": utils.FormatDateLong(sortStartDate),
+		"ShowingToDate":   utils.FormatDateLong(sortEndDate),
+
+		// sub-summary (for sorted transactions)
+		"IfSubSummary":       len(allTs) != len(tsForView),
+		"SubTotalIncome":     tsForViewSummary.TotalIncome,
+		"SubTotalExpense":    tsForViewSummary.TotalExpense,
+		"SubDifference":      tsForViewSummary.CurrentBalance,
+		"SubDifferenceClass": utils.GetClassNameByValue(tsForViewSummary.CurrentBalance),
+
 		// sort-form options
+		"SortForID":         config.SortForID,
 		"SortOptions":       config.SortOptions,
-		"SortInputID":       config.SortInputID,
 		"CustomDateStartID": config.CustomDateStartID,
 		"CustomDateEndID":   config.CustomDateEndID,
+
+		// type select for asc/des sort
+		"SortByID":    config.SortByID,
+		"SortByAscID": config.SortByAscID,
+		"SortByDesID": config.SortByDesID,
 	})
 }
