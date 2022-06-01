@@ -119,3 +119,7 @@ modalClose.addEventListener('click', hideModal);
 sortForm.addEventListener('submit', sortFormEventListener);
 sortInputEl.addEventListener('input', sortInputChangeListener);
 window.addEventListener('load', sortParamsLoader);
+
+// change paid_to text to "self" on type income, else ''
+typeIncomeEl.addEventListener('input', () => (paidToEl.value = 'self'));
+typeExpenseEl.addEventListener('input', () => (paidToEl.value = ''));

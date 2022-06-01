@@ -45,70 +45,6 @@ body {
 	padding: 2% 2% 2% 8%;
 }
 
-/* --------- FORM CONTAINER ----------- */
-
-.t-form-container {
-	float: left;
-	width: 30%;
-}
-
-.t-form-heading {
-	padding-bottom: 5%;
-}
-
-.t-form-element-div {
-	display: block;
-	margin: 3% 0 3% 0;
-	height: 50px;
-}
-
-.t-form-element-label {
-	font-size: 1.1rem;
-	padding: 0 2% 0 2%;
-}
-
-/* to make "select" element the same width as other form elements */
-input,
-select {
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-}
-
-.t-form-input {
-	float: right;
-	width: 40%;
-	height: 30px;
-}
-
-.t-btns-div {
-	margin-top: 10%;
-	text-align: center;
-}
-
-.btn {
-	width: fit-content;
-	height: 75%;
-	border-radius: 8px;
-	padding: 4px 8px 4px 8px;
-}
-
-/* error on insert/update */
-
-.error-div {
-	background-color: var(--color-error);
-	height: 30px;
-	line-height: 30px;
-	text-align: center;
-	border-radius: 5px;
-}
-
-.error-text {
-	color: var(--color-error-text);
-}
-
-/* --------- FORM CONTAINER ----------- */
-
 /* --------- MODAL CONTAINER ----------- */
 
 .modal {
@@ -173,31 +109,91 @@ select {
 
 /* --------- MODAL CONTAINER ----------- */
 
-/* --------- STATUS CONTAINER ----------- */
+/* --------- FORM CONTAINER ----------- */
 
-.status-container {
-	padding: 2%;
-	margin: 2% 2% 0 40%;
+.t-form-container {
+	float: left;
+	width: 30%;
+}
+
+.t-form-heading {
+	padding-bottom: 5%;
+}
+
+.t-form-element-div {
+	display: block;
+	margin: 3% 0 3% 0;
+	height: 50px;
+}
+
+.t-form-element-label {
+	font-size: 1.1rem;
+	padding: 0 2% 0 2%;
+}
+
+/* to make "select" element the same width as other form elements */
+input,
+select {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.t-form-input {
+	float: right;
+	width: 40%;
+	height: 30px;
+}
+
+.t-btns-div {
+	margin-top: 10%;
 	text-align: center;
 }
 
-.status-text {
-	display: inline;
-	margin: 0 3% 0 3%;
-	font-size: 1.1rem;
+.btn {
+	width: fit-content;
+	height: 75%;
+	border-radius: 8px;
+	padding: 4px 8px 4px 8px;
 }
 
-.sort-dates-container {
-	margin: 10% 0 0 0;
+/* error on insert/update */
+
+.error-div {
+	background-color: var(--color-error);
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	border-radius: 5px;
+}
+
+.error-text {
+	color: var(--color-error-text);
+}
+
+/* --------- FORM CONTAINER ----------- */
+
+/* --------- TRANSACTIONS CONTAINER ----------- */
+
+/* no transaction display message */
+.no-t-div {
+	margin-top: 10%;
+}
+
+.ts-container {
+	padding: 2%;
+	margin: 2% 2% 0 40%;
+	text-align: center;
 }
 
 .main-summary {
 	margin: 20px 0 20px 0;
 }
 
-.sub-summary {
-	margin: 20px 0 20px 0;
-	transform: scale(0.9);
+.t-status-text {
+	display: inline;
+	margin: 0 3% 0 3%;
+	font-size: 1.1rem;
 }
 
 /* to display transaction type with color */
@@ -209,13 +205,8 @@ select {
 	color: var(--color-expense);
 }
 
-/* no transaction display message */
-.no-t-div {
-	margin-top: 10%;
-}
-
 .table-container {
-	max-height: 450px;
+	max-height: 400px;
 	/* to enable scrolling over the table */
 	overflow-y: auto;
 	margin: 0 0 4% 0;
@@ -242,33 +233,61 @@ table th {
 	background-color: var(--bg-color);
 }
 
-/* SORT TRANSACTIONS SECTION */
-
-.sort-form-container {
+.sort-dates-range-container {
 	margin: 5% 0 0 0;
 }
 
+.sub-summary {
+	margin: 20px 0 20px 0;
+	transform: scale(0.9);
+}
+
+/* --------- TRANSACTIONS CONTAINER ----------- */
+
+/* --------- SORT FORM CONTAINER --------- */
+
+.sort-form-container {
+	margin-top: 2%;
+	display: block;
+	text-align: center;
+}
+
+.sort-form-element-div-container {
+	display: inline-block;
+	width: 15%;
+	/* to prevent: one div move downwards when side by side */
+	vertical-align: top;
+}
+
 .sort-form-element-div {
-	margin: 2%;
-	display: inline;
+	display: block;
+	height: 30px;
+	margin: 0 0 3% 0;
 }
 
 .sort-form-element-label {
-	margin: 0 2% 0 2%;
+	margin: 0 3% 0 3%;
 }
 
-.sort-form-input-select {
-	width: 150px;
-	height: 30px;
+.sort-form-input {
+	float: right;
+	width: 130px;
+	height: 25px;
 }
 
 .custom-dates-container {
-	margin: 3% 0 0 0;
+	margin: 5% 0 0 0;
+	display: inline;
 }
 
-/* SORT TRANSACTIONS SECTION */
+.btn-sort {
+	display: inline;
+	margin: 0 0 0 2%;
+}
 
-/* --------- STATUS CONTAINER ----------- */
+/* --------- SORT FORM CONTAINER --------- */
+
+/* --------- MAIN CONTAINER ----------- */
 
 /* --------- PSEUDO CLASSES ----------- */
 
@@ -292,7 +311,7 @@ table th {
 	color: var(--text-color);
 }
 
-/* edit icons */
+/* icons */
 .icon:hover {
 	transform: scale(1.2);
 }
@@ -302,5 +321,3 @@ table th {
 }
 
 /* --------- PSEUDO CLASSES ----------- */
-
-/* --------- MAIN CONTAINER ----------- */

@@ -11,7 +11,23 @@
 	</head>
 	<body>
 		<div class="main-container">
-			<!-- form container -->
+			<!----------- MODAL CONTAINER ----------->
+			<div class="modal modal-whole-page">
+				<div class="modal-container">
+					<span class="close-modal-span">&times;</span>
+
+					<div class="modal-content">
+						<h3 class="modal-title">Title</h3>
+						<div class="modal-t-field-div">
+							<label class="modal-t-field-label">Date</label>
+							<p class="modal-t-field-value">Fri, 13 May 2022</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!----------- MODAL CONTAINER ----------->
+
+			<!----------- FORM CONTAINER ----------->
 			<div class="container t-form-container">
 				<h2 class="t-form-heading">Add expense</h2>
 
@@ -78,7 +94,7 @@
 					<!-- (5) Transaction type -->
 					<div class="t-form-element-div">
 						<label class="t-form-element-label">Type of transaction</label>
-						<div class="t-form-input form-input-radio-group">
+						<div class="t-form-input">
 							<div class="form-input-radio">
 								<input
 									type="radio"
@@ -131,57 +147,55 @@
 					</div>
 				</form>
 			</div>
+			<!----------- FORM CONTAINER ----------->
 
-			<!-- modal container -->
-			<div class="modal modal-whole-page">
-				<div class="modal-container">
-					<span class="close-modal-span">&times;</span>
+			<!----------- TRANSACTIONS CONTAINER ----------->
+			<div class="container ts-container">
+				{{ if .IfZeroTransactions }}
 
-					<div class="modal-content">
-						<h3 class="modal-title">Title</h3>
-						<div class="modal-t-field-div">
-							<label class="modal-t-field-label">Date</label>
-							<p class="modal-t-field-value">Fri, 13 May 2022</p>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- status container -->
-			<div class="container status-container">
-				{{ if .IfNoTransactions }}
-
-				<!-- no transactions div -->
+				<!-- if 0 transactions - div -->
 				<div class="no-t-div">
 					<p class="no-t-text">Come on don't be shy... add a transaction!</p>
 				</div>
 
+				<!-- else for IfZeroTransactions -->
 				{{ else }}
 
 				<!-- main summary div -->
 				<div class="main-summary">
-					<p class="status-text total-income">
+					<p class="t-status-text total-income">
 						Total income:
-						<span class="status-text-value total-income-value t-type-income"
+						<span class="t-status-text-value total-income-value t-type-income"
 							>{{ .Currency }} {{ .TotalIncome }}</span
 						>
 					</p>
-					<p class="status-text total-expense">
+					<p class="t-status-text total-expense">
 						Total expense:
-						<span class="status-text-value total-expense-value t-type-expense"
+						<span class="t-status-text-value total-expense-value t-type-expense"
 							>{{ .Currency }} {{ .TotalExpense }}</span
 						>
 					</p>
-					<p class="status-text current-balance">
+					<p class="t-status-text current-balance">
 						Current balance:
 						<span
-							class="status-text-value current-balance-value {{ .CurrentBalanceClass }}"
+							class="t-status-text-value current-balance-value {{ .CurrentBalanceClass }}"
 							>{{ .Currency }} {{ .CurrentBalance }}</span
 						>
 					</p>
 				</div>
+				<!-- main summary div -->
 
-				<!-- table container -->
+				{{ if .IfNoTransactionToView }}
+
+				<!-- no transactions div -->
+				<div class="no-t-div">
+					<p class="no-t-text">No data found for the specified range!</p>
+				</div>
+
+				<!-- else for IfNoTransactionToView -->
+				{{ else }}
+
+				<!----------- TABLE CONTAINER ----------->
 				<div class="table-container">
 					<table class="t-table">
 						<tr class="table-header-row">
@@ -231,9 +245,10 @@
 						{{ end }}
 					</table>
 				</div>
+				<!----------- TABLE CONTAINER ----------->
 
-				<!-- sort-dates- text container -->
-				<div class="sort-dates-container">
+				<!-- sort-dates-range text container -->
+				<div class="sort-dates-range-container">
 					<p>
 						Showing results from
 						<strong> {{ .ShowingFromDate }} </strong> -
@@ -241,36 +256,49 @@
 					</p>
 				</div>
 
+				<!-- end for IfNoTransactionToView -->
+				{{ end }}
+
+				<!-- separator -->
+
 				{{ if .IfSubSummary }}
 
-				<!-- sorted summary -->
+				<!-- sub summary -->
 				<div class="sub-summary">
-					<p class="status-text total-income">
+					<p class="t-status-text total-income">
 						Total income:
-						<span class="status-text-value total-income-value t-type-income"
+						<span class="t-status-text-value total-income-value t-type-income"
 							>{{ .Currency }} {{ .SubTotalIncome }}</span
 						>
 					</p>
-					<p class="status-text total-expense">
+					<p class="t-status-text total-expense">
 						Total expense:
-						<span class="status-text-value total-expense-value t-type-expense"
+						<span class="t-status-text-value total-expense-value t-type-expense"
 							>{{ .Currency }} {{ .SubTotalExpense }}</span
 						>
 					</p>
-					<p class="status-text current-balance">
+					<p class="t-status-text current-balance">
 						Difference:
 						<span
-							class="status-text-value current-balance-value {{ .SubDifferenceClass }}"
+							class="t-status-text-value current-balance-value {{ .SubDifferenceClass }}"
 							>{{ .Currency }} {{ .SubDifference }}</span
 						>
 					</p>
 				</div>
 
+				<!-- end for IfSubSummary -->
 				{{ end }}
 
-				<!-- sort form container -->
-				<div class="sort-form-container">
-					<form class="form" id="sort-form">
+				<!-- end for IfZeroTransactions -->
+				{{ end }}
+			</div>
+			<!----------- TRANSACTIONS CONTAINER ----------->
+
+			<!----------- SORT FORM CONTAINER ----------->
+			<div class="sort-form-container">
+				<form class="form" id="sort-form">
+					<!-- SortFor (filter) (select dropdown) -->
+					<div class="sort-form-element-div-container">
 						<div class="sort-form-element-div">
 							<label class="sort-form-element-label" for="{{ .SortForID }}"
 								>Filter</label
@@ -288,35 +316,6 @@
 								{{ end }}
 							</select>
 						</div>
-
-						<div class="sort-form-element-div">
-							<label for="{{ .SortByID }}" class="sort-form-element-label"
-								>Sort by</label
-							>
-							<select
-								class="sort-form-input sort-form-input-select"
-								name="{{ .SortByID }}"
-								id="{{ .SortByID }}"
-								required
-							>
-								<option
-									class="sort-option"
-									value="{{ .SortByAscID }}"
-									id="{{ .SortByAscID }}"
-								>
-									Oldest first
-								</option>
-								<option
-									class="sort-option"
-									value="{{ .SortByDesID }}"
-									id="{{ .SortByDesID }}"
-								>
-									Newest first
-								</option>
-							</select>
-						</div>
-
-						<button class="btn btn-sort" type="submit">SORT</button>
 
 						<!-- custom dates container -->
 						<div class="custom-dates-container hidden">
@@ -348,11 +347,42 @@
 								/>
 							</div>
 						</div>
-					</form>
-				</div>
+					</div>
 
-				{{ end }}
+					<!-- SortBy (asc/des) (select dropdown) -->
+					<div class="sort-form-element-div-container">
+						<div class="sort-form-element-div">
+							<label for="{{ .SortByID }}" class="sort-form-element-label"
+								>Sort by</label
+							>
+							<select
+								class="sort-form-input sort-form-input-select"
+								name="{{ .SortByID }}"
+								id="{{ .SortByID }}"
+								required
+							>
+								<option
+									class="sort-option"
+									value="{{ .SortByAscID }}"
+									id="{{ .SortByAscID }}"
+								>
+									Oldest first
+								</option>
+								<option
+									class="sort-option"
+									value="{{ .SortByDesID }}"
+									id="{{ .SortByDesID }}"
+								>
+									Newest first
+								</option>
+							</select>
+						</div>
+					</div>
+
+					<button class="btn btn-sort" type="submit">SORT</button>
+				</form>
 			</div>
+			<!----------- SORT FORM CONTAINER ----------->
 		</div>
 
 		<script src="/public/js/init.js"></script>
