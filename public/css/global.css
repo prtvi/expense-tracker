@@ -184,6 +184,7 @@ select {
 	padding: 2%;
 	margin: 2% 2% 0 40%;
 	text-align: center;
+	height: 530px;
 }
 
 .main-summary {
@@ -234,7 +235,7 @@ table th {
 }
 
 .sort-dates-range-container {
-	margin: 5% 0 0 0;
+	margin: 3% 0 0 0;
 }
 
 .sub-summary {

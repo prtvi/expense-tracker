@@ -1,4 +1,8 @@
+// EL = EventListener
+// El = Element
+
 // main dom elements
+
 const tForm = document.getElementById('t-form');
 const table = document.querySelector('.t-table');
 
@@ -37,19 +41,19 @@ const typeExpenseEl = document.getElementById(typeExpenseID);
 const sortForm = document.getElementById('sort-form');
 
 // sort-form element ids
-const sortForID = 'sort_for';
+const filterByID = 'filter_by';
 
-// for when sort_for element is chosen as "custom"
+// sort-form select option element values (filter_by)
+const filterAll = '1';
+const filterLast7Days = '2';
+const filterLast30Days = '3';
+const filterThisMonth = '4';
+const filterLastMonth = '5';
+const filterCustom = '6';
+
+// for when filter_by element is chosen as "custom"
 const customDateStartID = 'date_start';
 const customDateEndID = 'date_end';
-
-// sort-form select option element values
-const sortAllValue = '1';
-const sortLast7DaysValue = '2';
-const sortLast30DaysValue = '3';
-const sortThisMonthValue = '4';
-const sortLastMonthValue = '5';
-const sortCustomValue = '6';
 
 // type select
 const sortByID = 'sort_by';
@@ -59,13 +63,13 @@ const sortByAscID = 'asc';
 const sortByDesID = 'des';
 
 // sort-form elements
-const sortInputEl = document.getElementById(sortForID);
+const filterByEl = document.getElementById(filterByID);
 const customDatesContainer = document.querySelector('.custom-dates-container');
 const customDateStartEl = document.getElementById(customDateStartID);
 const customDateEndEl = document.getElementById(customDateEndID);
 
 // sort by asc/des option
-const sortBy = document.getElementById(sortByID);
+const sortByEl = document.getElementById(sortByID);
 const sortByAscEl = document.getElementById(sortByAscID);
 const sortByDesEl = document.getElementById(sortByDesID);
 
@@ -106,6 +110,7 @@ const errShowTimeout = 2500;
 const updateTTimeout = 500;
 const updateTTimeout2 = 1000;
 const deleteTTimeout = 1000;
+const clearUrlTimeout = 3000;
 
 // text (messages/errors)
 const errInsertT = 'Error inserting the transaction!';
@@ -153,12 +158,13 @@ const modalClose = document.querySelector('.close-modal-span');
 	type ? (typeIncomeEl.checked = true) : (typeExpenseEl.checked = true);
 })();
 
-const clearUrl = function () {
-	setTimeout(() => {
-		window.location.href = '/';
-		console.log('clearing url');
-	}, 5000);
-};
+// clear url to '/' on load
+(function () {
+	setTimeout(
+		() => window.history.replaceState({}, 'Expense', '/'),
+		clearUrlTimeout
+	);
+});
 
 /**
  * Render error poput with given "errMsg"

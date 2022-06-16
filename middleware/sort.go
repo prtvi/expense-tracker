@@ -4,7 +4,7 @@ import (
 	"time"
 
 	config "webdev/config"
-	"webdev/utils"
+	utils "webdev/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -12,35 +12,26 @@ import (
 // will set the range of dates to sort from
 func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		sortFor := c.QueryParam(config.SortFor)
-
-		// asc/des option
+		filterBy := c.QueryParam(config.FilterBy)
 		sortBy := c.QueryParam(config.SortBy)
-		c.Set(config.SortBy, sortBy)
 
-		// if sortFor is empty, then set it to sortAllValue
-		if sortFor == "" {
-			c.Set(config.SortFor, config.SortAllValue)
-		} else {
-			c.Set(config.SortFor, sortFor)
-		}
-
+		// only for not "custom" options
 		// end date (today date)
 		var sortEndDate time.Time = time.Now()
 		// start from date (past)
 		var sortStartDate time.Time
 
-		switch sortFor {
+		switch filterBy {
 		// 7
-		case config.SortLast7DaysValue:
+		case config.FilterLast7Days:
 			sortStartDate = sortEndDate.AddDate(0, 0, -7)
 
 		// 30
-		case config.SortLast30DaysValue:
+		case config.FilterLast30Days:
 			sortStartDate = sortEndDate.AddDate(0, 0, -30)
 
 		// this month
-		case config.SortThisMonthValue:
+		case config.FilterThisMonth:
 			now := time.Now()
 			currentYear, currentMonth, _ := now.Date()
 			currentLocation := now.Location()
@@ -52,7 +43,7 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 			sortEndDate = lastOfMonth
 
 		// last month
-		case config.SortLastMonthValue:
+		case config.FilterLastMonth:
 			now := time.Now()
 			currentYear, currentMonth, _ := now.Date()
 			currentLocation := now.Location()
@@ -64,14 +55,14 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 			sortEndDate = lastOfMonth
 
 		// custom
-		case config.SortCustomValue:
+		case config.FilterCustom:
 			dateStart, dateEnd := c.QueryParam(config.CustomDateStartID), c.QueryParam(config.CustomDateEndID)
 
 			sortStartDate = utils.DateStringToDateObj(dateStart)
 			sortEndDate = utils.DateStringToDateObj(dateEnd)
 
 		// all
-		case config.SortAllValue:
+		case config.FilterAll:
 			fallthrough
 
 		default:
@@ -82,6 +73,13 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 			}
 		}
 
+		// if filterBy is empty, then set it to config.FilterAll
+		if filterBy == "" {
+			filterBy = config.FilterAll
+		}
+
+		c.Set(config.FilterBy, filterBy)
+		c.Set(config.SortBy, sortBy)
 		c.Set(config.SortEndDate, sortEndDate)
 		c.Set(config.SortStartDate, sortStartDate)
 

@@ -2,7 +2,6 @@ package utils
 
 import (
 	"context"
-
 	"fmt"
 
 	config "webdev/config"
@@ -14,7 +13,7 @@ import (
 
 // loops over all transactions and returns a model.Summary object with transaction summary
 
-func UpdateSummary(allTransactions []model.Transaction) model.Summary {
+func UpdateMainSummary(allTransactions []model.Transaction) model.Summary {
 	summary := GetSummary(allTransactions)
 
 	// create filter, update and options for querying
@@ -41,7 +40,7 @@ func UpdateSummary(allTransactions []model.Transaction) model.Summary {
 	return summary
 }
 
-func FetchSummary() model.Summary {
+func FetchMainSummary() model.Summary {
 	cursor := config.Summary.FindOne(context.TODO(), bson.M{})
 
 	fetchedDoc := bson.M{}

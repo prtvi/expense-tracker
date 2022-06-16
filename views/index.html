@@ -300,13 +300,13 @@
 					<!-- SortFor (filter) (select dropdown) -->
 					<div class="sort-form-element-div-container">
 						<div class="sort-form-element-div">
-							<label class="sort-form-element-label" for="{{ .SortForID }}"
+							<label class="sort-form-element-label" for="{{ .FilterByID }}"
 								>Filter</label
 							>
 							<select
 								class="sort-form-input sort-form-input-select"
-								name="{{ .SortForID }}"
-								id="{{ .SortForID }}"
+								name="{{ .FilterByID }}"
+								id="{{ .FilterByID }}"
 								required
 							>
 								{{ range $key, $value := .SortOptions }}

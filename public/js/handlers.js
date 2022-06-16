@@ -1,4 +1,14 @@
-const tableEventListener = function (e) {
+const hideModalOnClick = function (e) {
+	// modal here is the bg that is darkened
+	if (e.target === modal && modal.style.display === 'block') hideModal();
+};
+
+const hideModalOnKeydown = function (e) {
+	// looking for escape key pressed to hide modal
+	if (e.key === 'Escape' && modal.style.display === 'block') hideModal();
+};
+
+const tableEL = function (e) {
 	// using event delegation to add event listener to the entire table rather than every transaction
 	const tRow = e.target.closest(`.${cT}`);
 	if (!tRow) return;
@@ -20,7 +30,7 @@ const tableEventListener = function (e) {
 	if (e.type === 'dblclick') displayTModal(tID, GET_ENDPOINT);
 };
 
-const tFormEventListener = function (e) {
+const tFormEL = function (e) {
 	e.preventDefault();
 
 	// if btn text-content is for adding transaction then send form data wo update options
@@ -36,7 +46,7 @@ const tFormEventListener = function (e) {
 	}
 };
 
-const updateProcessHandler = function (e) {
+const updateTHandler = function (e) {
 	/*
 	UPDATE process
 	- event listener for the table checks if edit icon is clicked
@@ -57,17 +67,7 @@ const updateProcessHandler = function (e) {
 	}
 };
 
-const hideModalOnClick = function (e) {
-	// modal here is the bg that is darkened
-	if (e.target === modal && modal.style.display === 'block') hideModal();
-};
-
-const hideModalOnKeydown = function (e) {
-	// looking for escape key pressed to hide modal
-	if (e.key === 'Escape' && modal.style.display === 'block') hideModal();
-};
-
-const sortFormEventListener = function (e) {
+const sortFormEL = function (e) {
 	// submit form by adding the form params into url rather than making a request to "/" route
 	// this is done to use sort middleware rather than making a get request to a route and waiting for content to arrive on that route
 	// here the middleware picks the request params from the url and renders the page using only "/" route
@@ -75,9 +75,9 @@ const sortFormEventListener = function (e) {
 	window.location.href = generateQueryUrl(sortForm, HOME_ENDPOINT);
 };
 
-const sortInputChangeListener = function (e) {
-	// enable or disable custom dates container based on sortInput selection
-	if (sortInputEl.value === sortCustomValue) enableCustomDatesContainer(true);
+const filterByEL = function (e) {
+	// enable or disable custom dates container based on filterBy selection
+	if (this.value === filterCustom) enableCustomDatesContainer(true);
 	else enableCustomDatesContainer(false);
 };
 
@@ -87,14 +87,15 @@ const sortParamsLoader = function (e) {
 
 	// sort by options
 	// set the sortBy input element
-	if (sortParams.get(sortByID) === sortByAscID) sortBy.value = sortByAscID;
-	else if (sortParams.get(sortByID) === sortByDesID) sortBy.value = sortByDesID;
+	if (sortParams.get(sortByID) === sortByAscID) sortByEl.value = sortByAscID;
+	else if (sortParams.get(sortByID) === sortByDesID)
+		sortByEl.value = sortByDesID;
 
 	// set the sortInput element value
-	sortInputEl.value = sortParams.get(sortForID) || sortAllValue;
+	filterByEl.value = sortParams.get(filterByID) || filterAll;
 
 	// if sortParam is not custom then return
-	if (sortParams.get(sortForID) !== sortCustomValue) return;
+	if (sortParams.get(filterByID) !== filterCustom) return;
 
 	// else enable the custom dates container & set the corresponding values from sortParams
 	enableCustomDatesContainer(true);
@@ -102,24 +103,28 @@ const sortParamsLoader = function (e) {
 	customDateEndEl.value = sortParams.get(customDateEndID);
 };
 
-// table
-table && table.addEventListener('click', tableEventListener);
-table && table.addEventListener('dblclick', tableEventListener);
-
-// t-form
-tForm.addEventListener('submit', tFormEventListener);
-window.addEventListener('load', updateProcessHandler);
-
 // modal close event handlers
 window.addEventListener('click', hideModalOnClick);
 window.addEventListener('keydown', hideModalOnKeydown);
 modalClose.addEventListener('click', hideModal);
 
-// sort-form
-sortForm.addEventListener('submit', sortFormEventListener);
-sortInputEl.addEventListener('input', sortInputChangeListener);
-window.addEventListener('load', sortParamsLoader);
+// table
+table && ['click', 'dblclick'].forEach(e => table.addEventListener(e, tableEL));
+
+// t-form
+tForm.addEventListener('submit', tFormEL);
+window.addEventListener('load', updateTHandler);
 
 // change paid_to text to "self" on type income, else ''
 typeIncomeEl.addEventListener('input', () => (paidToEl.value = 'self'));
 typeExpenseEl.addEventListener('input', () => (paidToEl.value = ''));
+
+// sort-form
+sortForm.addEventListener('submit', sortFormEL);
+filterByEl.addEventListener('input', filterByEL);
+window.addEventListener('load', sortParamsLoader);
+
+// to prevent sort_end_date < sort_start_date
+customDateStartEl.addEventListener('input', () =>
+	customDateEndEl.setAttribute('min', customDateStartEl.value)
+);

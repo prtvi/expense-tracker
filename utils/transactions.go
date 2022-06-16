@@ -179,3 +179,9 @@ func GetTransactionsByDate(startDate, endDate time.Time, sortBy string) []model.
 
 	return allTransactions
 }
+
+// count the number of transactions in the db
+func CountTransactions() int64 {
+	count, _ := config.Transactions.CountDocuments(context.TODO(), bson.D{})
+	return count
+}
