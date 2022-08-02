@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	utils "webdev/utils"
+	utils "prtvi/expense-tracker/utils"
 
 	"github.com/labstack/echo/v4"
 )

@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	config "webdev/config"
-	model "webdev/model"
+	config "prtvi/expense-tracker/config"
+	model "prtvi/expense-tracker/model"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -20,9 +20,9 @@ func UpdateMainSummary(allTransactions []model.Transaction) model.Summary {
 	filter := bson.M{}
 	update := bson.M{
 		"$set": bson.D{
-			{Key: "total_income", Value: summary.TotalIncome},
-			{Key: "total_expense", Value: summary.TotalExpense},
-			{Key: "current_balance", Value: summary.CurrentBalance},
+			{Key: "income", Value: summary.Income},
+			{Key: "expense", Value: summary.Expense},
+			{Key: "balance", Value: summary.Balance},
 		},
 	}
 	upsert := true

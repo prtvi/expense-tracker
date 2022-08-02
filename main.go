@@ -1,10 +1,10 @@
 package main
 
 import (
-	config "webdev/config"
-	middleware "webdev/middleware"
-	model "webdev/model"
-	routes "webdev/routes"
+	config "prtvi/expense-tracker/config"
+	middleware "prtvi/expense-tracker/middleware"
+	model "prtvi/expense-tracker/model"
+	routes "prtvi/expense-tracker/routes"
 
 	"github.com/labstack/echo/v4"
 )

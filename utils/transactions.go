@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	config "webdev/config"
-	model "webdev/model"
+	config "prtvi/expense-tracker/config"
+	model "prtvi/expense-tracker/model"
 
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/bson"
@@ -70,10 +70,10 @@ func GetDocumentById(id string) (model.Transaction, error) {
 }
 
 // get sort options obj based on asc/des sort
-func getSortOptions(sortBy string) *options.FindOptions {
+func getSortOptions(sort string) *options.FindOptions {
 	findOptions := options.Find()
 
-	if sortBy == config.SortByDesID {
+	if sort == config.SortDesID {
 		findOptions.SetSort(bson.M{config.DateID: -1}) // descending
 	} else {
 		findOptions.SetSort(bson.M{config.DateID: 1}) // ascending (by default)
@@ -84,8 +84,8 @@ func getSortOptions(sortBy string) *options.FindOptions {
 
 // returns an array of model.Transaction from database
 
-func GetAllTransactions(sortBy string) []model.Transaction {
-	findOptions := getSortOptions(sortBy)
+func GetAllTransactions(sort string) []model.Transaction {
+	findOptions := getSortOptions(sort)
 
 	cursor, err := config.Transactions.Find(context.TODO(), bson.D{}, findOptions)
 	if err != nil {
@@ -157,9 +157,9 @@ func DeleteTransaction(id string) error {
 
 // get transactions within date range
 
-func GetTransactionsByDate(startDate, endDate time.Time, sortBy string) []model.Transaction {
+func GetTransactionsByDate(startDate, endDate time.Time, sort string) []model.Transaction {
 	filter := bson.M{config.DateID: bson.M{"$gte": startDate, "$lte": endDate}}
-	findOptions := getSortOptions(sortBy)
+	findOptions := getSortOptions(sort)
 
 	cursor, err := config.Transactions.Find(context.TODO(), filter, findOptions)
 	if err != nil {

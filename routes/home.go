@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"time"
 
-	config "webdev/config"
-	model "webdev/model"
-	utils "webdev/utils"
+	config "prtvi/expense-tracker/config"
+	model "prtvi/expense-tracker/model"
+	utils "prtvi/expense-tracker/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -15,10 +15,12 @@ import (
 
 func Home(c echo.Context) error {
 	// get sort params from sort middleware
-	filterBy := c.Get(config.FilterBy).(string)
-	sortBy := c.Get(config.SortBy).(string)
-	sortStartDate := c.Get(config.SortStartDate).(time.Time)
-	sortEndDate := c.Get(config.SortEndDate).(time.Time)
+	sort := c.Get(config.Sort).(string)
+
+	// view params from range of dates
+	view := c.Get(config.View).(string)
+	viewStartDate := c.Get(config.ViewStartDate).(time.Time)
+	viewEndDate := c.Get(config.ViewEndDate).(time.Time)
 
 	var tsForView []model.Transaction
 	var tsForViewSummary model.Summary
@@ -26,15 +28,15 @@ func Home(c echo.Context) error {
 	IfZeroTransactions := (utils.CountTransactions() == 0)
 	ifSubSummary := false
 
-	allTs := utils.GetAllTransactions(sortBy)
+	allTs := utils.GetAllTransactions(sort)
 	allTSummary := utils.UpdateMainSummary(allTs)
 
-	if filterBy == config.FilterAll {
+	if view == config.ViewAll {
 		tsForView = allTs
 	} else {
 		ifSubSummary = true
 
-		tsForView = utils.GetTransactionsByDate(sortStartDate, sortEndDate, sortBy)
+		tsForView = utils.GetTransactionsByDate(viewStartDate, viewEndDate, sort)
 		tsForViewSummary = utils.GetSummary(tsForView)
 
 		allTSummary = utils.FetchMainSummary()
@@ -66,35 +68,35 @@ func Home(c echo.Context) error {
 		"IfZeroTransactions": IfZeroTransactions,
 
 		// main summary
-		"TotalIncome":         allTSummary.TotalIncome,
-		"TotalExpense":        allTSummary.TotalExpense,
-		"CurrentBalance":      allTSummary.CurrentBalance,
-		"CurrentBalanceClass": utils.GetClassNameByValue(allTSummary.CurrentBalance),
+		"Income":       allTSummary.Income,
+		"Expense":      allTSummary.Expense,
+		"Balance":      allTSummary.Balance,
+		"BalanceClass": utils.GetClassNameByValue(allTSummary.Balance),
 
 		// transactions to show
 		"IfNoTransactionToView": len(tsForView) == 0,
 		"Transactions":          formattedTransactions,
 
-		// for sorted, dates
-		"ShowingFromDate": utils.FormatDateLong(sortStartDate),
-		"ShowingToDate":   utils.FormatDateLong(sortEndDate),
+		// for filtered, dates
+		"ShowingFromDate": utils.FormatDateLong(viewStartDate),
+		"ShowingToDate":   utils.FormatDateLong(viewEndDate),
 
-		// sub-summary (for sorted transactions)
+		// sub-summary (for filtered transactions)
 		"IfSubSummary":       ifSubSummary,
-		"SubTotalIncome":     tsForViewSummary.TotalIncome,
-		"SubTotalExpense":    tsForViewSummary.TotalExpense,
-		"SubDifference":      tsForViewSummary.CurrentBalance,
-		"SubDifferenceClass": utils.GetClassNameByValue(tsForViewSummary.CurrentBalance),
+		"SubIncome":          tsForViewSummary.Income,
+		"SubExpense":         tsForViewSummary.Expense,
+		"SubDifference":      tsForViewSummary.Balance,
+		"SubDifferenceClass": utils.GetClassNameByValue(tsForViewSummary.Balance),
 
 		// sort-form options
-		"FilterByID":        config.FilterByID,
-		"SortOptions":       config.SortOptions,
+		"ViewID":            config.ViewID,
+		"ViewOptions":       config.ViewOptions,
 		"CustomDateStartID": config.CustomDateStartID,
 		"CustomDateEndID":   config.CustomDateEndID,
 
 		// type select for asc/des sort
-		"SortByID":    config.SortByID,
-		"SortByAscID": config.SortByAscID,
-		"SortByDesID": config.SortByDesID,
+		"SortID":    config.Sort,
+		"SortAscID": config.SortAscID,
+		"SortDesID": config.SortDesID,
 	})
 }

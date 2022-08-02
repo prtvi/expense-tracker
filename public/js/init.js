@@ -41,37 +41,37 @@ const typeExpenseEl = document.getElementById(typeExpenseID);
 const sortForm = document.getElementById('sort-form');
 
 // sort-form element ids
-const filterByID = 'filter_by';
+const viewID = 'view';
 
-// sort-form select option element values (filter_by)
-const filterAll = '1';
-const filterLast7Days = '2';
-const filterLast30Days = '3';
-const filterThisMonth = '4';
-const filterLastMonth = '5';
-const filterCustom = '6';
+// sort-form select option element values (view)
+const viewAll = '1';
+const viewLast7Days = '2';
+const viewLast30Days = '3';
+const viewThisMonth = '4';
+const viewLastMonth = '5';
+const viewCustom = '6';
 
-// for when filter_by element is chosen as "custom"
+// for when view element is chosen as "custom"
 const customDateStartID = 'date_start';
 const customDateEndID = 'date_end';
 
 // type select
-const sortByID = 'sort_by';
+const sortID = 'sort';
 
 // id and values
-const sortByAscID = 'asc';
-const sortByDesID = 'des';
+const sortAscID = 'asc';
+const sortDesID = 'des';
 
 // sort-form elements
-const filterByEl = document.getElementById(filterByID);
+const viewEl = document.getElementById(viewID);
 const customDatesContainer = document.querySelector('.custom-dates-container');
 const customDateStartEl = document.getElementById(customDateStartID);
 const customDateEndEl = document.getElementById(customDateEndID);
 
 // sort by asc/des option
-const sortByEl = document.getElementById(sortByID);
-const sortByAscEl = document.getElementById(sortByAscID);
-const sortByDesEl = document.getElementById(sortByDesID);
+const sortEl = document.getElementById(sortID);
+const sortAscEl = document.getElementById(sortAscID);
+const sortDesEl = document.getElementById(sortDesID);
 
 // endpoints
 const HOME_ENDPOINT = '/';
@@ -117,6 +117,11 @@ const errInsertT = 'Error inserting the transaction!';
 const errUpdateT = 'Error updating the transaction!';
 const errLoadT = 'Error loading the transaction!';
 const errDeleteT = 'Error deleting the transaction!';
+
+const formTitleOnAddExpense = 'Add expense';
+const formTitleOnEditExpense = 'Update transaction';
+
+const formTitle = document.querySelector('.t-form-heading');
 
 const btnTextAddT = 'Add transaction';
 const btnTextUpdateT = 'Update transaction';
@@ -298,6 +303,7 @@ const getAndLoadTForEdit = async function (tID, endpoint) {
 
 	// change btn text content
 	submitBtn.textContent = btnTextUpdateT;
+	formTitle.textContent = formTitleOnEditExpense;
 
 	// storing the updated transaction id to sessionStorage to fetch later on reload for showing changes
 	sessionStorage.setItem(UPDATE_TID, res._id);

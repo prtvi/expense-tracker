@@ -75,9 +75,9 @@ const sortFormEL = function (e) {
 	window.location.href = generateQueryUrl(sortForm, HOME_ENDPOINT);
 };
 
-const filterByEL = function (e) {
-	// enable or disable custom dates container based on filterBy selection
-	if (this.value === filterCustom) enableCustomDatesContainer(true);
+const viewEL = function (e) {
+	// enable or disable custom dates container based on view selection
+	if (this.value === viewCustom) enableCustomDatesContainer(true);
 	else enableCustomDatesContainer(false);
 };
 
@@ -86,16 +86,16 @@ const sortParamsLoader = function (e) {
 	const sortParams = new URLSearchParams(window.location.search);
 
 	// sort by options
-	// set the sortBy input element
-	if (sortParams.get(sortByID) === sortByAscID) sortByEl.value = sortByAscID;
-	else if (sortParams.get(sortByID) === sortByDesID)
-		sortByEl.value = sortByDesID;
+	// set the sort input element
+	if (sortParams.get(sortID) === sortAscID) sortEl.value = sortAscID;
+	else if (sortParams.get(sortID) === sortDesID)
+		sortEl.value = sortDesID;
 
 	// set the sortInput element value
-	filterByEl.value = sortParams.get(filterByID) || filterAll;
+	viewEl.value = sortParams.get(viewID) || viewAll;
 
 	// if sortParam is not custom then return
-	if (sortParams.get(filterByID) !== filterCustom) return;
+	if (sortParams.get(viewID) !== viewCustom) return;
 
 	// else enable the custom dates container & set the corresponding values from sortParams
 	enableCustomDatesContainer(true);
@@ -121,10 +121,10 @@ typeExpenseEl.addEventListener('input', () => (paidToEl.value = ''));
 
 // sort-form
 sortForm.addEventListener('submit', sortFormEL);
-filterByEl.addEventListener('input', filterByEL);
+viewEl.addEventListener('input', viewEL);
 window.addEventListener('load', sortParamsLoader);
 
-// to prevent sort_end_date < sort_start_date
+// to prevent view_end_date < view_start_date
 customDateStartEl.addEventListener('input', () =>
 	customDateEndEl.setAttribute('min', customDateStartEl.value)
 );

@@ -1,4 +1,4 @@
-module webdev
+module prtvi/expense-tracker
 
 go 1.18
 

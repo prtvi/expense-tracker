@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	config "webdev/config"
-	model "webdev/model"
+	config "prtvi/expense-tracker/config"
+	model "prtvi/expense-tracker/model"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -122,11 +122,11 @@ func GetSummary(ts []model.Transaction) model.Summary {
 
 	for _, transaction := range ts {
 		if transaction.Type == config.TypeIncomeID {
-			summary.CurrentBalance += transaction.Amount
-			summary.TotalIncome += transaction.Amount
+			summary.Balance += transaction.Amount
+			summary.Income += transaction.Amount
 		} else {
-			summary.CurrentBalance -= transaction.Amount
-			summary.TotalExpense += transaction.Amount
+			summary.Balance -= transaction.Amount
+			summary.Expense += transaction.Amount
 		}
 	}
 
@@ -176,7 +176,7 @@ func GetNewestAndOldestTDates() (time.Time, time.Time, error) {
 	}
 
 	if len(oldestT) == 0 || len(newestT) == 0 {
-		return time.Time{}, time.Time{}, fmt.Errorf("No documents found")
+		return time.Time{}, time.Time{}, fmt.Errorf("no documents found")
 	}
 
 	return oldestT[0].Date, newestT[0].Date, nil

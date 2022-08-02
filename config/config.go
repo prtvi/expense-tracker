@@ -43,40 +43,43 @@ const TypeExpenseID = "expense"
 
 // sort-form
 // sort-form ids
-const FilterByID = "filter_by"
+const ViewID = "view"
 
-// sort-form select option element values (filter_by)
-const FilterAll = "1"
-const FilterLast7Days = "2"
-const FilterLast30Days = "3"
-const FilterThisMonth = "4"
-const FilterLastMonth = "5"
-const FilterCustom = "6"
+// sort-form select option element values (view)
+const ViewAll = "1"
+const ViewLast7Days = "2"
+const ViewLast30Days = "3"
+const ViewThisMonth = "4"
+const ViewLastMonth = "5"
 
-// for when filter_by element is chosen as "custom"
+// for when view element is chosen as "custom"
+
+const ViewCustom = "6"
+
 const CustomDateStartID = "date_start"
 const CustomDateEndID = "date_end"
 
 // type select
-const SortByID = "sort_by"
+const SortID = "sort"
 
 // id and values
-const SortByAscID = "asc"
-const SortByDesID = "des"
+const SortAscID = "asc"
+const SortDesID = "des"
 
 // keys for passing data between middlewares
-const FilterBy = FilterByID
-const SortBy = SortByID
-const SortStartDate = "sort_start_date"
-const SortEndDate = "sort_end_date"
+const Sort = SortID
+
+const View = ViewID
+const ViewStartDate = "view_start_date"
+const ViewEndDate = "view_end_date"
 
 // numbers given to sort them according to preference
-var SortOptions map[string]string = map[string]string{
+var ViewOptions map[string]string = map[string]string{
 	// select option element value : text shown on elements on UI
-	FilterAll:        "All",
-	FilterLast7Days:  "Last 7 days",
-	FilterLast30Days: "Last 30 days",
-	FilterThisMonth:  "This month",
-	FilterLastMonth:  "Last month",
-	FilterCustom:     "Custom",
+	ViewAll:        "All",
+	ViewLast7Days:  "Last 7 days",
+	ViewLast30Days: "Last 30 days",
+	ViewThisMonth:  "This month",
+	ViewLastMonth:  "Last month",
+	ViewCustom:     "Custom",
 }

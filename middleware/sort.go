@@ -3,8 +3,8 @@ package middleware
 import (
 	"time"
 
-	config "webdev/config"
-	utils "webdev/utils"
+	config "prtvi/expense-tracker/config"
+	utils "prtvi/expense-tracker/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -12,26 +12,27 @@ import (
 // will set the range of dates to sort from
 func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		filterBy := c.QueryParam(config.FilterBy)
-		sortBy := c.QueryParam(config.SortBy)
+		view := c.QueryParam(config.View)
+		sort := c.QueryParam(config.Sort)
 
 		// only for not "custom" options
 		// end date (today date)
-		var sortEndDate time.Time = time.Now()
-		// start from date (past)
-		var sortStartDate time.Time
+		var viewEndDate time.Time = time.Now()
 
-		switch filterBy {
+		// start from date (past)
+		var viewStartDate time.Time
+
+		switch view {
 		// 7
-		case config.FilterLast7Days:
-			sortStartDate = sortEndDate.AddDate(0, 0, -7)
+		case config.ViewLast7Days:
+			viewStartDate = viewEndDate.AddDate(0, 0, -7)
 
 		// 30
-		case config.FilterLast30Days:
-			sortStartDate = sortEndDate.AddDate(0, 0, -30)
+		case config.ViewLast30Days:
+			viewStartDate = viewEndDate.AddDate(0, 0, -30)
 
 		// this month
-		case config.FilterThisMonth:
+		case config.ViewThisMonth:
 			now := time.Now()
 			currentYear, currentMonth, _ := now.Date()
 			currentLocation := now.Location()
@@ -39,11 +40,11 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 			firstOfMonth := time.Date(currentYear, currentMonth, 1, 0, 0, 0, 0, currentLocation)
 			lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
 
-			sortStartDate = firstOfMonth
-			sortEndDate = lastOfMonth
+			viewStartDate = firstOfMonth
+			viewEndDate = lastOfMonth
 
 		// last month
-		case config.FilterLastMonth:
+		case config.ViewLastMonth:
 			now := time.Now()
 			currentYear, currentMonth, _ := now.Date()
 			currentLocation := now.Location()
@@ -51,37 +52,38 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 			firstOfMonth := time.Date(currentYear, currentMonth-1, 1, 0, 0, 0, 0, currentLocation)
 			lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
 
-			sortStartDate = firstOfMonth
-			sortEndDate = lastOfMonth
+			viewStartDate = firstOfMonth
+			viewEndDate = lastOfMonth
 
 		// custom
-		case config.FilterCustom:
+		case config.ViewCustom:
 			dateStart, dateEnd := c.QueryParam(config.CustomDateStartID), c.QueryParam(config.CustomDateEndID)
 
-			sortStartDate = utils.DateStringToDateObj(dateStart)
-			sortEndDate = utils.DateStringToDateObj(dateEnd)
+			viewStartDate = utils.DateStringToDateObj(dateStart)
+			viewEndDate = utils.DateStringToDateObj(dateEnd)
 
 		// all
-		case config.FilterAll:
+		case config.ViewAll:
 			fallthrough
 
 		default:
 			var err error
-			sortStartDate, sortEndDate, err = utils.GetNewestAndOldestTDates()
+			viewStartDate, viewEndDate, err = utils.GetNewestAndOldestTDates()
 			if err != nil {
 				break
 			}
 		}
 
-		// if filterBy is empty, then set it to config.FilterAll
-		if filterBy == "" {
-			filterBy = config.FilterAll
+		// if view is empty, then set it to config.ViewAll
+		if view == "" {
+			view = config.ViewAll
 		}
 
-		c.Set(config.FilterBy, filterBy)
-		c.Set(config.SortBy, sortBy)
-		c.Set(config.SortEndDate, sortEndDate)
-		c.Set(config.SortStartDate, sortStartDate)
+		c.Set(config.View, view)
+		c.Set(config.ViewStartDate, viewStartDate)
+		c.Set(config.ViewEndDate, viewEndDate)
+
+		c.Set(config.Sort, sort)
 
 		return next(c)
 	}
