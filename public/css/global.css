@@ -1,34 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 
 * {
-	margin: 0;
-	padding: 0;
-	font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
 :root {
-	--bg-color: #0d1116;
-	--text-color: #c9d1d9;
+  --bg-color: #0d1116;
+  --text-color: #c9d1d9;
 
-	--color-income: #39d353;
-	--color-expense: #e16637;
+  --color-income: #39d353;
+  --color-expense: #e16637;
 
-	--color-error: #f26524;
-	--color-error-text: #000;
+  --color-error: #f26524;
+  --color-error-text: #000;
 
-	--black-a: rgba(0, 0, 0, 0.4);
-	--black: #000;
-	--white: #fff;
-	--red: #ff0000;
+  --black-a: rgba(0, 0, 0, 0.4);
+  --black: #000;
+  --white: #fff;
+  --red: #ff0000;
 
-	--modal-bg-color: #fefefe;
-	--modal-border: #888;
-	--modal-close: #aaa;
+  --modal-bg-color: #fefefe;
+  --modal-border: #888;
+  --modal-close: #aaa;
 }
 
 body {
-	background-color: var(--bg-color);
-	color: var(--text-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 /* t = transaction, globally over all class names */
@@ -36,139 +36,141 @@ body {
 /* --------- MAIN CONTAINER ----------- */
 
 .main-container {
-	height: 800px;
-	width: 100%;
+  height: 800px;
+  width: 100%;
 }
 
 .container {
-	height: 500px;
-	padding: 2% 2% 2% 8%;
+  height: 500px;
+  padding: 2% 2% 2% 8%;
 }
 
 /* --------- MODAL CONTAINER ----------- */
 
 .modal {
-	display: none;
-	position: fixed;
-	z-index: 2;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: var(--black);
-	background-color: var(--black-a);
+  display: none;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--black);
+  background-color: var(--black-a);
 }
 
 /* to only contain the cross for closing the modal */
 .modal-container {
-	background-color: var(--modal-bg-color);
-	margin: 15% auto;
-	padding: 20px;
-	border: 1px solid var(--modal-border);
-	border-radius: 5px;
-	width: 35%;
+  background-color: var(--modal-bg-color);
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid var(--modal-border);
+  border-radius: 5px;
+  width: 35%;
 }
 
 .close-modal-span {
-	color: var(--modal-close);
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
+  color: var(--modal-close);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .close-modal-span:hover,
 .close-modal-span:focus {
-	color: var(--bg-color);
-	text-decoration: none;
-	cursor: pointer;
+  color: var(--bg-color);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* main container for changing and holding content inside the modal */
 .modal-content {
-	color: var(--bg-color);
+  color: var(--bg-color);
 }
 
+/* dynamic */
 .modal-title {
-	margin: 0 2% 5% 0;
+  margin: 0 2% 5% 0;
 }
 
 .modal-t-field-div {
-	margin: 1% 5% 1% 5%;
+  margin: 1% 5% 1% 5%;
 }
 
 .modal-t-field-label {
-	color: var(--modal-border);
+  color: var(--modal-border);
 }
 
 .modal-t-field-value {
-	display: inline;
-	float: right;
-	color: var(--bg-color);
+  display: inline;
+  float: right;
+  color: var(--bg-color);
 }
+/* dynamic */
 
 /* --------- MODAL CONTAINER ----------- */
 
 /* --------- FORM CONTAINER ----------- */
 
 .t-form-container {
-	float: left;
-	width: 30%;
+  float: left;
+  width: 30%;
 }
 
 .t-form-heading {
-	padding-bottom: 5%;
+  padding-bottom: 5%;
 }
 
 .t-form-element-div {
-	display: block;
-	margin: 3% 0 3% 0;
-	height: 50px;
+  display: block;
+  margin: 3% 0 3% 0;
+  height: 50px;
 }
 
 .t-form-element-label {
-	font-size: 1.1rem;
-	padding: 0 2% 0 2%;
+  font-size: 1.1rem;
+  padding: 0 2% 0 2%;
 }
 
 /* to make "select" element the same width as other form elements */
 input,
 select {
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 .t-form-input {
-	float: right;
-	width: 40%;
-	height: 30px;
+  float: right;
+  width: 40%;
+  height: 30px;
 }
 
 .t-btns-div {
-	margin-top: 10%;
-	text-align: center;
+  margin-top: 10%;
+  text-align: center;
 }
 
 .btn {
-	width: fit-content;
-	height: 75%;
-	border-radius: 8px;
-	padding: 4px 8px 4px 8px;
+  width: fit-content;
+  height: 75%;
+  border-radius: 8px;
+  padding: 4px 8px 4px 8px;
 }
 
 /* error on insert/update */
 
 .error-div {
-	background-color: var(--color-error);
-	height: 30px;
-	line-height: 30px;
-	text-align: center;
-	border-radius: 5px;
+  background-color: var(--color-error);
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 5px;
 }
 
 .error-text {
-	color: var(--color-error-text);
+  color: var(--color-error-text);
 }
 
 /* --------- FORM CONTAINER ----------- */
@@ -177,70 +179,108 @@ select {
 
 /* no transaction display message */
 .no-t-div {
-	margin-top: 10%;
+  margin-top: 10%;
 }
 
 .ts-container {
-	padding: 2%;
-	margin: 2% 2% 0 40%;
-	text-align: center;
-	height: 530px;
+  padding: 2%;
+  margin: 2% 2% 0 40%;
+  text-align: center;
+  height: 600px;
 }
 
-.summary-div {
-	margin: 20px 0 20px 0;
+.summary-container {
+  margin: 15px 0 15px 0;
+  height: 100px;
+  padding: 0 40px 0 40px;
 }
 
-.t-status-text {
-	display: inline;
-	margin: 0 3% 0 3%;
-	font-size: 1.1rem;
+.main-summary,
+.budget-summary {
+  display: inline-block;
+  width: 40%;
+  height: 100px;
+  margin: 0 20px 0 20px;
+  border: 1px solid var(--color-income);
+  border-radius: 10px;
 }
 
-/* to display transaction type with color */
-.t-type-income {
-	color: var(--color-income);
+.main-summary {
+  float: left;
 }
 
-.t-type-expense {
-	color: var(--color-expense);
+.budget-summary {
+  float: right;
 }
+
+.summary-item {
+  display: block;
+  font-size: 1.1rem;
+  height: 33.33px;
+  transform: scale(0.9);
+}
+
+.summary-item-label {
+  margin-left: 10px;
+  display: inline;
+  float: left;
+}
+
+.summary-item-value {
+  margin-right: 10px;
+  display: inline;
+  float: right;
+}
+
+/* TABLE */
 
 .table-container {
-	max-height: 350px;
-	/* to enable scrolling over the table */
-	overflow-y: auto;
-	margin: 0 0 4% 0;
+  max-height: 350px;
+  /* to enable scrolling over the table */
+  overflow-y: auto;
+  margin: 0 0 4% 0;
+  width: 100%;
 }
 
 .t-table {
-	margin: 1% auto 0 auto;
-	width: 80%;
+  margin: 1% auto 0 auto;
+  width: 80%;
 }
 
 th,
 td {
-	padding: 8px;
-	text-align: center;
-	border-radius: 4px;
+  padding: 8px;
+  text-align: center;
+  border-radius: 4px;
 }
 
 /* to make table headers sticky on scroll */
 table th {
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0;
-	z-index: 1;
-	background-color: var(--bg-color);
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--bg-color);
 }
 
-.sort-dates-range-container {
-	margin: 3% 0 0 0;
+/* TABLE */
+
+.show-range-container {
+  margin: 3% 0 0 0;
 }
 
 .sub-summary {
-	margin: 20px 0 20px 0;
-	transform: scale(0.9);
+  margin: 20px 0 20px 0;
+}
+
+.sub-summary-item,
+.sub-summary-item-label,
+.sub-summary-item-value {
+  display: inline;
+}
+
+.sub-summary-item {
+  margin: 10px;
 }
 
 /* --------- TRANSACTIONS CONTAINER ----------- */
@@ -248,42 +288,42 @@ table th {
 /* --------- SORT FORM CONTAINER --------- */
 
 .sort-form-container {
-	margin-top: 2%;
-	display: block;
-	text-align: center;
+  /* margin-top: 4%; */
+  display: block;
+  text-align: center;
 }
 
-.sort-form-element-div-container {
-	display: inline-block;
-	width: 15%;
-	/* to prevent: one div move downwards when side by side */
-	vertical-align: top;
+.sort-form-section {
+  display: inline-block;
+  width: 15%;
+  /* to prevent: one div move downwards when side by side */
+  vertical-align: top;
 }
 
 .sort-form-element-div {
-	display: block;
-	height: 30px;
-	margin: 0 0 3% 0;
+  display: block;
+  height: 30px;
+  margin: 0 0 3% 0;
 }
 
 .sort-form-element-label {
-	margin: 0 3% 0 3%;
+  margin: 0 3% 0 3%;
 }
 
 .sort-form-input {
-	float: right;
-	width: 130px;
-	height: 25px;
+  float: right;
+  width: 130px;
+  height: 25px;
 }
 
 .custom-dates-container {
-	margin: 5% 0 0 0;
-	display: inline;
+  margin: 5% 0 0 0;
+  display: inline;
 }
 
 .btn-sort {
-	display: inline;
-	margin: 0 0 0 2%;
+  display: inline;
+  margin: 0 0 0 2%;
 }
 
 /* --------- SORT FORM CONTAINER --------- */
@@ -292,33 +332,42 @@ table th {
 
 /* --------- PSEUDO CLASSES ----------- */
 
+/* to display transaction type with color */
+.t-type-income {
+  color: var(--color-income);
+}
+
+.t-type-expense {
+  color: var(--color-expense);
+}
+
 .hidden {
-	display: none;
+  display: none;
 }
 
 /* pseudo class for updated t */
 .updated-t {
-	background-color: var(--white);
-	opacity: 0.8;
-	color: var(--bg-color);
+  background-color: var(--white);
+  opacity: 0.8;
+  color: var(--bg-color);
 }
 
 /* for deletion */
 .strike {
-	color: var(--red);
+  color: var(--red);
 }
 
 .strike-text {
-	color: var(--text-color);
+  color: var(--text-color);
 }
 
 /* icons */
 .icon:hover {
-	transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .icon:active {
-	transform: translateY(2px);
+  transform: translateY(2px);
 }
 
 /* --------- PSEUDO CLASSES ----------- */

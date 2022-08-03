@@ -101,9 +101,9 @@ const cModalTFieldLabel = 'modal-t-field-label';
 const cModalTFieldValue = 'modal-t-field-value';
 
 const cT = 't';
+const cViewIcon = 'view-icon';
 const cEditIcon = 'edit-icon';
 const cDeleteIcon = 'delete-icon';
-const cViewIcon = 'view-icon';
 
 // timeouts (ms)
 const errShowTimeout = 2500;

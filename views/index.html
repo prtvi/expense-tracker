@@ -7,18 +7,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/public/css/global.css" />
-    <link rel="shortcut icon" href="/public/images/icon.png" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="/public/images/icon.png"
+      type="image/x-icon"
+    />
     <title>Expense Tracker</title>
   </head>
   <body>
-    <div class="main-container">
+    <main class="main-container">
       <!----------- MODAL CONTAINER ----------->
-      <div class="modal modal-whole-page">
+      <div class="modal">
+        <!-- modal-whole-page -->
         <div class="modal-container">
           <span class="close-modal-span">&times;</span>
-
           <div class="modal-content">
             <h3 class="modal-title">Title</h3>
+
             <div class="modal-t-field-div">
               <label class="modal-t-field-label">Date</label>
               <p class="modal-t-field-value">Fri, 13 May 2022</p>
@@ -32,7 +37,7 @@
       <div class="container t-form-container">
         <h2 class="t-form-heading">Add expense</h2>
 
-        <form class="form" id="t-form">
+        <form id="t-form">
           <!-- (1) Date -->
           <div class="t-form-element-div">
             <label class="t-form-element-label" for="{{ .DateID }}">Date</label>
@@ -96,7 +101,7 @@
           <div class="t-form-element-div">
             <label class="t-form-element-label">Type of transaction</label>
             <div class="t-form-input">
-              <div class="form-input-radio">
+              <div>
                 <input
                   type="radio"
                   name="{{ .TypeInputGroupName }}"
@@ -107,7 +112,7 @@
                 <label for="{{ .TypeIncomeID }}">Income</label>
               </div>
 
-              <div class="form-input-radio">
+              <div>
                 <input
                   type="radio"
                   name="{{ .TypeInputGroupName }}"
@@ -156,67 +161,67 @@
 
         <!-- if 0 transactions - div -->
         <div class="no-t-div">
-          <p class="no-t-text">Come on don't be shy... add a transaction!</p>
+          <p>Come on don't be shy... add a transaction!</p>
         </div>
 
         <!-- else for IfZeroTransactions -->
         {{ else }}
 
-        <!-- main summary div -->
-        <div class="summary-div main-summary">
-          <p class="t-status-text income">
-            Total income:
-            <span class="t-status-text-value income-value t-type-income"
-              >{{ .Currency }} {{ .Income }}</span
-            >
-          </p>
-          <p class="t-status-text expense">
-            Total expense:
-            <span class="t-status-text-value expense-value t-type-expense"
-              >{{ .Currency }} {{ .Expense }}</span
-            >
-          </p>
-          <p class="t-status-text current-balance">
-            Current balance:
-            <span
-              class="t-status-text-value current-balance-value {{ .SummaryBalanceClass }}"
-              >{{ .Currency }} {{ .Balance }}</span
-            >
-          </p>
-        </div>
-        <!-- main summary div -->
+        <div class="summary-container">
+          <!-- main summary div -->
+          <div class="main-summary">
+            <div class="summary-item">
+              <p class="summary-item-label">Total income:</p>
+              <span class="summary-item-value t-type-income"
+                >{{ .Currency }} {{ .Income }}</span
+              >
+            </div>
 
-        <!-- budget summary div -->
-        <div class="summary-div budget-summary">
-          <p class="t-status-text monthly-budget">
-            Monthly budget:
-            <span class="t-status-text-value monthly-budget-value t-type-income"
-              >{{ .Currency }} {{ .Budget }}</span
-            >
-          </p>
-          <p class="t-status-text spent">
-            Spent:
-            <span class="t-status-text-value spent-value t-type-expense"
-              >{{ .Currency }} {{ .Spent }}</span
-            >
-          </p>
-          <p class="t-status-text remaining">
-            Remaining:
-            <span
-              class="t-status-text-value remaining-value {{ .BudgetRemainingClass }}"
-              >{{ .Currency }} {{ .Remaining }}</span
-            >
-          </p>
+            <div class="summary-item">
+              <p class="summary-item-label">Total expense:</p>
+              <span class="summary-item-value t-type-expense"
+                >{{ .Currency }} {{ .Expense }}</span
+              >
+            </div>
+
+            <div class="summary-item">
+              <p class="summary-item-label">Current balance:</p>
+              <span class="summary-item-value {{ .SummaryBalanceClass }}"
+                >{{ .Currency }} {{ .Balance }}</span
+              >
+            </div>
+          </div>
+
+          <!-- budget summary div -->
+          <div class="budget-summary">
+            <div class="summary-item">
+              <p class="summary-item-label">Monthly budget:</p>
+              <span class="summary-item-value t-type-income"
+                >{{ .Currency }} {{ .Budget }}</span
+              >
+            </div>
+
+            <div class="summary-item">
+              <p class="summary-item-label">Spent:</p>
+              <span class="summary-item-value t-type-expense"
+                >{{ .Currency }} {{ .Spent }}</span
+              >
+            </div>
+
+            <div class="summary-item">
+              <p class="summary-item-label">Remaining:</p>
+              <span class="summary-item-value {{ .BudgetRemainingClass }}"
+                >{{ .Currency }} {{ .Remaining }}</span
+              >
+            </div>
+          </div>
         </div>
-        <!-- budget summary div -->
 
         {{ if .IfNoTransactionToView }}
 
         <!-- no transactions div -->
         <div class="no-t-div">
-          <p class="no-t-text">
-            No transactions found for the specified range!
-          </p>
+          <p>No transactions found for the specified range!</p>
         </div>
 
         <!-- else for IfNoTransactionToView -->
@@ -225,9 +230,9 @@
         <!----------- TABLE CONTAINER ----------->
         <div class="table-container">
           <table class="t-table">
-            <tr class="table-header-row">
+            <tr>
               <th>Date</th>
-              <th>Description</th>
+              <th style="width: 40%">Description</th>
               <th>Amount ({{ .Currency }})</th>
               <th></th>
               <th></th>
@@ -237,32 +242,32 @@
             {{ range .Transactions }}
 
             <tr class="t" id="{{ .ID }}">
-              <td class="t-field t-date">{{ .Date }}</td>
-              <td class="t-field t-desc">{{ .Desc }}</td>
+              <td>{{ .Date }}</td>
+              <td>{{ .Desc }}</td>
 
               {{ if eq .Type "income" }}
-              <td class="t-field t-amount t-type-income">{{ .Amount }}</td>
+              <td class="t-type-income">{{ .Amount }}</td>
               {{ else }}
-              <td class="t-field t-amount t-type-expense">{{ .Amount }}</td>
+              <td class="t-type-expense">{{ .Amount }}</td>
               {{ end }}
 
-              <td class="t-field view-t">
+              <td>
                 <img
-                  class="icon modify-t-icon view-icon"
+                  class="icon view-icon"
                   src="/public/images/view.png"
                   alt="view icon"
                 />
               </td>
-              <td class="t-field edit-t">
+              <td>
                 <img
-                  class="icon modify-t-icon edit-icon"
+                  class="icon edit-icon"
                   src="/public/images/edit.png"
                   alt="edit icon"
                 />
               </td>
-              <td class="t-field delete-t">
+              <td>
                 <img
-                  class="icon modify-t-icon delete-icon"
+                  class="icon delete-icon"
                   src="/public/images/delete.png"
                   alt="delete icon"
                 />
@@ -274,8 +279,8 @@
         </div>
         <!----------- TABLE CONTAINER ----------->
 
-        <!-- sort-dates-range text container -->
-        <div class="sort-dates-range-container">
+        <!-- show-range text container -->
+        <div class="show-range-container">
           <p>
             Showing results from
             <strong> {{ .ShowingFromDate }} </strong> -
@@ -292,25 +297,26 @@
 
         <!-- sub summary -->
         <div class="sub-summary">
-          <p class="t-status-text total-income">
-            Total income:
-            <span class="t-status-text-value total-income-value t-type-income"
+          <div class="sub-summary-item">
+            <p class="sub-summary-item-label">Income:</p>
+            <span class="sub-summary-item-value t-type-income"
               >{{ .Currency }} {{ .SubIncome }}</span
             >
-          </p>
-          <p class="t-status-text total-expense">
-            Total expense:
-            <span class="t-status-text-value total-expense-value t-type-expense"
+          </div>
+
+          <div class="sub-summary-item">
+            <p class="sub-summary-item-label">Expense:</p>
+            <span class="sub-summary-item-value t-type-expense"
               >{{ .Currency }} {{ .SubExpense }}</span
             >
-          </p>
-          <p class="t-status-text current-balance">
-            Difference:
-            <span
-              class="t-status-text-value current-balance-value {{ .SubDifferenceClass }}"
+          </div>
+
+          <div class="sub-summary-item">
+            <p class="sub-summary-item-label">Difference:</p>
+            <span class="sub-summary-item-value {{ .SubDifferenceClass }}"
               >{{ .Currency }} {{ .SubDifference }}</span
             >
-          </p>
+          </div>
         </div>
 
         <!-- end for IfSubSummary -->
@@ -323,29 +329,30 @@
 
       <!----------- SORT FORM CONTAINER ----------->
       <div class="sort-form-container">
-        <form class="form" id="sort-form">
-          <!-- view (select dropdown) -->
-          <div class="sort-form-element-div-container">
+        <form id="sort-form">
+          <!-- view & custom dates container -->
+
+          <div class="sort-form-section">
+            <!-- view (select dropdown) -->
             <div class="sort-form-element-div">
               <label class="sort-form-element-label" for="{{ .ViewID }}"
                 >View</label
               >
               <select
-                class="sort-form-input sort-form-input-select"
+                class="sort-form-input"
                 name="{{ .ViewID }}"
                 id="{{ .ViewID }}"
                 required
               >
                 {{ range $key, $value := .ViewOptions }}
-                <option class="sort-option" value="{{ $key }}">
-                  {{ $value }}
-                </option>
+                <option value="{{ $key }}">{{ $value }}</option>
                 {{ end }}
               </select>
             </div>
 
-            <!-- custom dates container -->
+            <!-- custom dates container (for startDate & endDate) -->
             <div class="custom-dates-container hidden">
+              <!-- startDate -->
               <div class="sort-form-element-div">
                 <label
                   class="sort-form-element-label"
@@ -360,6 +367,7 @@
                 />
               </div>
 
+              <!-- endDate -->
               <div class="sort-form-element-div">
                 <label
                   class="sort-form-element-label"
@@ -374,32 +382,26 @@
                 />
               </div>
             </div>
+            <!-- custom dates container -->
           </div>
 
           <!-- Sort (asc/des) (select dropdown) -->
-          <div class="sort-form-element-div-container">
+          <div class="sort-form-section">
             <div class="sort-form-element-div">
               <label for="{{ .SortID }}" class="sort-form-element-label"
                 >Sort</label
               >
               <select
-                class="sort-form-input sort-form-input-select"
+                class="sort-form-input"
                 name="{{ .SortID }}"
                 id="{{ .SortID }}"
                 required
               >
-                <option
-                  class="sort-option"
-                  value="{{ .SortAscID }}"
-                  id="{{ .SortAscID }}"
-                >
+                <option value="{{ .SortAscID }}" id="{{ .SortAscID }}">
                   Oldest first
                 </option>
-                <option
-                  class="sort-option"
-                  value="{{ .SortDesID }}"
-                  id="{{ .SortDesID }}"
-                >
+
+                <option value="{{ .SortDesID }}" id="{{ .SortDesID }}">
                   Newest first
                 </option>
               </select>
@@ -410,7 +412,7 @@
         </form>
       </div>
       <!----------- SORT FORM CONTAINER ----------->
-    </div>
+    </main>
 
     <script src="/public/js/init.js"></script>
     <script src="/public/js/handlers.js"></script>
