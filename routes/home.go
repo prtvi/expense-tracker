@@ -14,7 +14,7 @@ import (
 // "/" route, gets all transactions (formatted for view) and makes a summary to render on page
 
 func Home(c echo.Context) error {
-	// get sort params from sort middleware
+	// get filter params from sort middleware
 	sort := c.Get(config.Sort).(string)
 
 	// view params from range of dates
@@ -45,6 +45,11 @@ func Home(c echo.Context) error {
 	// format the transactions for view (to display on UI)
 	formattedTransactions := utils.FormatTransactionsForView(tsForView)
 
+	// budget
+	// utils.SetBudget(15000)
+
+	// budget := utils.EvalBudget()
+
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
 		// element ids
 		// t-form
@@ -68,10 +73,16 @@ func Home(c echo.Context) error {
 		"IfZeroTransactions": IfZeroTransactions,
 
 		// main summary
-		"Income":       allTSummary.Income,
-		"Expense":      allTSummary.Expense,
-		"Balance":      allTSummary.Balance,
-		"BalanceClass": utils.GetClassNameByValue(allTSummary.Balance),
+		"Income":              allTSummary.Income,
+		"Expense":             allTSummary.Expense,
+		"Balance":             allTSummary.Balance,
+		"SummaryBalanceClass": utils.GetClassNameByValue(allTSummary.Balance),
+
+		// // budget
+		// "Budget":               budget.Budget,
+		// "Spent":                budget.Spent,
+		// "Remaining":            budget.Remaining,
+		// "BudgetRemainingClass": utils.GetClassNameByValue(budget.Remaining),
 
 		// transactions to show
 		"IfNoTransactionToView": len(tsForView) == 0,

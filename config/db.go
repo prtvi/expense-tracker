@@ -28,7 +28,10 @@ func EstablishConnection() {
 	}
 
 	Transactions = *client.Database(os.Getenv("DB_NAME")).Collection(os.Getenv("TRANSACTIONS"))
+
 	Summary = *client.Database(os.Getenv("DB_NAME")).Collection(os.Getenv("SUMMARY"))
+
+	Budget = *client.Database(os.Getenv("DB_NAME")).Collection(os.Getenv("BUDGET"))
 
 	fmt.Println("Database connected")
 }

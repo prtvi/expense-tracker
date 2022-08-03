@@ -33,6 +33,14 @@ func BsonDocToSummary(doc bson.M) model.Summary {
 	return summary
 }
 
+func BsonDocToBudget(doc bson.M) model.Budget {
+	var budget model.Budget
+	docByte, _ := json.Marshal(doc)
+	json.Unmarshal(docByte, &budget)
+
+	return budget
+}
+
 // constructor for generating model.ResponseMessage objects
 
 func CreateResponseMessage(statusCode int, success bool, message string) model.ResponseMsg {
@@ -49,6 +57,11 @@ func GetClassNameByValue(value float32) string {
 // date object to date string with format: 2022-05-25
 func FormatDateShort(d time.Time) string {
 	return d.String()[0:config.FORMAT_DATE_STR_LEN]
+}
+
+// date object to date string with format: Wed, 25 May
+func FormatDateWords(d time.Time) string {
+	return d.Format(time.RFC1123Z)[0:config.FORMAT_DATE_STR_LEN_WORDS]
 }
 
 // date object to date string with format: Wed, 25 May 2022
@@ -72,14 +85,14 @@ func FormatTransaction(t model.Transaction) model.TransactionFormatted {
 }
 
 // formats a single transaction for view, model.Traansaction to model.TransactionFormatted (format for view)
-// truncate desc text to MAX_DESC_LEN & format date to format: Wed, 25 May 2022
-// to view only on table and modal
+// truncate desc text to MAX_DESC_LEN & format date to format: Wed, 25 May
+// to view only on table
 
 func FormatTransactionForView(t model.Transaction) model.TransactionFormatted {
 	T := FormatTransaction(t)
 
-	// 1. format date to format into: Wed, 25 May 2022
-	T.Date = FormatDateLong(t.Date)
+	// 1. format date to format into: Wed, 25 May
+	T.Date = FormatDateWords(t.Date)
 
 	// 2. truncating desc text
 	if len(t.Desc) > config.MAX_DESC_LEN {
@@ -102,7 +115,7 @@ func FormatTransactionsForView(allTransactions []model.Transaction) []model.Tran
 }
 
 // convert 2022-05-30 string to date obj
-func DateStringToDateObj(dateStr string) time.Time {
+func DateStringToDateObj(dateStr string, insert bool) time.Time {
 	dateParts := strings.Split(dateStr, "-")
 	datePartsInt := make([]int, len(dateParts))
 
@@ -113,7 +126,18 @@ func DateStringToDateObj(dateStr string) time.Time {
 
 	year, month, day := datePartsInt[0], time.Month(datePartsInt[1]), datePartsInt[2]
 
-	return time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+	if insert {
+		// if the converted time is to be inserted into the db, then add time to the date as well
+
+		now := time.Now()
+		currentLocation := now.Location()
+		hour, min, sec := now.Hour(), now.Minute(), now.Second()
+
+		return time.Date(year, month, day, hour, min, sec, 0, currentLocation)
+	}
+
+	// else do not add time to date
+	return time.Date(year, month, day, 0, 0, 0, 0, time.Local)
 }
 
 // Create a model.Summary object for given transactions

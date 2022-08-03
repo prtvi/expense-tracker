@@ -39,7 +39,7 @@ func InitTransaction(c echo.Context) (bson.D, error) {
 
 		// to enter time.Date object into db
 		if key == config.DateID {
-			date := DateStringToDateObj(value[0])
+			date := DateStringToDateObj(value[0], true)
 
 			transaction = append(transaction, bson.E{Key: key, Value: date})
 			continue

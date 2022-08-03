@@ -187,7 +187,7 @@ select {
 	height: 530px;
 }
 
-.main-summary {
+.summary-div {
 	margin: 20px 0 20px 0;
 }
 
@@ -207,7 +207,7 @@ select {
 }
 
 .table-container {
-	max-height: 400px;
+	max-height: 350px;
 	/* to enable scrolling over the table */
 	overflow-y: auto;
 	margin: 0 0 4% 0;

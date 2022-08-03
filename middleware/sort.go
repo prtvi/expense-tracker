@@ -17,26 +17,32 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// only for not "custom" options
 		// end date (today date)
-		var viewEndDate time.Time = time.Now()
+		now := time.Now()
+		currentYear, currentMonth, currentDay := now.Date()
+		currentLocation := now.Location()
+
+		// endDate initially initialized with hour, minute and second as 0s
+		var viewEndDate time.Time = time.Date(currentYear, currentMonth, currentDay, 0, 0, 0, 0, currentLocation)
 
 		// start from date (past)
 		var viewStartDate time.Time
 
-		switch view {
-		// 7
-		case config.ViewLast7Days:
-			viewStartDate = viewEndDate.AddDate(0, 0, -7)
+		// if view is empty, then set it to config.ViewAll
+		if view == "" {
+			view = config.ViewAll
+		}
 
-		// 30
+		switch view {
+		// last 7 days
+		case config.ViewLast7Days:
+			viewStartDate = viewEndDate.AddDate(0, 0, -7+1)
+
+		// last 30 days
 		case config.ViewLast30Days:
-			viewStartDate = viewEndDate.AddDate(0, 0, -30)
+			viewStartDate = viewEndDate.AddDate(0, 0, -30+1)
 
 		// this month
 		case config.ViewThisMonth:
-			now := time.Now()
-			currentYear, currentMonth, _ := now.Date()
-			currentLocation := now.Location()
-
 			firstOfMonth := time.Date(currentYear, currentMonth, 1, 0, 0, 0, 0, currentLocation)
 			lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
 
@@ -45,10 +51,6 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// last month
 		case config.ViewLastMonth:
-			now := time.Now()
-			currentYear, currentMonth, _ := now.Date()
-			currentLocation := now.Location()
-
 			firstOfMonth := time.Date(currentYear, currentMonth-1, 1, 0, 0, 0, 0, currentLocation)
 			lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
 
@@ -59,8 +61,8 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 		case config.ViewCustom:
 			dateStart, dateEnd := c.QueryParam(config.CustomDateStartID), c.QueryParam(config.CustomDateEndID)
 
-			viewStartDate = utils.DateStringToDateObj(dateStart)
-			viewEndDate = utils.DateStringToDateObj(dateEnd)
+			viewStartDate = utils.DateStringToDateObj(dateStart, false)
+			viewEndDate = utils.DateStringToDateObj(dateEnd, false)
 
 		// all
 		case config.ViewAll:
@@ -74,9 +76,11 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 			}
 		}
 
-		// if view is empty, then set it to config.ViewAll
-		if view == "" {
-			view = config.ViewAll
+		// adding a day to the endDate and subtracting a nanosecond to make the endDate time to 23:59:59.9999 rather than 00:00:00
+		// for sorting dates "lesser than equal to" endDate
+
+		if view != config.ViewAll {
+			viewEndDate = viewEndDate.AddDate(0, 0, 1).Add(-time.Nanosecond)
 		}
 
 		c.Set(config.View, view)

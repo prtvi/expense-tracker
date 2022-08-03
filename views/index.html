@@ -162,28 +162,52 @@
         {{ else }}
 
         <!-- main summary div -->
-        <div class="main-summary">
-          <p class="t-status-text total-income">
+        <div class="summary-div main-summary">
+          <p class="t-status-text income">
             Total income:
-            <span class="t-status-text-value total-income-value t-type-income"
+            <span class="t-status-text-value income-value t-type-income"
               >{{ .Currency }} {{ .Income }}</span
             >
           </p>
-          <p class="t-status-text total-expense">
+          <p class="t-status-text expense">
             Total expense:
-            <span class="t-status-text-value total-expense-value t-type-expense"
+            <span class="t-status-text-value expense-value t-type-expense"
               >{{ .Currency }} {{ .Expense }}</span
             >
           </p>
           <p class="t-status-text current-balance">
             Current balance:
             <span
-              class="t-status-text-value current-balance-value {{ .BalanceClass }}"
+              class="t-status-text-value current-balance-value {{ .SummaryBalanceClass }}"
               >{{ .Currency }} {{ .Balance }}</span
             >
           </p>
         </div>
         <!-- main summary div -->
+
+        <!-- budget summary div -->
+        <div class="summary-div budget-summary">
+          <p class="t-status-text current-budget">
+            Current budget:
+            <span class="t-status-text-value current-budget-value t-type-income"
+              >{{ .Currency }} {{ .Budget }}</span
+            >
+          </p>
+          <p class="t-status-text spent">
+            Spent:
+            <span class="t-status-text-value spent-value t-type-expense"
+              >{{ .Currency }} {{ .Spent }}</span
+            >
+          </p>
+          <p class="t-status-text remaining">
+            Remaining:
+            <span
+              class="t-status-text-value remaining-value {{ .BudgetRemainingClass }}"
+              >{{ .Currency }} {{ .Remaining }}</span
+            >
+          </p>
+        </div>
+        <!-- budget summary div -->
 
         {{ if .IfNoTransactionToView }}
 

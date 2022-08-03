@@ -5,12 +5,16 @@ import "go.mongodb.org/mongo-driver/mongo"
 // Global mongo collection connection
 var Transactions mongo.Collection
 var Summary mongo.Collection
+var Budget mongo.Collection
 
 // for date formatting
 const MAX_DESC_LEN = 20
 
 // for format: 2022-05-25 (short date)
 const FORMAT_DATE_STR_LEN = 10
+
+// for format: Wed, 25 May (in words)
+const FORMAT_DATE_STR_LEN_WORDS = 11
 
 // for format: Wed, 25 May 2022 (long date)
 const FORMAT_DATE_STR_LEN_LONG = 16
