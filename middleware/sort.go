@@ -43,16 +43,14 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// this month
 		case config.ViewThisMonth:
-			firstOfMonth := time.Date(currentYear, currentMonth, 1, 0, 0, 0, 0, currentLocation)
-			lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
+			firstOfMonth, lastOfMonth := utils.FirstAndLastDayOfMonth(currentYear, int(currentMonth), currentLocation)
 
 			viewStartDate = firstOfMonth
 			viewEndDate = lastOfMonth
 
 		// last month
 		case config.ViewLastMonth:
-			firstOfMonth := time.Date(currentYear, currentMonth-1, 1, 0, 0, 0, 0, currentLocation)
-			lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
+			firstOfMonth, lastOfMonth := utils.FirstAndLastDayOfMonth(currentYear, int(currentMonth-1), currentLocation)
 
 			viewStartDate = firstOfMonth
 			viewEndDate = lastOfMonth
@@ -80,7 +78,7 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 		// for sorting dates "lesser than equal to" endDate
 
 		if view != config.ViewAll {
-			viewEndDate = viewEndDate.AddDate(0, 0, 1).Add(-time.Nanosecond)
+			viewEndDate = utils.LastSecondOfTheDay(viewEndDate)
 		}
 
 		c.Set(config.View, view)

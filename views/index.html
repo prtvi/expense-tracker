@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/public/css/global.css" />
+    <link rel="shortcut icon" href="/public/images/icon.png" type="image/x-icon">
     <title>Expense Tracker</title>
   </head>
   <body>
@@ -187,9 +188,9 @@
 
         <!-- budget summary div -->
         <div class="summary-div budget-summary">
-          <p class="t-status-text current-budget">
-            Current budget:
-            <span class="t-status-text-value current-budget-value t-type-income"
+          <p class="t-status-text monthly-budget">
+            Monthly budget:
+            <span class="t-status-text-value monthly-budget-value t-type-income"
               >{{ .Currency }} {{ .Budget }}</span
             >
           </p>

@@ -46,9 +46,9 @@ func Home(c echo.Context) error {
 	formattedTransactions := utils.FormatTransactionsForView(tsForView)
 
 	// budget
-	// utils.SetBudget(15000)
+	utils.SetBudget(15000)
 
-	// budget := utils.EvalBudget()
+	budget := utils.EvalBudget()
 
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
 		// element ids
@@ -78,11 +78,11 @@ func Home(c echo.Context) error {
 		"Balance":             allTSummary.Balance,
 		"SummaryBalanceClass": utils.GetClassNameByValue(allTSummary.Balance),
 
-		// // budget
-		// "Budget":               budget.Budget,
-		// "Spent":                budget.Spent,
-		// "Remaining":            budget.Remaining,
-		// "BudgetRemainingClass": utils.GetClassNameByValue(budget.Remaining),
+		// budget
+		"Budget":               budget.Budget,
+		"Spent":                budget.Spent,
+		"Remaining":            budget.Remaining,
+		"BudgetRemainingClass": utils.GetClassNameByValue(budget.Remaining),
 
 		// transactions to show
 		"IfNoTransactionToView": len(tsForView) == 0,

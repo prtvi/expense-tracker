@@ -70,7 +70,6 @@ func FormatDateLong(d time.Time) string {
 }
 
 // converts a single transaction from model.Transaction to model.TransactionFormatted (not for view, to be loaded on t-form)
-
 func FormatTransaction(t model.Transaction) model.TransactionFormatted {
 	// date object to format: 2022-05-25
 	return model.TransactionFormatted{
@@ -84,10 +83,9 @@ func FormatTransaction(t model.Transaction) model.TransactionFormatted {
 	}
 }
 
-// formats a single transaction for view, model.Traansaction to model.TransactionFormatted (format for view)
+// formats a single transaction for view, model.Transaction to model.TransactionFormatted (format for view)
 // truncate desc text to MAX_DESC_LEN & format date to format: Wed, 25 May
 // to view only on table
-
 func FormatTransactionForView(t model.Transaction) model.TransactionFormatted {
 	T := FormatTransaction(t)
 
@@ -103,7 +101,6 @@ func FormatTransactionForView(t model.Transaction) model.TransactionFormatted {
 }
 
 // specifically for "/get" route, to format an array of model.Transaction to array of model.TransactionFormatted, format for view
-
 func FormatTransactionsForView(allTransactions []model.Transaction) []model.TransactionFormatted {
 	formattedTransactions := make([]model.TransactionFormatted, len(allTransactions))
 
@@ -204,4 +201,17 @@ func GetNewestAndOldestTDates() (time.Time, time.Time, error) {
 	}
 
 	return oldestT[0].Date, newestT[0].Date, nil
+}
+
+// get the first & last day of the month, without time (time->0)
+func FirstAndLastDayOfMonth(year, month int, loc *time.Location) (time.Time, time.Time) {
+	firstOfMonth := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, loc)
+	lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
+
+	return firstOfMonth, lastOfMonth
+}
+
+// convert a time from 00:00:00 to 23:59:59.9999
+func LastSecondOfTheDay(t time.Time) time.Time {
+	return t.AddDate(0, 0, 1).Add(-time.Nanosecond)
 }
