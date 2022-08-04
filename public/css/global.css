@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
-
 * {
   margin: 0;
   padding: 0;
@@ -9,6 +7,7 @@
 :root {
   --bg-color: #0d1116;
   --text-color: #c9d1d9;
+  --bg-color-table: #040b10;
 
   --color-income: #39d353;
   --color-expense: #e16637;
@@ -36,13 +35,8 @@ body {
 /* --------- MAIN CONTAINER ----------- */
 
 .main-container {
-  height: 800px;
-  width: 100%;
-}
-
-.container {
-  height: 500px;
-  padding: 2% 2% 2% 8%;
+  height: 700px;
+  padding: 3% 6% 4% 6%;
 }
 
 /* --------- MODAL CONTAINER ----------- */
@@ -116,19 +110,21 @@ body {
 .t-form-container {
   float: left;
   width: 30%;
+  height: 530px;
+  margin: 2%;
 }
 
 .t-form-heading {
   padding-bottom: 5%;
 }
 
-.t-form-element-div {
+.t-form-item {
   display: block;
   margin: 3% 0 3% 0;
   height: 50px;
 }
 
-.t-form-element-label {
+.t-form-item-label {
   font-size: 1.1rem;
   padding: 0 2% 0 2%;
 }
@@ -147,18 +143,6 @@ select {
   height: 30px;
 }
 
-.t-btns-div {
-  margin-top: 10%;
-  text-align: center;
-}
-
-.btn {
-  width: fit-content;
-  height: 75%;
-  border-radius: 8px;
-  padding: 4px 8px 4px 8px;
-}
-
 /* error on insert/update */
 
 .error-div {
@@ -173,44 +157,55 @@ select {
   color: var(--color-error-text);
 }
 
+.t-btns-div {
+  margin-top: 10%;
+  text-align: center;
+}
+
+/* btns */
+
+.btn {
+  width: fit-content;
+  height: 75%;
+  border-radius: 8px;
+  padding: 4px 8px 4px 8px;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn:active {
+  transform: translateY(2px);
+}
+
 /* --------- FORM CONTAINER ----------- */
 
-/* --------- TRANSACTIONS CONTAINER ----------- */
 
-/* no transaction display message */
-.no-t-div {
-  margin-top: 10%;
-}
+/* --------- SUMMARY CONTAINER ----------- */
 
-.ts-container {
-  padding: 2%;
-  margin: 2% 2% 0 40%;
-  text-align: center;
-  height: 600px;
-}
 
 .summary-container {
-  margin: 15px 0 15px 0;
-  height: 100px;
-  padding: 0 40px 0 40px;
+  display: flex;
+  float: left;
+  width: 55%;
+  height: 110px;
+  margin: 1% 2% 0 2%;
+}
+
+.summary-container:first-child {
+  margin-right: 10px;
 }
 
 .main-summary,
 .budget-summary {
-  display: inline-block;
+  flex: 1;
+  float: left;
   width: 40%;
-  height: 100px;
-  margin: 0 20px 0 20px;
+  height: 98px;
   border: 1px solid var(--color-income);
   border-radius: 10px;
-}
-
-.main-summary {
-  float: left;
-}
-
-.budget-summary {
-  float: right;
+  margin: 0 2% 0 2%;
 }
 
 .summary-item {
@@ -232,19 +227,38 @@ select {
   float: right;
 }
 
-/* TABLE */
+/* --------- SUMMARY CONTAINER ----------- */
+
+/* --------- TRANSACTIONS CONTAINER ----------- */
+
+.ts-container {
+  float: left;
+  width: 60%;
+  height: 450px;
+  margin: 2%;
+  padding: 0;
+  text-align: center;
+}
+
+
+/* no transaction display message */
+.no-t-div {
+  margin-top: 10%;
+}
+
+
+/* --------- TABLE CONTAINER ----------- */
 
 .table-container {
   max-height: 350px;
   /* to enable scrolling over the table */
   overflow-y: auto;
-  margin: 0 0 4% 0;
   width: 100%;
 }
 
 .t-table {
-  margin: 1% auto 0 auto;
-  width: 80%;
+  margin: 0 auto 0 auto;
+  width: 100%;
 }
 
 th,
@@ -252,6 +266,7 @@ td {
   padding: 8px;
   text-align: center;
   border-radius: 4px;
+  background-color: var(--bg-color-table);
 }
 
 /* to make table headers sticky on scroll */
@@ -260,15 +275,26 @@ table th {
   position: sticky;
   top: 0;
   z-index: 1;
+  background-color: var(--bg-color-table);
+}
+
+.bg-th {
   background-color: var(--bg-color);
 }
 
-/* TABLE */
+.no-bg-td {
+  background: none;
+}
 
+/* --------- TABLE CONTAINER ----------- */
+
+/* show range container */
 .show-range-container {
   margin: 3% 0 0 0;
 }
 
+
+/* sub summary */
 .sub-summary {
   margin: 20px 0 20px 0;
 }
@@ -288,7 +314,6 @@ table th {
 /* --------- SORT FORM CONTAINER --------- */
 
 .sort-form-container {
-  /* margin-top: 4%; */
   display: block;
   text-align: center;
 }
@@ -300,13 +325,13 @@ table th {
   vertical-align: top;
 }
 
-.sort-form-element-div {
+.sort-form-item {
   display: block;
   height: 30px;
   margin: 0 0 3% 0;
 }
 
-.sort-form-element-label {
+.sort-form-item-label {
   margin: 0 3% 0 3%;
 }
 
@@ -331,6 +356,10 @@ table th {
 /* --------- MAIN CONTAINER ----------- */
 
 /* --------- PSEUDO CLASSES ----------- */
+
+.t {
+  cursor: pointer;
+}
 
 /* to display transaction type with color */
 .t-type-income {
@@ -363,10 +392,12 @@ table th {
 
 /* icons */
 .icon:hover {
+  cursor: pointer;
   transform: scale(1.2);
 }
 
 .icon:active {
+  cursor: pointer;
   transform: translateY(2px);
 }
 

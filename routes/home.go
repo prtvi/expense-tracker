@@ -25,7 +25,7 @@ func Home(c echo.Context) error {
 	var tsForView []model.Transaction
 	var tsForViewSummary model.Summary
 
-	IfZeroTransactions := (utils.CountTransactions() == 0)
+	IfTransactions := (utils.CountTransactions() != 0)
 	ifSubSummary := false
 
 	allTs := utils.GetAllTransactions(sort)
@@ -70,7 +70,7 @@ func Home(c echo.Context) error {
 		"Currency": "₹",
 
 		// is true if there are 0 transactions in the entire db
-		"IfZeroTransactions": IfZeroTransactions,
+		"IfTransactions": IfTransactions,
 
 		// main summary
 		"Income":              allTSummary.Income,

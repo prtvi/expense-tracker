@@ -114,6 +114,7 @@ table && ['click', 'dblclick'].forEach(e => table.addEventListener(e, tableEL));
 // t-form
 tForm.addEventListener('submit', tFormEL);
 window.addEventListener('load', updateTHandler);
+clearBtn.addEventListener('click', changeFormLabels);
 
 // change paid_to text to "self" on type income, else ''
 typeIncomeEl.addEventListener('input', () => (paidToEl.value = 'self'));

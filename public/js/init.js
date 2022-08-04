@@ -118,16 +118,21 @@ const errUpdateT = 'Error updating the transaction!';
 const errLoadT = 'Error loading the transaction!';
 const errDeleteT = 'Error deleting the transaction!';
 
+// form titles
 const formTitleOnAddExpense = 'Add expense';
-const formTitleOnEditExpense = 'Update transaction';
+const formTitleOnUpdateExpense = 'Update transaction';
+
+// btn texts
+const btnTextAddT = 'Add transaction';
+const btnTextUpdateT = 'Update transaction';
+const btnTextClear = 'Clear all';
+const btnTextCancel = 'Cancel';
 
 const formTitle = document.querySelector('.t-form-heading');
 
-const btnTextAddT = 'Add transaction';
-const btnTextUpdateT = 'Update transaction';
-
 // btns
 const submitBtn = document.querySelector('.btn-add');
+const clearBtn = document.querySelector('.btn-clear');
 const sortBtn = document.querySelector('.btn-sort');
 
 // modal
@@ -162,14 +167,6 @@ const modalClose = document.querySelector('.close-modal-span');
 
 	type ? (typeIncomeEl.checked = true) : (typeExpenseEl.checked = true);
 })();
-
-// clear url to '/' on load
-(function () {
-	setTimeout(
-		() => window.history.replaceState({}, 'Expense', '/'),
-		clearUrlTimeout
-	);
-});
 
 /**
  * Render error poput with given "errMsg"
@@ -278,6 +275,20 @@ const sendFormData = async function (
 	else onFormSubmitFailure(endpoint);
 };
 
+const changeFormLabels = function(add=true) {
+	// if ADD
+	if (add) {
+		formTitle.textContent = formTitleOnAddExpense;
+		submitBtn.textContent = btnTextAddT;
+		clearBtn.textContent = btnTextClear;
+	} else {
+		// if UPDATE
+		formTitle.textContent = formTitleOnUpdateExpense;
+		submitBtn.textContent = btnTextUpdateT;
+		clearBtn.textContent = btnTextCancel;
+	}
+}
+
 /**
  * Get the transaction data from the backend, insert it into form to edit, init UPDATE_ID to reflect update on reload
  *
@@ -302,8 +313,7 @@ const getAndLoadTForEdit = async function (tID, endpoint) {
 	else typeExpenseEl.checked = true;
 
 	// change btn text content
-	submitBtn.textContent = btnTextUpdateT;
-	formTitle.textContent = formTitleOnEditExpense;
+	changeFormLabels(false);
 
 	// storing the updated transaction id to sessionStorage to fetch later on reload for showing changes
 	sessionStorage.setItem(UPDATE_TID, res._id);
