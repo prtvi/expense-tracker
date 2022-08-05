@@ -1,3 +1,5 @@
+'use strict';
+
 // EL = EventListener
 // El = Element
 
@@ -122,13 +124,13 @@ const errDeleteT = 'Error deleting the transaction!';
 const formTitleOnAddExpense = 'Add expense';
 const formTitleOnUpdateExpense = 'Update transaction';
 
+const formTitle = document.querySelector('.t-form-heading');
+
 // btn texts
 const btnTextAddT = 'Add transaction';
 const btnTextUpdateT = 'Update transaction';
 const btnTextClear = 'Clear all';
 const btnTextCancel = 'Cancel';
-
-const formTitle = document.querySelector('.t-form-heading');
 
 // btns
 const submitBtn = document.querySelector('.btn-add');
@@ -144,28 +146,28 @@ const modalClose = document.querySelector('.close-modal-span');
 
 //To keep the default date to "today"
 (function (dateEl) {
-	const newDate = new Date();
-	const year = newDate.getFullYear();
-	const month = String(newDate.getMonth() + 1).padStart(2, '0');
-	const day = String(newDate.getDate()).padStart(2, '0');
+  const newDate = new Date();
+  const year = newDate.getFullYear();
+  const month = String(newDate.getMonth() + 1).padStart(2, '0');
+  const day = String(newDate.getDate()).padStart(2, '0');
 
-	dateEl.value = `${year}-${month}-${day}`;
+  dateEl.value = `${year}-${month}-${day}`;
 })(dateEl);
 
 (function () {
-	const desc = (Math.random() + 1).toString(36).substring(2);
-	const amount = Math.floor(Math.random() * (550 - 10) + 10);
-	const paidTo = (Math.random() + 1).toString(36).substring(2);
-	const mode = Math.random() > 0.5 ? true : false;
-	const type = Math.random() > 0.5 ? true : false;
+  const desc = (Math.random() + 1).toString(36).substring(2);
+  const amount = Math.floor(Math.random() * (550 - 10) + 10);
+  const paidTo = (Math.random() + 1).toString(36).substring(2);
+  const mode = Math.random() > 0.5 ? true : false;
+  const type = Math.random() > 0.5 ? true : false;
 
-	descEl.value = desc;
-	amountEl.value = amount;
-	paidToEl.value = paidTo;
+  descEl.value = desc;
+  amountEl.value = amount;
+  paidToEl.value = paidTo;
 
-	mode ? (modeEl.value = 'PhonePe') : (modeEl.value = 'Google Pay');
+  mode ? (modeEl.value = 'PhonePe') : (modeEl.value = 'Google Pay');
 
-	type ? (typeIncomeEl.checked = true) : (typeExpenseEl.checked = true);
+  type ? (typeIncomeEl.checked = true) : (typeExpenseEl.checked = true);
 })();
 
 /**
@@ -173,9 +175,9 @@ const modalClose = document.querySelector('.close-modal-span');
  * @param {string} errMsg Error message to display
  */
 const showError = function (errMsg) {
-	errText.textContent = errMsg;
-	errDiv.classList.remove(cHidden);
-	setTimeout(() => errDiv.classList.add(cHidden), errShowTimeout);
+  errText.textContent = errMsg;
+  errDiv.classList.remove(cHidden);
+  setTimeout(() => errDiv.classList.add(cHidden), errShowTimeout);
 };
 
 /**
@@ -184,7 +186,7 @@ const showError = function (errMsg) {
  * @param {boolean} reload If true, then reload page
  */
 const onFormSubmitSuccess = reload => {
-	reload ? window.location.reload() : console.log('debugging (no reload)');
+  reload ? window.location.reload() : console.log('debugging (no reload)');
 };
 
 /**
@@ -192,8 +194,8 @@ const onFormSubmitSuccess = reload => {
  * @param {string} endpoint Error based on endpoint
  */
 const onFormSubmitFailure = function (endpoint) {
-	if (endpoint === ADD_ENDPOINT) showError(errInsertT);
-	if (endpoint === EDIT_ENDPOINT) showError(errUpdateT);
+  if (endpoint === ADD_ENDPOINT) showError(errInsertT);
+  if (endpoint === EDIT_ENDPOINT) showError(errUpdateT);
 };
 
 /**
@@ -204,14 +206,12 @@ const onFormSubmitFailure = function (endpoint) {
  * @returns {string} New markup with strikethrough text
  */
 const getStrikeSpanMarkup = (currMarkup, spanClass) => {
-	return `<s class="${cStrike}"><span class="${spanClass}">${currMarkup}</span></s>`;
+  return `<s class="${cStrike}"><span class="${spanClass}">${currMarkup}</span></s>`;
 };
 
 // self explanatory
 const showModal = () => (modal.style.display = 'block');
 const hideModal = () => (modal.style.display = 'none');
-
-//
 
 /**
  * Make fetch request and get back JSON response
@@ -220,9 +220,9 @@ const hideModal = () => (modal.style.display = 'none');
  * @returns {JSON} JSON response from server
  */
 const makeFetchRequest = async function (url) {
-	const res = await fetch(url);
-	const resJson = await res.json();
-	return resJson;
+  const res = await fetch(url);
+  const resJson = await res.json();
+  return resJson;
 };
 
 /**
@@ -233,17 +233,17 @@ const makeFetchRequest = async function (url) {
  * @returns {string} The generated request URL
  */
 const generateQueryUrl = function (form, endpoint) {
-	const formData = new FormData(form);
-	let reqUrl = `${endpoint}?`;
+  const formData = new FormData(form);
+  let reqUrl = `${endpoint}?`;
 
-	// generate query with form data
-	Array.from(formData.keys()).forEach(key => {
-		if (!formData.get(key)) return;
-		reqUrl += `${key}=${formData.get(key)}&`;
-	});
+  // generate query with form data
+  Array.from(formData.keys()).forEach(key => {
+    if (!formData.get(key)) return;
+    reqUrl += `${key}=${formData.get(key)}&`;
+  });
 
-	// remove the last '&' from query string
-	return reqUrl.slice(0, -1);
+  // remove the last '&' from query string
+  return reqUrl.slice(0, -1);
 };
 
 /**
@@ -257,37 +257,37 @@ const generateQueryUrl = function (form, endpoint) {
  * @param {string} tID Transaction ID of the transaction to be updated
  */
 const sendFormData = async function (
-	form,
-	endpoint,
-	update = false,
-	tID = null
+  form,
+  endpoint,
+  update = false,
+  tID = null
 ) {
-	let reqUrl = generateQueryUrl(form, endpoint);
+  let reqUrl = generateQueryUrl(form, endpoint);
 
-	// if update true then append id to query
-	if (update) reqUrl += `&id=${tID}`;
+  // if update true then append id to query
+  if (update) reqUrl += `&id=${tID}`;
 
-	const res = await makeFetchRequest(reqUrl);
+  const res = await makeFetchRequest(reqUrl);
 
-	// if success then reload window to reload transactions
-	if (res.success) onFormSubmitSuccess(true);
-	// else render errors accordingly
-	else onFormSubmitFailure(endpoint);
+  // if success then reload window to reload transactions
+  if (res.success) onFormSubmitSuccess(true);
+  // else render errors accordingly
+  else onFormSubmitFailure(endpoint);
 };
 
-const changeFormLabels = function(add=true) {
-	// if ADD
-	if (add) {
-		formTitle.textContent = formTitleOnAddExpense;
-		submitBtn.textContent = btnTextAddT;
-		clearBtn.textContent = btnTextClear;
-	} else {
-		// if UPDATE
-		formTitle.textContent = formTitleOnUpdateExpense;
-		submitBtn.textContent = btnTextUpdateT;
-		clearBtn.textContent = btnTextCancel;
-	}
-}
+const changeFormLabels = function (add = true) {
+  // if ADD
+  if (add) {
+    formTitle.textContent = formTitleOnAddExpense;
+    submitBtn.textContent = btnTextAddT;
+    clearBtn.textContent = btnTextClear;
+  } else {
+    // if UPDATE
+    formTitle.textContent = formTitleOnUpdateExpense;
+    submitBtn.textContent = btnTextUpdateT;
+    clearBtn.textContent = btnTextCancel;
+  }
+};
 
 /**
  * Get the transaction data from the backend, insert it into form to edit, init UPDATE_ID to reflect update on reload
@@ -297,26 +297,26 @@ const changeFormLabels = function(add=true) {
  * @returns None
  */
 const getAndLoadTForEdit = async function (tID, endpoint) {
-	const url = `${endpoint}?id=${tID}`;
-	const res = await makeFetchRequest(url);
+  const url = `${endpoint}?id=${tID}`;
+  const res = await makeFetchRequest(url);
 
-	if (!res.date) return showError(errLoadT);
+  if (!res.date) return showError(errLoadT);
 
-	// load values to form
-	dateEl.value = res.date;
-	descEl.value = res.desc;
-	amountEl.value = res.amount;
-	modeEl.value = res.mode;
-	paidToEl.value = res.paid_to;
+  // load values to form
+  dateEl.value = res.date;
+  descEl.value = res.desc;
+  amountEl.value = res.amount;
+  modeEl.value = res.mode;
+  paidToEl.value = res.paid_to;
 
-	if (res.type === typeIncomeID) typeIncomeEl.checked = true;
-	else typeExpenseEl.checked = true;
+  if (res.type === typeIncomeID) typeIncomeEl.checked = true;
+  else typeExpenseEl.checked = true;
 
-	// change btn text content
-	changeFormLabels(false);
+  // change btn text content
+  changeFormLabels(false);
 
-	// storing the updated transaction id to sessionStorage to fetch later on reload for showing changes
-	sessionStorage.setItem(UPDATE_TID, res._id);
+  // storing the updated transaction id to sessionStorage to fetch later on reload for showing changes
+  sessionStorage.setItem(UPDATE_TID, res._id);
 };
 
 /**
@@ -327,26 +327,26 @@ const getAndLoadTForEdit = async function (tID, endpoint) {
  * @param {string} endpoint Endpoint to which request will be made
  */
 const initiateDeleteT = function (tRow, tID, endpoint) {
-	// get child elements from tRow (transaction) who have no children and strike them before deleting that transaction
-	Array.from(tRow.children).forEach(field => {
-		if (field.children.length > 0) return;
+  // get child elements from tRow (transaction) who have no children and strike them before deleting that transaction
+  Array.from(tRow.children).forEach(field => {
+    if (field.children.length > 0) return;
 
-		// to keep the amount text color same as the original
-		if (field.classList.contains(cTTypeIncome))
-			field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cTTypeIncome);
-		else if (field.classList.contains(cTTypeExpense))
-			field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cTTypeExpense);
-		else field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cStrikeText);
-	});
+    // to keep the amount text color same as the original
+    if (field.classList.contains(cTTypeIncome))
+      field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cTTypeIncome);
+    else if (field.classList.contains(cTTypeExpense))
+      field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cTTypeExpense);
+    else field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cStrikeText);
+  });
 
-	// make ajax call to delete the transaction after a timeout
-	const reqUrl = `${endpoint}?id=${tID}`;
-	setTimeout(async () => {
-		const res = await makeFetchRequest(reqUrl);
-		if (!res.success) return showError(errDeleteT);
+  // make ajax call to delete the transaction after a timeout
+  const reqUrl = `${endpoint}?id=${tID}`;
+  setTimeout(async () => {
+    const res = await makeFetchRequest(reqUrl);
+    if (!res.success) return showError(errDeleteT);
 
-		window.location.reload();
-	}, deleteTTimeout);
+    window.location.reload();
+  }, deleteTTimeout);
 };
 
 /**
@@ -354,20 +354,20 @@ const initiateDeleteT = function (tRow, tID, endpoint) {
  * @param {string} tID Transaction ID of transaction that will be highlighted
  */
 const highlightT = function (tID) {
-	// local function for highlightT function
-	const callSetTimeoutForUpdate = (tds, ms) =>
-		setTimeout(() => tds.forEach(el => el.classList.toggle(cUpdatedT)), ms);
+  // local function for highlightT function
+  const callSetTimeoutForUpdate = (tds, ms) =>
+    setTimeout(() => tds.forEach(el => el.classList.toggle(cUpdatedT)), ms);
 
-	const tRow = document.getElementById(tID);
+  const tRow = document.getElementById(tID);
 
-	// selecting only the td where there is text
-	const tds = [];
-	Array.from(tRow.children).forEach(field => {
-		if (field.children.length <= 0) tds.push(field);
-	});
+  // selecting only the td where there is text
+  const tds = [];
+  Array.from(tRow.children).forEach(field => {
+    if (field.children.length <= 0) tds.push(field);
+  });
 
-	callSetTimeoutForUpdate(tds, updateTTimeout);
-	callSetTimeoutForUpdate(tds, updateTTimeout2);
+  callSetTimeoutForUpdate(tds, updateTTimeout);
+  callSetTimeoutForUpdate(tds, updateTTimeout2);
 };
 
 /**
@@ -377,11 +377,11 @@ const highlightT = function (tID) {
  * @returns {string} Date string of format "Wed, 25 May 2022"
  */
 const formatDate = function (dateStr) {
-	const [weekday, month, date, year] = String(new Date(dateStr))
-		.slice(0, 16)
-		.split(' ');
+  const [weekday, month, date, year] = String(new Date(dateStr))
+    .slice(0, 16)
+    .split(' ');
 
-	return `${weekday}, ${date} ${month} ${year}`;
+  return `${weekday}, ${date} ${month} ${year}`;
 };
 
 /**
@@ -392,45 +392,45 @@ const formatDate = function (dateStr) {
  * @returns None
  */
 const displayTModal = async function (tID, endpoint) {
-	const url = `${endpoint}?id=${tID}`;
-	const res = await makeFetchRequest(url);
+  const url = `${endpoint}?id=${tID}`;
+  const res = await makeFetchRequest(url);
 
-	if (!res.date) return showError(errLoadT);
+  if (!res.date) return showError(errLoadT);
 
-	// format date in readable format
-	const formattedDate = formatDate(res.date);
+  // format date in readable format
+  const formattedDate = formatDate(res.date);
 
-	// TODO: add currency symbol here
-	// TODO: truncated desc
+  // TODO: add currency symbol here
+  // TODO: truncated desc
 
-	const typeUpper = res.type.slice(0, 1).toUpperCase() + res.type.slice(1);
+  const typeUpper = res.type.slice(0, 1).toUpperCase() + res.type.slice(1);
 
-	// map to create modal content
-	const modalContentMap = new Map([
-		['Date', formattedDate],
-		['Description', res.desc],
-		['Amount', res.amount],
-		['Mode', res.mode],
-		['Type of transaction', typeUpper],
-		['Paid to', res.paid_to],
-	]);
+  // map to create modal content
+  const modalContentMap = new Map([
+    ['Date', formattedDate],
+    ['Description', res.desc],
+    ['Amount', res.amount],
+    ['Mode', res.mode],
+    ['Type of transaction', typeUpper],
+    ['Paid to', res.paid_to],
+  ]);
 
-	// generate dom for modal content
-	let fieldContainers = '';
-	modalContentMap.forEach((value, key) => {
-		fieldContainers += `<div class="${cModalTFieldDiv}">
+  // generate dom for modal content
+  let fieldContainers = '';
+  modalContentMap.forEach((value, key) => {
+    fieldContainers += `<div class="${cModalTFieldDiv}">
 	<label class="${cModalTFieldLabel}">${key}</label>
 	<p class="${cModalTFieldValue}">${value}</p>
 	</div>`;
-	});
+  });
 
-	// attach title & modal content
-	modalContent.innerHTML =
-		`<h3 class="${cModalTitle}">${res.desc} on ${formattedDate}</h3>` +
-		fieldContainers;
+  // attach title & modal content
+  modalContent.innerHTML =
+    `<h3 class="${cModalTitle}">${res.desc} on ${formattedDate}</h3>` +
+    fieldContainers;
 
-	// display modal
-	showModal();
+  // display modal
+  showModal();
 };
 
 /**
@@ -439,15 +439,15 @@ const displayTModal = async function (tID, endpoint) {
  * @param {boolean} enable True if custom dates container is to be revealed
  */
 const enableCustomDatesContainer = function (enable) {
-	if (enable) {
-		customDatesContainer.classList.remove(cHidden);
+  if (enable) {
+    customDatesContainer.classList.remove(cHidden);
 
-		customDateStartEl.setAttribute('required', 'true');
-		customDateEndEl.setAttribute('required', 'true');
-	} else {
-		customDateStartEl.removeAttribute('required');
-		customDateEndEl.removeAttribute('required');
+    customDateStartEl.setAttribute('required', 'true');
+    customDateEndEl.setAttribute('required', 'true');
+  } else {
+    customDateStartEl.removeAttribute('required');
+    customDateEndEl.removeAttribute('required');
 
-		customDatesContainer.classList.add(cHidden);
-	}
+    customDatesContainer.classList.add(cHidden);
+  }
 };

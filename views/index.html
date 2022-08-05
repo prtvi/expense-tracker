@@ -14,7 +14,7 @@
     />
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
-      </style>
+    </style>
     <title>Expense Tracker</title>
   </head>
   <body>
@@ -163,7 +163,10 @@
       <!----------- SUMMARY CONTAINER --------------->
       <div class="summary-container">
         <!-- main summary div -->
-        <div class="main-summary">
+        <div
+          class="main-summary"
+          title="Overall summary of all transactions added"
+        >
           <div class="summary-item">
             <p class="summary-item-label">Total income:</p>
             <span class="summary-item-value t-type-income"
@@ -187,11 +190,17 @@
         </div>
 
         <!-- budget summary div -->
-        <div class="budget-summary">
+        <div class="budget-summary" title="Your monthly budget statistics">
           <div class="summary-item">
             <p class="summary-item-label">Monthly budget:</p>
-            <span class="summary-item-value t-type-income"
-              >{{ .Currency }} {{ .Budget }}</span
+            <img
+              class="icon edit-budget-icon"
+              src="/public/images/edit.png"
+              alt="edit budget icon"
+              title="Edit monthly budget"
+            />
+            <span class="summary-item-value t-type-income">
+              {{ .Currency }} {{ .Budget }}</span
             >
           </div>
 
@@ -212,11 +221,11 @@
       </div>
       <!----------- SUMMARY CONTAINER --------------->
 
-      <!----------- TRANSACTIONS CONTAINER ----------->
+      <!----------- TABLE, SHOW-RANGE & SUB-SUMMARY CONTAINER ----------->
       <div class="ts-container">
         {{ if .IfNoTransactionToView }}
 
-        <!-- no transactions div -->
+        <!-- no transactions to view div -->
         <div class="no-t-div">
           <p>No transactions found for the specified range!</p>
         </div>
@@ -253,6 +262,7 @@
                   class="icon view-icon"
                   src="/public/images/view.png"
                   alt="view icon"
+                  title="View transaction"
                 />
               </td>
               <td class="no-bg-td">
@@ -260,6 +270,7 @@
                   class="icon edit-icon"
                   src="/public/images/edit.png"
                   alt="edit icon"
+                  title="Edit transaction"
                 />
               </td>
               <td class="no-bg-td">
@@ -267,6 +278,7 @@
                   class="icon delete-icon"
                   src="/public/images/delete.png"
                   alt="delete icon"
+                  title="Delete transaction"
                 />
               </td>
             </tr>
@@ -276,7 +288,7 @@
         </div>
         <!----------- TABLE CONTAINER ----------->
 
-        <!-- show-range text container -->
+        <!--------- SHOW-RANGE CONTAINER --------->
         <div class="show-range-container">
           <p>
             Showing results from
@@ -284,6 +296,7 @@
             <strong> {{ .ShowingToDate }} </strong>
           </p>
         </div>
+        <!--------- SHOW-RANGE CONTAINER --------->
 
         <!-- end for IfNoTransactionToView -->
         {{ end }}
@@ -292,8 +305,11 @@
 
         {{ if .IfSubSummary }}
 
-        <!-- sub summary -->
-        <div class="sub-summary">
+        <!--------- SUB-SUMMARY CONTAINER ------->
+        <div
+          class="sub-summary"
+          title="Transaction summary for the range of dates shown above"
+        >
           <div class="sub-summary-item">
             <p class="sub-summary-item-label">Income:</p>
             <span class="sub-summary-item-value t-type-income"
@@ -315,6 +331,7 @@
             >
           </div>
         </div>
+        <!--------- SUB-SUMMARY CONTAINER ------->
 
         <!-- end for IfSubSummary -->
         {{ end }}
@@ -330,7 +347,7 @@
         <!-- end for IfTransactions -->
         {{ end }}
       </div>
-      <!----------- TRANSACTIONS CONTAINER ----------->
+      <!----------- TABLE, SHOW-RANGE & SUB-SUMMARY CONTAINER ----------->
 
       <!----------- SORT FORM CONTAINER ----------->
       <div class="sort-form-container">
@@ -374,9 +391,7 @@
 
               <!-- endDate -->
               <div class="sort-form-item">
-                <label
-                  class="sort-form-item-label"
-                  for="{{ .CustomDateEndID }}"
+                <label class="sort-form-item-label" for="{{ .CustomDateEndID }}"
                   >End</label
                 >
                 <input

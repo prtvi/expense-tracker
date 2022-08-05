@@ -167,6 +167,7 @@ select {
 .btn {
   width: fit-content;
   height: 75%;
+  border-width: 1px;
   border-radius: 8px;
   padding: 4px 8px 4px 8px;
 }
@@ -181,9 +182,7 @@ select {
 
 /* --------- FORM CONTAINER ----------- */
 
-
 /* --------- SUMMARY CONTAINER ----------- */
-
 
 .summary-container {
   display: flex;
@@ -227,9 +226,13 @@ select {
   float: right;
 }
 
+.edit-budget-icon {
+  margin: 5px 0 0 15px;
+}
+
 /* --------- SUMMARY CONTAINER ----------- */
 
-/* --------- TRANSACTIONS CONTAINER ----------- */
+/* --------- TABLE, SHOW-RANGE & SUB-SUMMARY CONTAINER ----------- */
 
 .ts-container {
   float: left;
@@ -240,12 +243,10 @@ select {
   text-align: center;
 }
 
-
 /* no transaction display message */
 .no-t-div {
   margin-top: 10%;
 }
-
 
 /* --------- TABLE CONTAINER ----------- */
 
@@ -280,6 +281,7 @@ table th {
 
 .bg-th {
   background-color: var(--bg-color);
+  width: 16px;
 }
 
 .no-bg-td {
@@ -292,7 +294,6 @@ table th {
 .show-range-container {
   margin: 3% 0 0 0;
 }
-
 
 /* sub summary */
 .sub-summary {
@@ -309,7 +310,7 @@ table th {
   margin: 10px;
 }
 
-/* --------- TRANSACTIONS CONTAINER ----------- */
+/* --------- TABLE, SHOW-RANGE & SUB-SUMMARY CONTAINER ----------- */
 
 /* --------- SORT FORM CONTAINER --------- */
 
