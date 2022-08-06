@@ -34,10 +34,12 @@ func Home(c echo.Context) error {
 	if view == config.ViewAll {
 		tsForView = allTs
 	} else {
-		ifSubSummary = true
-
 		tsForView = utils.GetTransactionsByDate(viewStartDate, viewEndDate, sort)
 		tsForViewSummary = utils.GetSummary(tsForView)
+
+		if len(tsForView) != 0 {
+			ifSubSummary = true
+		}
 
 		allTSummary = utils.FetchMainSummary()
 	}
@@ -46,7 +48,7 @@ func Home(c echo.Context) error {
 	formattedTransactions := utils.FormatTransactionsForView(tsForView)
 
 	// budget
-	utils.SetBudget(15000)
+	utils.SetBudget(20000)
 
 	budget := utils.EvalBudget()
 

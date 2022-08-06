@@ -110,7 +110,7 @@ body {
 .t-form-container {
   float: left;
   width: 30%;
-  height: 530px;
+  height: 600px;
   margin: 2%;
 }
 
@@ -189,7 +189,7 @@ select {
   float: left;
   width: 55%;
   height: 110px;
-  margin: 1% 2% 0 2%;
+  margin: 2%;
 }
 
 .summary-container:first-child {
@@ -232,20 +232,13 @@ select {
 
 /* --------- SUMMARY CONTAINER ----------- */
 
-/* --------- TABLE, SHOW-RANGE & SUB-SUMMARY CONTAINER ----------- */
-
-.ts-container {
-  float: left;
-  width: 60%;
-  height: 450px;
-  margin: 2%;
-  padding: 0;
-  text-align: center;
-}
-
 /* no transaction display message */
 .no-t-div {
-  margin-top: 10%;
+  text-align: center;
+  margin-top: 5%;
+  width: 60%;
+  float: right;
+  border: 1px solid red;
 }
 
 /* --------- TABLE CONTAINER ----------- */
@@ -254,7 +247,11 @@ select {
   max-height: 350px;
   /* to enable scrolling over the table */
   overflow-y: auto;
-  width: 100%;
+
+  width: 60%;
+  float: left;
+  display: block;
+  margin: 0 0 0 2%;
 }
 
 .t-table {
@@ -292,12 +289,19 @@ table th {
 
 /* show range container */
 .show-range-container {
-  margin: 3% 0 0 0;
+  display: block;
+  float: left;
+  margin: 3% 0 0 4%;
+  height: 30px;
+  width: fit-content;
 }
 
 /* sub summary */
 .sub-summary {
-  margin: 20px 0 20px 0;
+  display: block;
+  float: left;
+  margin: 0 0 0 4%;
+  height: 30px;
 }
 
 .sub-summary-item,
@@ -310,46 +314,90 @@ table th {
   margin: 10px;
 }
 
-/* --------- TABLE, SHOW-RANGE & SUB-SUMMARY CONTAINER ----------- */
-
 /* --------- SORT FORM CONTAINER --------- */
 
-.sort-form-container {
-  display: block;
-  text-align: center;
+.no-t-div + .sort-form-container {
+  width: 15%;
+  height: 150px;
+  margin: 5% auto 0 auto;
 }
 
-.sort-form-section {
+.sort-form-container {
   display: inline-block;
+  margin: 3% 0 0 5px;
   width: 15%;
-  /* to prevent: one div move downwards when side by side */
-  vertical-align: top;
+  height: 150px;
+  padding: 0 10px 0 20px;
+}
+
+.sort-form-item,
+.custom-dates-container {
+  height: 30px;
+  width: 100%;
+  margin-bottom: 3%;
+}
+
+.custom-dates-container {
+  display: flex;
 }
 
 .sort-form-item {
   display: block;
-  height: 30px;
-  margin: 0 0 3% 0;
 }
+
+
+
+
+
+/* selector for direct child */
+.custom-dates-container > .sort-form-item {
+  flex: 1;
+  display: inline;
+  height: 30px;
+}
+
+.custom-dates-container > .sort-form-item:first-child {
+  margin-right: 20px;
+}
+
+
+
 
 .sort-form-item-label {
-  margin: 0 3% 0 3%;
+  margin: 4px;
 }
+
+
+
+
 
 .sort-form-input {
+  height: 20px;
+  width: 100px;
+  margin: 4px;
   float: right;
-  width: 130px;
-  height: 25px;
+  border: none;
 }
 
-.custom-dates-container {
-  margin: 5% 0 0 0;
-  display: inline;
+
+
+/* selector for descendant */
+.custom-dates-container .sort-form-input {
+  width: 20px;
 }
+
+
+
+
+
+
+
+
 
 .btn-sort {
-  display: inline;
-  margin: 0 0 0 2%;
+  display: block;
+  height: fit-content;
+  margin: 0 auto 0 auto;
 }
 
 /* --------- SORT FORM CONTAINER --------- */

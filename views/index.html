@@ -221,211 +221,195 @@
       </div>
       <!----------- SUMMARY CONTAINER --------------->
 
-      <!----------- TABLE, SHOW-RANGE & SUB-SUMMARY CONTAINER ----------->
-      <div class="ts-container">
-        {{ if .IfNoTransactionToView }}
+      {{ if .IfNoTransactionToView }}
 
-        <!-- no transactions to view div -->
-        <div class="no-t-div">
-          <p>No transactions found for the specified range!</p>
-        </div>
-
-        <!-- else for IfNoTransactionToView -->
-        {{ else }}
-
-        <!----------- TABLE CONTAINER ----------->
-        <div class="table-container">
-          <table class="t-table">
-            <tr>
-              <th>Date</th>
-              <th style="width: 40%">Description</th>
-              <th>Amount ({{ .Currency }})</th>
-              <th class="bg-th"></th>
-              <th class="bg-th"></th>
-              <th class="bg-th"></th>
-            </tr>
-
-            {{ range .Transactions }}
-
-            <tr class="t" id="{{ .ID }}">
-              <td>{{ .Date }}</td>
-              <td>{{ .Desc }}</td>
-
-              {{ if eq .Type "income" }}
-              <td class="t-type-income">{{ .Amount }}</td>
-              {{ else }}
-              <td class="t-type-expense">{{ .Amount }}</td>
-              {{ end }}
-
-              <td class="no-bg-td">
-                <img
-                  class="icon view-icon"
-                  src="/public/images/view.png"
-                  alt="view icon"
-                  title="View transaction"
-                />
-              </td>
-              <td class="no-bg-td">
-                <img
-                  class="icon edit-icon"
-                  src="/public/images/edit.png"
-                  alt="edit icon"
-                  title="Edit transaction"
-                />
-              </td>
-              <td class="no-bg-td">
-                <img
-                  class="icon delete-icon"
-                  src="/public/images/delete.png"
-                  alt="delete icon"
-                  title="Delete transaction"
-                />
-              </td>
-            </tr>
-
-            {{ end }}
-          </table>
-        </div>
-        <!----------- TABLE CONTAINER ----------->
-
-        <!--------- SHOW-RANGE CONTAINER --------->
-        <div class="show-range-container">
-          <p>
-            Showing results from
-            <strong> {{ .ShowingFromDate }} </strong> -
-            <strong> {{ .ShowingToDate }} </strong>
-          </p>
-        </div>
-        <!--------- SHOW-RANGE CONTAINER --------->
-
-        <!-- end for IfNoTransactionToView -->
-        {{ end }}
-
-        <!-- separator -->
-
-        {{ if .IfSubSummary }}
-
-        <!--------- SUB-SUMMARY CONTAINER ------->
-        <div
-          class="sub-summary"
-          title="Transaction summary for the range of dates shown above"
-        >
-          <div class="sub-summary-item">
-            <p class="sub-summary-item-label">Income:</p>
-            <span class="sub-summary-item-value t-type-income"
-              >{{ .Currency }} {{ .SubIncome }}</span
-            >
-          </div>
-
-          <div class="sub-summary-item">
-            <p class="sub-summary-item-label">Expense:</p>
-            <span class="sub-summary-item-value t-type-expense"
-              >{{ .Currency }} {{ .SubExpense }}</span
-            >
-          </div>
-
-          <div class="sub-summary-item">
-            <p class="sub-summary-item-label">Difference:</p>
-            <span class="sub-summary-item-value {{ .SubDifferenceClass }}"
-              >{{ .Currency }} {{ .SubDifference }}</span
-            >
-          </div>
-        </div>
-        <!--------- SUB-SUMMARY CONTAINER ------->
-
-        <!-- end for IfSubSummary -->
-        {{ end }}
-
-        <!-- else for IfTransactions -->
-        {{ else }}
-
-        <!-- if 0 transactions -->
-        <div class="no-t-div">
-          <p>Come on don't be shy... add a transaction!</p>
-        </div>
-
-        <!-- end for IfTransactions -->
-        {{ end }}
+      <!-- no transactions to view div -->
+      <div class="no-t-div">
+        <p>No transactions found for the specified range!</p>
       </div>
-      <!----------- TABLE, SHOW-RANGE & SUB-SUMMARY CONTAINER ----------->
+
+      <!-- ELSE for IfNoTransactionToView -->
+      {{ else }}
+
+      <!----------- TABLE CONTAINER ----------->
+      <div class="table-container">
+        <table class="t-table">
+          <tr>
+            <th>Date</th>
+            <th style="width: 40%">Description</th>
+            <th>Amount ({{ .Currency }})</th>
+            <th class="bg-th"></th>
+            <th class="bg-th"></th>
+            <th class="bg-th"></th>
+          </tr>
+
+          {{ range .Transactions }}
+
+          <tr class="t" id="{{ .ID }}">
+            <td>{{ .Date }}</td>
+            <td>{{ .Desc }}</td>
+
+            {{ if eq .Type "income" }}
+            <td class="t-type-income">{{ .Amount }}</td>
+            {{ else }}
+            <td class="t-type-expense">{{ .Amount }}</td>
+            {{ end }}
+
+            <td class="no-bg-td">
+              <img
+                class="icon view-icon"
+                src="/public/images/view.png"
+                alt="view icon"
+                title="View transaction"
+              />
+            </td>
+            <td class="no-bg-td">
+              <img
+                class="icon edit-icon"
+                src="/public/images/edit.png"
+                alt="edit icon"
+                title="Edit transaction"
+              />
+            </td>
+            <td class="no-bg-td">
+              <img
+                class="icon delete-icon"
+                src="/public/images/delete.png"
+                alt="delete icon"
+                title="Delete transaction"
+              />
+            </td>
+          </tr>
+
+          {{ end }}
+        </table>
+      </div>
+      <!----------- TABLE CONTAINER ----------->
+
+      <!--------- SHOW-RANGE CONTAINER --------->
+      <div class="show-range-container">
+        <p>
+          Showing results from
+          <strong> {{ .ShowingFromDate }} </strong> -
+          <strong> {{ .ShowingToDate }} </strong>
+        </p>
+      </div>
+      <!--------- SHOW-RANGE CONTAINER --------->
+
+      {{ if .IfSubSummary }}
+      <!--------- SUB-SUMMARY CONTAINER ------->
+      <div class="sub-summary"
+        title="Transaction summary for the range of dates shown above"
+      >
+        <div class="sub-summary-item">
+          <p class="sub-summary-item-label">Income:</p>
+          <span class="sub-summary-item-value t-type-income"
+            >{{ .Currency }} {{ .SubIncome }}</span
+          >
+        </div>
+
+        <div class="sub-summary-item">
+          <p class="sub-summary-item-label">Expense:</p>
+          <span class="sub-summary-item-value t-type-expense"
+            >{{ .Currency }} {{ .SubExpense }}</span
+          >
+        </div>
+
+        <div class="sub-summary-item">
+          <p class="sub-summary-item-label">Difference:</p>
+          <span class="sub-summary-item-value {{ .SubDifferenceClass }}"
+            >{{ .Currency }} {{ .SubDifference }}</span
+          >
+        </div>
+      </div>
+      <!--------- SUB-SUMMARY CONTAINER ------->
+      {{ end }}
+      <!-- END for IfSubSummary -->
+
+      {{ end }}
+      <!-- END for IfNoTransactionToView -->
+
+      <!-- ELSE for IfTransactions -->
+      {{ else }}
+
+      <!-- if 0 transactions -->
+      <div class="no-t-div">
+        <p>Come on don't be shy... add a transaction!</p>
+      </div>
+
+      {{ end }}
+      <!-- END for IfTransactions -->
 
       <!----------- SORT FORM CONTAINER ----------->
       <div class="sort-form-container">
         <form id="sort-form">
-          <!-- view & custom dates container -->
-
-          <div class="sort-form-section">
-            <!-- view (select dropdown) -->
-            <div class="sort-form-item">
-              <label class="sort-form-item-label" for="{{ .ViewID }}"
-                >View</label
-              >
-              <select
-                class="sort-form-input"
-                name="{{ .ViewID }}"
-                id="{{ .ViewID }}"
-                required
-              >
-                {{ range $key, $value := .ViewOptions }}
-                <option value="{{ $key }}">{{ $value }}</option>
-                {{ end }}
-              </select>
-            </div>
-
-            <!-- custom dates container (for startDate & endDate) -->
-            <div class="custom-dates-container hidden">
-              <!-- startDate -->
-              <div class="sort-form-item">
-                <label
-                  class="sort-form-item-label"
-                  for="{{ .CustomDateStartID }}"
-                  >Start</label
-                >
-                <input
-                  class="sort-form-input"
-                  type="date"
-                  name="{{ .CustomDateStartID }}"
-                  id="{{ .CustomDateStartID }}"
-                />
-              </div>
-
-              <!-- endDate -->
-              <div class="sort-form-item">
-                <label class="sort-form-item-label" for="{{ .CustomDateEndID }}"
-                  >End</label
-                >
-                <input
-                  class="sort-form-input"
-                  type="date"
-                  name="{{ .CustomDateEndID }}"
-                  id="{{ .CustomDateEndID }}"
-                />
-              </div>
-            </div>
-            <!-- custom dates container -->
+          <!-- view (select dropdown) -->
+          <div class="sort-form-item">
+            <label class="sort-form-item-label" for="{{ .ViewID }}"
+              >View</label
+            >
+            <select
+              class="sort-form-input"
+              name="{{ .ViewID }}"
+              id="{{ .ViewID }}"
+              required
+            >
+              {{ range $key, $value := .ViewOptions }}
+              <option value="{{ $key }}">{{ $value }}</option>
+              {{ end }}
+            </select>
           </div>
 
-          <!-- Sort (asc/des) (select dropdown) -->
-          <div class="sort-form-section">
+          <!-- custom dates container (for startDate & endDate) -->
+          <div class="custom-dates-container hidden">
+            <!-- startDate -->
             <div class="sort-form-item">
-              <label for="{{ .SortID }}" class="sort-form-item-label"
-                >Sort</label
+              <label
+                class="sort-form-item-label"
+                for="{{ .CustomDateStartID }}"
+                >Start</label
               >
-              <select
+              <input
                 class="sort-form-input"
-                name="{{ .SortID }}"
-                id="{{ .SortID }}"
-                required
-              >
-                <option value="{{ .SortAscID }}" id="{{ .SortAscID }}">
-                  Oldest first
-                </option>
-
-                <option value="{{ .SortDesID }}" id="{{ .SortDesID }}">
-                  Newest first
-                </option>
-              </select>
+                type="date"
+                name="{{ .CustomDateStartID }}"
+                id="{{ .CustomDateStartID }}"
+              />
             </div>
+
+            <!-- endDate -->
+            <div class="sort-form-item">
+              <label class="sort-form-item-label" for="{{ .CustomDateEndID }}"
+                >End</label
+              >
+              <input
+                class="sort-form-input"
+                type="date"
+                name="{{ .CustomDateEndID }}"
+                id="{{ .CustomDateEndID }}"
+              />
+            </div>
+          </div>
+
+          <!-- sort (asc/des) (select dropdown) -->
+          <div class="sort-form-item">
+            <label for="{{ .SortID }}" class="sort-form-item-label"
+              >Sort</label
+            >
+            <select
+              class="sort-form-input"
+              name="{{ .SortID }}"
+              id="{{ .SortID }}"
+              required
+            >
+              <option value="{{ .SortAscID }}" id="{{ .SortAscID }}">
+                Oldest first
+              </option>
+
+              <option value="{{ .SortDesID }}" id="{{ .SortDesID }}">
+                Newest first
+              </option>
+            </select>
           </div>
 
           <button class="btn btn-sort" type="submit">SORT</button>
