@@ -102,7 +102,7 @@ func EvalBudget() model.Budget {
 	// get the month begin & end date for quering the transactions between that month
 	monthBeginDate, monthEndDate := FirstAndLastDayOfMonth(budgetObj.Year, budgetObj.Month, time.Local)
 	monthEndDate = LastSecondOfTheDay(monthEndDate)
-	
+
 	// get transactions for that month
 	transactionsThisMonth := GetTransactionsByDate(monthBeginDate, monthEndDate, config.SortAscID)
 

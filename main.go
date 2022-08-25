@@ -17,6 +17,8 @@ func main() {
 	e.Static("/public", "public")
 
 	e.GET("/", routes.Home, middleware.Logger, middleware.Sort)
+
+	// routes for javascript to make requests
 	e.GET("/get", routes.ReturnT, middleware.Logger)
 	e.GET("/add", routes.AddT, middleware.Logger)
 	e.GET("/edit", routes.EditT, middleware.Logger)

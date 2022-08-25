@@ -11,6 +11,23 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// Create a model.Summary object for given transactions
+func GetSummary(ts []model.Transaction) model.Summary {
+	var summary model.Summary
+
+	for _, transaction := range ts {
+		if transaction.Type == config.TypeIncomeID {
+			summary.TotalBalance += transaction.Amount
+			summary.TotalIncome += transaction.Amount
+		} else {
+			summary.TotalBalance -= transaction.Amount
+			summary.TotalExpense += transaction.Amount
+		}
+	}
+
+	return summary
+}
+
 // loops over all transactions and returns a model.Summary object with transaction summary
 
 func UpdateMainSummary(allTransactions []model.Transaction) model.Summary {
@@ -20,9 +37,9 @@ func UpdateMainSummary(allTransactions []model.Transaction) model.Summary {
 	filter := bson.M{}
 	update := bson.M{
 		"$set": bson.D{
-			{Key: "income", Value: summary.Income},
-			{Key: "expense", Value: summary.Expense},
-			{Key: "balance", Value: summary.Balance},
+			{Key: "total_income", Value: summary.TotalIncome},
+			{Key: "total_expense", Value: summary.TotalExpense},
+			{Key: "total_balance", Value: summary.TotalBalance},
 		},
 	}
 	upsert := true

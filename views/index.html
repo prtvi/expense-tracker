@@ -2,425 +2,525 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/public/css/global.css" />
-    <link
-      rel="shortcut icon"
-      href="/public/images/icon.png"
-      type="image/x-icon"
-    />
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
-    </style>
-    <title>Expense Tracker</title>
-  </head>
-  <body>
-    <main class="main-container">
-      <!----------- MODAL CONTAINER ----------->
-      <div class="modal">
-        <!-- modal-whole-page -->
-        <div class="modal-container">
-          <span class="close-modal-span">&times;</span>
-          <div class="modal-content">
-            <h3 class="modal-title">Title</h3>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/public/css/global.css" />
+		<link
+			rel="shortcut icon"
+			href="/public/images/icon.png"
+			type="image/x-icon"
+		/>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+		</style>
+		<title>Expense Tracker</title>
+	</head>
+	<body>
+		<main>
+			<div class="main-container">
+				<!-- MODAL -->
+				<div class="modal">
+					<!-- modal-whole-page -->
+					<div class="modal-container">
+						<span class="close-modal-span">&times;</span>
+						<div class="modal-content">
+							<h3 class="modal-title">Title</h3>
 
-            <div class="modal-t-field-div">
-              <label class="modal-t-field-label">Date</label>
-              <p class="modal-t-field-value">Fri, 13 May 2022</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!----------- MODAL CONTAINER ----------->
+							<div class="modal-t-field-div">
+								<label class="modal-t-field-label">Date</label>
+								<p class="modal-t-field-value">Fri, 13 May 2022</p>
+							</div>
+						</div>
+					</div>
+				</div>
 
-      <!----------- FORM CONTAINER ----------->
-      <div class="t-form-container">
-        <h2 class="t-form-heading">Add expense</h2>
+				<!-- NAVBAR -->
+				<nav class="navbar">
+					<ul class="navbar-list">
+						<li class="navbar-item">
+							<button class="navbar-link active" data-nav-link="add">
+								Add
+							</button>
+						</li>
 
-        <form id="t-form">
-          <!-- (1) Date -->
-          <div class="t-form-item">
-            <label class="t-form-item-label" for="{{ .DateID }}">Date</label>
-            <input
-              class="t-form-input"
-              type="date"
-              name="{{ .DateID }}"
-              id="{{ .DateID }}"
-              required
-            />
-          </div>
+						<li class="navbar-item">
+							<button class="navbar-link" data-nav-link="report">Report</button>
+						</li>
 
-          <!-- (2) Description -->
-          <div class="t-form-item">
-            <label class="t-form-item-label" for="{{ .DescID }}"
-              >Description</label
-            >
-            <input
-              class="t-form-input"
-              type="text"
-              name="{{ .DescID }}"
-              id="{{ .DescID }}"
-              placeholder="Add description"
-              minlength="1"
-              maxlength="25"
-              required
-            />
-          </div>
+						<li class="navbar-item">
+							<button class="navbar-link" data-nav-link="settings">
+								Settings
+							</button>
+						</li>
+					</ul>
+				</nav>
 
-          <!-- (3) Amount -->
-          <div class="t-form-item">
-            <label class="t-form-item-label" for="{{ .AmountID }}"
-              >Amount ({{ .Currency }})</label
-            >
-            <input
-              class="t-form-input"
-              type="number"
-              name="{{ .AmountID }}"
-              id="{{ .AmountID }}"
-              placeholder="Enter amount"
-              required
-            />
-          </div>
+				<!-- ADD TRANSACTION -->
+				<article class="add active" data-page="add">
+					<header>
+						<h2 class="h2 article-title t-form-heading">Add transaction</h2>
+					</header>
 
-          <!-- (4) Mode of payment -->
-          <div class="t-form-item">
-            <label class="t-form-item-label" for="{{ .ModeID }}">Mode</label>
-            <select
-              class="t-form-input"
-              name="{{ .ModeID }}"
-              id="{{ .ModeID }}"
-              required
-            >
-              {{ range .Modes }}
-              <option value="{{ . }}">{{ . }}</option>
-              {{ end }}
-            </select>
-          </div>
+					<!----------- FORM CONTAINER ----------->
+					<div class="article-content t-form-container">
+						<form id="t-form">
+							<!-- (1) Date -->
+							<div class="form-item">
+								<label class="form-item-label" for="{{ .DateID }}">Date</label>
+								<input
+									class="form-input"
+									type="date"
+									name="{{ .DateID }}"
+									id="{{ .DateID }}"
+									required
+								/>
+							</div>
 
-          <!-- (5) Transaction type -->
-          <div class="t-form-item">
-            <label class="t-form-item-label">Type of transaction</label>
-            <div class="t-form-input">
-              <div>
-                <input
-                  type="radio"
-                  name="{{ .TypeInputGroupName }}"
-                  id="{{ .TypeIncomeID }}"
-                  value="{{ .TypeIncomeID }}"
-                  required
-                />
-                <label for="{{ .TypeIncomeID }}">Income</label>
-              </div>
+							<!-- (2) Description -->
+							<div class="form-item">
+								<label class="form-item-label" for="{{ .DescID }}"
+									>Description</label
+								>
+								<input
+									class="form-input"
+									type="text"
+									name="{{ .DescID }}"
+									id="{{ .DescID }}"
+									placeholder="Add description"
+									minlength="1"
+									maxlength="100"
+									required
+								/>
+							</div>
 
-              <div>
-                <input
-                  type="radio"
-                  name="{{ .TypeInputGroupName }}"
-                  id="{{ .TypeExpenseID }}"
-                  value="{{ .TypeExpenseID }}"
-                  required
-                />
-                <label for="{{ .TypeExpenseID }}">Expense</label>
-              </div>
-            </div>
-          </div>
+							<!-- (3) Amount -->
+							<div class="form-item">
+								<label class="form-item-label" for="{{ .AmountID }}"
+									>Amount ({{ .Currency }})</label
+								>
+								<input
+									class="form-input"
+									type="number"
+									name="{{ .AmountID }}"
+									id="{{ .AmountID }}"
+									placeholder="Enter amount"
+									required
+								/>
+							</div>
 
-          <!-- (6) Paid to -->
-          <div class="t-form-item">
-            <label class="t-form-item-label" for="{{ .PaidToID }}"
-              >Paid to</label
-            >
-            <input
-              class="t-form-input"
-              type="text"
-              name="{{ .PaidToID }}"
-              id="{{ .PaidToID }}"
-              placeholder="Paid to"
-              minlength="1"
-              maxlength="20"
-              required
-            />
-          </div>
+							<!-- (4) Mode of payment -->
+							<div class="form-item">
+								<label class="form-item-label" for="{{ .ModeID }}">Mode</label>
+								<select
+									class="form-input"
+									name="{{ .ModeID }}"
+									id="{{ .ModeID }}"
+									required
+								>
+									{{ range .Modes }}
+									<option value="{{ . }}">{{ . }}</option>
+									{{ end }}
+								</select>
+							</div>
 
-          <div class="t-form-item error-div hidden">
-            <p class="error-text"></p>
-          </div>
+							<!-- (5) Transaction type -->
+							<div class="form-item">
+								<label class="form-item-label">Type of transaction</label>
+								<div class="form-input">
+									<div class="radio-option">
+										<input
+											type="radio"
+											name="{{ .TypeInputGroupName }}"
+											id="{{ .TypeIncomeID }}"
+											value="{{ .TypeIncomeID }}"
+											required
+										/>
+										<label for="{{ .TypeIncomeID }}">Income</label>
+									</div>
 
-          <!-- Buttons -->
-          <div class="t-form-item t-btns-div">
-            <button class="btn btn-add" type="submit">Add transaction</button>
-            <button class="btn btn-clear" type="reset">Clear all</button>
-          </div>
-        </form>
-      </div>
-      <!----------- FORM CONTAINER ----------->
+									<div class="radio-option">
+										<input
+											type="radio"
+											name="{{ .TypeInputGroupName }}"
+											id="{{ .TypeExpenseID }}"
+											value="{{ .TypeExpenseID }}"
+											required
+										/>
+										<label for="{{ .TypeExpenseID }}">Expense</label>
+									</div>
+								</div>
+							</div>
 
-      {{ if .IfTransactions }}
+							<!-- (6) Paid to -->
+							<div class="form-item">
+								<label class="form-item-label" for="{{ .PaidToID }}"
+									>Paid to</label
+								>
+								<input
+									class="form-input"
+									type="text"
+									name="{{ .PaidToID }}"
+									id="{{ .PaidToID }}"
+									placeholder="Paid to"
+									minlength="1"
+									maxlength="25"
+									required
+								/>
+							</div>
 
-      <!----------- SUMMARY CONTAINER --------------->
-      <div class="summary-container">
-        <!-- main summary div -->
-        <div
-          class="main-summary"
-          title="Overall summary of all transactions added"
-        >
-          <div class="summary-item">
-            <p class="summary-item-label">Total income:</p>
-            <span class="summary-item-value t-type-income"
-              >{{ .Currency }} {{ .Income }}</span
-            >
-          </div>
+							<div class="form-item error-div hidden">
+								<p class="error-text"></p>
+							</div>
 
-          <div class="summary-item">
-            <p class="summary-item-label">Total expense:</p>
-            <span class="summary-item-value t-type-expense"
-              >{{ .Currency }} {{ .Expense }}</span
-            >
-          </div>
+							<!-- Buttons -->
+							<div class="form-item t-btns-div">
+								<button class="btn btn-add" type="submit">
+									Add transaction
+								</button>
 
-          <div class="summary-item">
-            <p class="summary-item-label">Current balance:</p>
-            <span class="summary-item-value {{ .SummaryBalanceClass }}"
-              >{{ .Currency }} {{ .Balance }}</span
-            >
-          </div>
-        </div>
+								<button class="btn btn-clear" type="reset">Clear all</button>
+							</div>
+						</form>
+					</div>
+				</article>
 
-        <!-- budget summary div -->
-        <div class="budget-summary" title="Your monthly budget statistics">
-          <div class="summary-item">
-            <p class="summary-item-label">Monthly budget:</p>
-            <img
-              class="icon edit-budget-icon"
-              src="/public/images/edit.png"
-              alt="edit budget icon"
-              title="Edit monthly budget"
-            />
-            <span class="summary-item-value t-type-income">
-              {{ .Currency }} {{ .Budget }}</span
-            >
-          </div>
+				<!-- REPORT -->
+				<article class="report" data-page="report">
+					<header>
+						<h2 class="h2 article-title">Report</h2>
+					</header>
+					<!----------- REPORT CONTAINER ----------->
 
-          <div class="summary-item">
-            <p class="summary-item-label">Spent:</p>
-            <span class="summary-item-value t-type-expense"
-              >{{ .Currency }} {{ .Spent }}</span
-            >
-          </div>
+					<div class="article-content report-container">
+						<!----------- SORT FORM CONTAINER ----------->
+						<div class="sort-form-container">
+							<form id="sort-form">
+								<!-- view (select dropdown) -->
+								<div class="sort-form-item">
+									<label class="sort-form-item-label" for="{{ .ViewID }}"
+										>View</label
+									>
+									<select
+										class="sort-form-input"
+										name="{{ .ViewID }}"
+										id="{{ .ViewID }}"
+										required
+									>
+										{{ range $key, $value := .ViewOptions }}
+										<option value="{{ $key }}">{{ $value }}</option>
+										{{ end }}
+									</select>
+								</div>
 
-          <div class="summary-item">
-            <p class="summary-item-label">Remaining:</p>
-            <span class="summary-item-value {{ .BudgetRemainingClass }}"
-              >{{ .Currency }} {{ .Remaining }}</span
-            >
-          </div>
-        </div>
-      </div>
-      <!----------- SUMMARY CONTAINER --------------->
+								<!-- sort (asc/des) (select dropdown) -->
+								<div class="sort-form-item">
+									<label for="{{ .SortID }}" class="sort-form-item-label"
+										>Sort</label
+									>
+									<select
+										class="sort-form-input"
+										name="{{ .SortID }}"
+										id="{{ .SortID }}"
+										required
+									>
+										<option value="{{ .SortAscID }}" id="{{ .SortAscID }}">
+											Oldest first
+										</option>
 
-      {{ if .IfNoTransactionToView }}
+										<option value="{{ .SortDesID }}" id="{{ .SortDesID }}">
+											Newest first
+										</option>
+									</select>
+								</div>
 
-      <!-- no transactions to view div -->
-      <div class="no-t-div">
-        <p>No transactions found for the specified range!</p>
-      </div>
+								<!-- custom dates container (for startDate & endDate) -->
+								<div class="custom-dates-container hidden">
+									<!-- startDate -->
+									<div class="sort-form-item">
+										<label
+											class="sort-form-item-label"
+											for="{{ .CustomDateStartID }}"
+											>Start</label
+										>
+										<input
+											class="sort-form-input"
+											type="date"
+											name="{{ .CustomDateStartID }}"
+											id="{{ .CustomDateStartID }}"
+										/>
+									</div>
 
-      <!-- ELSE for IfNoTransactionToView -->
-      {{ else }}
+									<!-- endDate -->
+									<div class="sort-form-item">
+										<label
+											class="sort-form-item-label"
+											for="{{ .CustomDateEndID }}"
+											>End</label
+										>
+										<input
+											class="sort-form-input"
+											type="date"
+											name="{{ .CustomDateEndID }}"
+											id="{{ .CustomDateEndID }}"
+										/>
+									</div>
+								</div>
 
-      <!----------- TABLE CONTAINER ----------->
-      <div class="table-container">
-        <table class="t-table">
-          <tr>
-            <th>Date</th>
-            <th style="width: 40%">Description</th>
-            <th>Amount ({{ .Currency }})</th>
-            <th class="bg-th"></th>
-            <th class="bg-th"></th>
-            <th class="bg-th"></th>
-          </tr>
+								<button class="btn btn-sort" type="submit">SORT</button>
+							</form>
+						</div>
 
-          {{ range .Transactions }}
+						<!----------- SUMMARY CONTAINER --------------->
+						<div class="summary-container">
+							<!-- main summary div -->
+							<div
+								class="main-summary"
+								title="Overall summary of all transactions added"
+							>
+								<div class="summary-item">
+									<p class="summary-item-label">Total income:</p>
+									<span class="summary-item-value t-type-income"
+										>{{ .Currency }} {{ .Income }}</span
+									>
+								</div>
 
-          <tr class="t" id="{{ .ID }}">
-            <td>{{ .Date }}</td>
-            <td>{{ .Desc }}</td>
+								<div class="summary-item">
+									<p class="summary-item-label">Total expense:</p>
+									<span class="summary-item-value t-type-expense"
+										>{{ .Currency }} {{ .Expense }}</span
+									>
+								</div>
 
-            {{ if eq .Type "income" }}
-            <td class="t-type-income">{{ .Amount }}</td>
-            {{ else }}
-            <td class="t-type-expense">{{ .Amount }}</td>
-            {{ end }}
+								<div class="summary-item">
+									<p class="summary-item-label">Current balance:</p>
+									<span class="summary-item-value {{ .SummaryBalanceClass }}"
+										>{{ .Currency }} {{ .Balance }}</span
+									>
+								</div>
+							</div>
 
-            <td class="no-bg-td">
-              <img
-                class="icon view-icon"
-                src="/public/images/view.png"
-                alt="view icon"
-                title="View transaction"
-              />
-            </td>
-            <td class="no-bg-td">
-              <img
-                class="icon edit-icon"
-                src="/public/images/edit.png"
-                alt="edit icon"
-                title="Edit transaction"
-              />
-            </td>
-            <td class="no-bg-td">
-              <img
-                class="icon delete-icon"
-                src="/public/images/delete.png"
-                alt="delete icon"
-                title="Delete transaction"
-              />
-            </td>
-          </tr>
+							<!-- budget summary div -->
+							<div
+								class="budget-summary"
+								title="Your monthly budget statistics"
+							>
+								<div class="summary-item">
+									<p class="summary-item-label">Monthly budget:</p>
+									<span class="summary-item-value">
+										{{ .Currency }} {{ .Budget }}</span
+									>
+								</div>
 
-          {{ end }}
-        </table>
-      </div>
-      <!----------- TABLE CONTAINER ----------->
+								<div class="summary-item">
+									<p class="summary-item-label">Spent:</p>
+									<span class="summary-item-value t-type-expense"
+										>{{ .Currency }} {{ .Spent }}</span
+									>
+								</div>
 
-      <!--------- SHOW-RANGE CONTAINER --------->
-      <div class="show-range-container">
-        <p>
-          Showing results from
-          <strong> {{ .ShowingFromDate }} </strong> -
-          <strong> {{ .ShowingToDate }} </strong>
-        </p>
-      </div>
-      <!--------- SHOW-RANGE CONTAINER --------->
+								<div class="summary-item">
+									<p class="summary-item-label">Remaining:</p>
+									<span class="summary-item-value {{ .BudgetRemainingClass }}"
+										>{{ .Currency }} {{ .Remaining }}</span
+									>
+								</div>
+							</div>
+						</div>
 
-      {{ if .IfSubSummary }}
-      <!--------- SUB-SUMMARY CONTAINER ------->
-      <div class="sub-summary"
-        title="Transaction summary for the range of dates shown above"
-      >
-        <div class="sub-summary-item">
-          <p class="sub-summary-item-label">Income:</p>
-          <span class="sub-summary-item-value t-type-income"
-            >{{ .Currency }} {{ .SubIncome }}</span
-          >
-        </div>
+						<!--  -->
+						{{ if .IfNoTransactionToView }}
 
-        <div class="sub-summary-item">
-          <p class="sub-summary-item-label">Expense:</p>
-          <span class="sub-summary-item-value t-type-expense"
-            >{{ .Currency }} {{ .SubExpense }}</span
-          >
-        </div>
+						<!-- no transactions to view div -->
+						<div class="no-t-div">
+							<p>No transactions found for the specified range!</p>
+						</div>
 
-        <div class="sub-summary-item">
-          <p class="sub-summary-item-label">Difference:</p>
-          <span class="sub-summary-item-value {{ .SubDifferenceClass }}"
-            >{{ .Currency }} {{ .SubDifference }}</span
-          >
-        </div>
-      </div>
-      <!--------- SUB-SUMMARY CONTAINER ------->
-      {{ end }}
-      <!-- END for IfSubSummary -->
+						<!-- ELSE for IfNoTransactionToView -->
+						{{ else }}
 
-      {{ end }}
-      <!-- END for IfNoTransactionToView -->
+						<!----------- TABLE CONTAINER ----------->
+						<div class="table-container">
+							<table class="t-table">
+								<tr>
+									<th>Date</th>
+									<th style="width: 40%">Description</th>
+									<th>Amount ({{ .Currency }})</th>
+									<th class="bg-th"></th>
+									<th class="bg-th"></th>
+									<th class="bg-th"></th>
+								</tr>
 
-      <!-- ELSE for IfTransactions -->
-      {{ else }}
+								{{ range .Transactions }}
 
-      <!-- if 0 transactions -->
-      <div class="no-t-div">
-        <p>Come on don't be shy... add a transaction!</p>
-      </div>
+								<tr class="t" id="{{ .ID }}">
+									<td>{{ .Date }}</td>
+									<td>{{ .Desc }}</td>
 
-      {{ end }}
-      <!-- END for IfTransactions -->
+									{{ if eq .Type "income" }}
+									<td class="t-type-income">{{ .Amount }}</td>
+									{{ else }}
+									<td class="t-type-expense">{{ .Amount }}</td>
+									{{ end }}
 
-      <!----------- SORT FORM CONTAINER ----------->
-      <div class="sort-form-container">
-        <form id="sort-form">
-          <!-- view (select dropdown) -->
-          <div class="sort-form-item">
-            <label class="sort-form-item-label" for="{{ .ViewID }}"
-              >View</label
-            >
-            <select
-              class="sort-form-input"
-              name="{{ .ViewID }}"
-              id="{{ .ViewID }}"
-              required
-            >
-              {{ range $key, $value := .ViewOptions }}
-              <option value="{{ $key }}">{{ $value }}</option>
-              {{ end }}
-            </select>
-          </div>
+									<td class="no-bg-td">
+										<img
+											class="icon view-icon"
+											src="/public/images/view.png"
+											alt="view icon"
+											title="View transaction"
+										/>
+									</td>
+									<td class="no-bg-td">
+										<img
+											class="icon edit-icon"
+											src="/public/images/edit.png"
+											alt="edit icon"
+											title="Edit transaction"
+										/>
+									</td>
+									<td class="no-bg-td">
+										<img
+											class="icon delete-icon"
+											src="/public/images/delete.png"
+											alt="delete icon"
+											title="Delete transaction"
+										/>
+									</td>
+								</tr>
 
-          <!-- custom dates container (for startDate & endDate) -->
-          <div class="custom-dates-container hidden">
-            <!-- startDate -->
-            <div class="sort-form-item">
-              <label
-                class="sort-form-item-label"
-                for="{{ .CustomDateStartID }}"
-                >Start</label
-              >
-              <input
-                class="sort-form-input"
-                type="date"
-                name="{{ .CustomDateStartID }}"
-                id="{{ .CustomDateStartID }}"
-              />
-            </div>
+								{{ end }}
+							</table>
+						</div>
 
-            <!-- endDate -->
-            <div class="sort-form-item">
-              <label class="sort-form-item-label" for="{{ .CustomDateEndID }}"
-                >End</label
-              >
-              <input
-                class="sort-form-input"
-                type="date"
-                name="{{ .CustomDateEndID }}"
-                id="{{ .CustomDateEndID }}"
-              />
-            </div>
-          </div>
+						{{ if .IfSubSummary }}
+						<!--------- SUB-SUMMARY CONTAINER ------->
+						<div
+							class="sub-summary"
+							title="Transaction summary for the range of dates shown above"
+						>
+							<div class="sub-summary-item">
+								<p class="sub-summary-item-label">Income:</p>
+								<span class="sub-summary-item-value t-type-income"
+									>{{ .Currency }} {{ .SubIncome }}</span
+								>
+							</div>
 
-          <!-- sort (asc/des) (select dropdown) -->
-          <div class="sort-form-item">
-            <label for="{{ .SortID }}" class="sort-form-item-label"
-              >Sort</label
-            >
-            <select
-              class="sort-form-input"
-              name="{{ .SortID }}"
-              id="{{ .SortID }}"
-              required
-            >
-              <option value="{{ .SortAscID }}" id="{{ .SortAscID }}">
-                Oldest first
-              </option>
+							<div class="sub-summary-item">
+								<p class="sub-summary-item-label">Expense:</p>
+								<span class="sub-summary-item-value t-type-expense"
+									>{{ .Currency }} {{ .SubExpense }}</span
+								>
+							</div>
 
-              <option value="{{ .SortDesID }}" id="{{ .SortDesID }}">
-                Newest first
-              </option>
-            </select>
-          </div>
+							<div class="sub-summary-item">
+								<p class="sub-summary-item-label">Difference:</p>
+								<span class="sub-summary-item-value {{ .SubDifferenceClass }}"
+									>{{ .Currency }} {{ .SubDifference }}</span
+								>
+							</div>
+						</div>
+						{{ end }}
 
-          <button class="btn btn-sort" type="submit">SORT</button>
-        </form>
-      </div>
-      <!----------- SORT FORM CONTAINER ----------->
-    </main>
+						<!-- END for IfNoTransactionToView -->
+						{{ end }}
 
-    <script src="/public/js/init.js"></script>
-    <script src="/public/js/handlers.js"></script>
-  </body>
+						<!--------- SHOW-RANGE CONTAINER --------->
+						<div class="show-range-container hidden">
+							<p>
+								Showing results from
+								<strong> {{ .ShowingFromDate }} </strong> -
+								<strong> {{ .ShowingToDate }} </strong>
+							</p>
+						</div>
+
+						<!-- TODO -->
+						<div class="no-t-div hidden">
+							<p>Come on! Don't be shy, add a transaction</p>
+						</div>
+					</div>
+				</article>
+
+				<!-- SETTINGS -->
+				<article class="settings" data-page="settings">
+					<header>
+						<h2 class="h2 article-title">Settings</h2>
+					</header>
+
+					<!-- SETTINGS FORM CONTAINER -->
+					<div class="article-content settings-form-container">
+						<form id="set-form">
+							<!-- 0 Username -->
+							<div class="form-item">
+								<label class="form-item-label" for="username">Username</label>
+								<input
+									class="form-input"
+									type="text"
+									name="username"
+									id="username"
+									placeholder="Enter your username"
+									required
+								/>
+							</div>
+
+							<!-- 1 Currency -->
+							<div class="form-item">
+								<label class="form-item-label" for="currency"
+									>Currency (symbol)</label
+								>
+								<input
+									class="form-input"
+									type="text"
+									name="currency"
+									id="currency"
+									value="₹"
+									placeholder="Currency"
+									required
+								/>
+							</div>
+
+							<!-- 2 Modes -->
+							<div class="form-item">
+								<label class="form-item-label" for="modes_of_payment"
+									>Modes of payment</label
+								>
+								<input
+									class="form-input"
+									type="text"
+									name="modes_of_payment"
+									id="modes_of_payment"
+									placeholder="Enter your mode of transactions - comma separated (eg. PhonePe,Cash,Google Pay,Bhim UPI)"
+									required
+								/>
+							</div>
+
+							<!-- 2 Monthly budget -->
+							<div class="form-item">
+								<label class="form-item-label" for="budget"
+									>Monthly budget</label
+								>
+								<input
+									class="form-input"
+									type="number"
+									name="budget"
+									id="budget"
+									placeholder="Enter your monthly budget"
+									required
+								/>
+							</div>
+
+							<button class="btn btn-set" type="submit">Save</button>
+						</form>
+					</div>
+				</article>
+			</div>
+		</main>
+
+		<script src="/public/js/config.js"></script>
+		<script src="/public/js/functions.js"></script>
+		<script src="/public/js/handlers.js"></script>
+	</body>
 </html>
 
 {{ end }}

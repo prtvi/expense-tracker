@@ -137,23 +137,6 @@ func DateStringToDateObj(dateStr string, insert bool) time.Time {
 	return time.Date(year, month, day, 0, 0, 0, 0, time.Local)
 }
 
-// Create a model.Summary object for given transactions
-func GetSummary(ts []model.Transaction) model.Summary {
-	var summary model.Summary
-
-	for _, transaction := range ts {
-		if transaction.Type == config.TypeIncomeID {
-			summary.Balance += transaction.Amount
-			summary.Income += transaction.Amount
-		} else {
-			summary.Balance -= transaction.Amount
-			summary.Expense += transaction.Amount
-		}
-	}
-
-	return summary
-}
-
 func GetNewestAndOldestTDates() (time.Time, time.Time, error) {
 	// for oldest
 	findOptions := options.Find()

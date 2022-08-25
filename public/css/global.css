@@ -1,453 +1,701 @@
-* {
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
+:root {
+	--bg-color: #0d1116;
+	--text-color: #c9d1d9;
+	--bg-color-table: #040b10;
+
+	--color-income: #39d353;
+	--color-expense: #e16637;
+
+	--color-error: #f26524;
+	--color-error-text: #000;
+
+	--black-a: rgba(0, 0, 0, 0.4);
+	--black: #000;
+	--white: #fff;
+	--red: #ff0000;
+
+	--modal-bg-color: #fefefe;
+	--modal-border: #888;
+	--modal-close: #aaa;
+
+	/* ---------------------------------------------
+      colors
+    --------------------------------------------- */
+
+	/* gradients */
+
+	--border-gradient-onyx: linear-gradient(
+		to bottom right,
+		hsl(0, 0%, 25%) 0%,
+		hsla(0, 0%, 25%, 0) 50%
+	);
+	--text-gradient-yellow: linear-gradient(
+		to right,
+		hsl(45, 100%, 72%),
+		hsl(35, 100%, 68%)
+	);
+
+	/* solids */
+
+	--jet: hsl(0, 0%, 22%);
+	--onyx: hsl(240, 1%, 17%);
+	--eerie-black-1: hsl(240, 2%, 13%);
+	--eerie-black-2: hsl(240, 2%, 12%);
+	--smoky-black: hsl(0, 0%, 7%);
+	--white-1: hsl(0, 0%, 100%);
+	--white-2: hsl(0, 0%, 98%);
+	--orange-yellow-crayola: hsl(45, 100%, 72%);
+	--vegas-gold: hsl(45, 54%, 58%);
+	--light-gray: hsl(0, 0%, 84%);
+	--light-gray-70: hsla(0, 0%, 84%, 0.7);
+	--bittersweet-shimmer: hsl(0, 43%, 51%);
+
+	/* 
+      typography
+    */
+
+	/* font-family */
+
+	--ff-poppins: 'Poppins', sans-serif;
+
+	/* font-size */
+
+	--fs-1: 24px;
+	--fs-2: 18px;
+	--fs-3: 17px;
+	--fs-4: 16px;
+	--fs-5: 15px;
+	--fs-6: 14px;
+	--fs-7: 13px;
+	--fs-8: 11px;
+
+	/* font-weight */
+
+	--fw-300: 300;
+	--fw-400: 400;
+	--fw-500: 500;
+	--fw-600: 600;
+
+	/*
+      shadow
+    */
+
+	--shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.25);
+	--shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.25);
+
+	/*
+      transition
+    */
+
+	--transition-1: 0.25s ease;
 }
 
-:root {
-  --bg-color: #0d1116;
-  --text-color: #c9d1d9;
-  --bg-color-table: #040b10;
+/* RESET */
 
-  --color-income: #39d353;
-  --color-expense: #e16637;
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	font-family: var(--ff-poppins);
+	box-sizing: border-box;
+}
 
-  --color-error: #f26524;
-  --color-error-text: #000;
+a {
+	text-decoration: none;
+}
 
-  --black-a: rgba(0, 0, 0, 0.4);
-  --black: #000;
-  --white: #fff;
-  --red: #ff0000;
+li {
+	list-style: none;
+}
 
-  --modal-bg-color: #fefefe;
-  --modal-border: #888;
-  --modal-close: #aaa;
+img,
+a,
+button,
+time,
+span {
+	display: block;
+}
+
+button {
+	font: inherit;
+	background: none;
+	border: none;
+	text-align: left;
+	cursor: pointer;
+}
+
+input,
+textarea {
+	display: block;
+	width: 100%;
+	/* background: none; */
+	font: inherit;
+}
+
+::selection {
+	background: var(--orange-yellow-crayola);
+	color: var(--smoky-black);
+}
+
+:focus {
+	outline-color: var(--orange-yellow-crayola);
+}
+
+html {
+	font-family: var(--ff-poppins);
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+	background: var(--bg-color);
+	color: var(--text-color);
 }
+
+/* REUSED STYLE */
+
+article {
+	background: var(--eerie-black-2);
+	border: 1px solid var(--jet);
+	border-radius: 20px;
+	padding: 15px;
+	box-shadow: var(--shadow-1);
+	z-index: 1;
+	display: none;
+}
+
+article.active {
+	display: block;
+	animation: fade 0.5s ease backwards;
+}
+
+@keyframes fade {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.h2,
+h3 {
+	color: var(--white-2);
+	text-transform: capitalize;
+}
+
+.h2 {
+	font-size: var(--fs-1);
+}
+
+.h3 {
+	font-size: var(--fs-2);
+}
+
+.article-title {
+	position: relative;
+	padding-bottom: 7px;
+}
+
+.article-title::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 30px;
+	height: 3px;
+	background: var(--text-gradient-yellow);
+	border-radius: 3px;
+}
+
+main {
+	margin: 15px 12px;
+	margin-bottom: 75px;
+	min-width: 259px;
+}
+
+/* --------- MODAL CONTAINER ----------- */
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 2;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: var(--black);
+	background-color: var(--black-a);
+}
+
+/* to only contain the cross for closing the modal */
+.modal-container {
+	background-color: var(--modal-bg-color);
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid var(--modal-border);
+	border-radius: 5px;
+	width: 35%;
+}
+
+.close-modal-span {
+	color: var(--modal-close);
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close-modal-span:hover,
+.close-modal-span:focus {
+	color: var(--bg-color);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* main container for changing and holding content inside the modal */
+.modal-content {
+	color: var(--bg-color);
+}
+
+/* dynamic */
+.modal-title {
+	margin: 0 2% 5% 0;
+}
+
+.modal-t-field-div {
+	margin: 1% 5% 1% 5%;
+}
+
+.modal-t-field-label {
+	color: var(--modal-border);
+}
+
+.modal-t-field-value {
+	display: inline;
+	float: right;
+	color: var(--bg-color);
+}
+/* dynamic */
+
+/* --------- MODAL CONTAINER ----------- */
+
+/* --------- NAVBAR --------- */
+
+.navbar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background: hsla(240, 1%, 17%, 0.75);
+	backdrop-filter: blur(10px);
+	border: 1px solid var(--jet);
+	border-radius: 12px 12px 0 0;
+	box-shadow: var(--shadow-2);
+	z-index: 5;
+}
+
+.navbar-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	padding: 0 10px;
+}
+
+.navbar-link {
+	color: var(--light-gray);
+	font-size: var(--fs-8);
+	padding: 20px 7px;
+	transition: color var(--transition-1);
+}
+
+.navbar-link:hover,
+.navbar-link:focus {
+	color: var(--light-gray-70);
+}
+
+.navbar-link.active {
+	color: var(--orange-yellow-crayola);
+}
+
+/* --------- NAVBAR --------- */
 
 /* t = transaction, globally over all class names */
 
 /* --------- MAIN CONTAINER ----------- */
 
 .main-container {
-  height: 700px;
-  padding: 3% 6% 4% 6%;
+	padding: 1% 5% 1% 5%;
 }
 
-/* --------- MODAL CONTAINER ----------- */
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 2;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: var(--black);
-  background-color: var(--black-a);
+.article-content {
+	height: 600px;
+	margin: 2%;
+	margin-top: 30px;
 }
 
-/* to only contain the cross for closing the modal */
-.modal-container {
-  background-color: var(--modal-bg-color);
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid var(--modal-border);
-  border-radius: 5px;
-  width: 35%;
+/* --------- ADD PAGE ----------- */
+
+.add .article-title {
+	margin-bottom: 15px;
 }
 
-.close-modal-span {
-  color: var(--modal-close);
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+.form-item {
+	display: block;
+	margin: 3% 0 5% 0;
+	height: 50px;
 }
 
-.close-modal-span:hover,
-.close-modal-span:focus {
-  color: var(--bg-color);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* main container for changing and holding content inside the modal */
-.modal-content {
-  color: var(--bg-color);
-}
-
-/* dynamic */
-.modal-title {
-  margin: 0 2% 5% 0;
-}
-
-.modal-t-field-div {
-  margin: 1% 5% 1% 5%;
-}
-
-.modal-t-field-label {
-  color: var(--modal-border);
-}
-
-.modal-t-field-value {
-  display: inline;
-  float: right;
-  color: var(--bg-color);
-}
-/* dynamic */
-
-/* --------- MODAL CONTAINER ----------- */
-
-/* --------- FORM CONTAINER ----------- */
-
-.t-form-container {
-  float: left;
-  width: 30%;
-  height: 600px;
-  margin: 2%;
-}
-
-.t-form-heading {
-  padding-bottom: 5%;
-}
-
-.t-form-item {
-  display: block;
-  margin: 3% 0 3% 0;
-  height: 50px;
-}
-
-.t-form-item-label {
-  font-size: 1.1rem;
-  padding: 0 2% 0 2%;
+.form-item-label {
+	font-size: 1.1rem;
+	padding: 0 2% 0 2%;
 }
 
 /* to make "select" element the same width as other form elements */
 input,
 select {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
 
-.t-form-input {
-  float: right;
-  width: 40%;
-  height: 30px;
+.form-input {
+	float: right;
+	width: 40%;
+	height: 30px;
+}
+
+/* specific designs for radio input */
+
+.form-item-radio {
+	height: 60px;
+}
+
+.radio-option {
+	height: 30px;
+}
+
+.radio-option input {
+	display: inline-block;
+	width: fit-content;
+	height: 30px;
+	vertical-align: middle;
+}
+
+.radio-option label {
+	margin-left: 5px;
 }
 
 /* error on insert/update */
 
 .error-div {
-  background-color: var(--color-error);
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  border-radius: 5px;
+	background-color: var(--color-error);
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	border-radius: 5px;
 }
 
 .error-text {
-  color: var(--color-error-text);
+	color: var(--color-error-text);
 }
 
 .t-btns-div {
-  margin-top: 10%;
-  text-align: center;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 100%;
+	margin: 40px auto 0 auto;
+	justify-content: center;
 }
 
 /* btns */
 
 .btn {
-  width: fit-content;
-  height: 75%;
-  border-width: 1px;
-  border-radius: 8px;
-  padding: 4px 8px 4px 8px;
+	text-align: center;
+	height: 75%;
+	border-width: 1px;
+	border-radius: 8px;
+	padding: 4px 8px 4px 8px;
+	margin-left: 10px;
+	width: 40%;
+	color: var(--orange-yellow-crayola);
+	background: var(--border-gradient-onyx);
+	box-shadow: var(--shadow-2);
+	transition: var(--transition-1);
 }
 
 .btn:hover {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .btn:active {
-  transform: translateY(2px);
+	transform: translateY(2px);
 }
 
-/* --------- FORM CONTAINER ----------- */
+/* --------- ADD PAGE ----------- */
+
+/* --------- REPORT PAGE --------- */
+
+.report .article-title {
+	margin-bottom: 15px;
+}
+
+/* --------- SORT FORM CONTAINER --------- */
+
+.sort-form-container {
+	display: inline-block;
+	width: 100%;
+	height: 90px;
+	margin-bottom: 10px;
+}
+
+.no-t-div + .sort-form-container {
+	width: 15%;
+	height: 150px;
+	margin: 5% auto 0 auto;
+}
+
+.sort-form-item,
+.custom-dates-container {
+	float: left;
+	height: 30px;
+	width: 50%;
+	padding: 0 20px 0 20px;
+	margin-bottom: 3%;
+}
+
+.custom-dates-container {
+	display: flex;
+	width: 50%;
+	padding: 0;
+}
+
+/* selector for direct child */
+.custom-dates-container > .sort-form-item {
+	flex: 1;
+	display: inline;
+	height: 30px;
+}
+
+.sort-form-item-label {
+	margin: 4px;
+}
+
+.sort-form-input {
+	height: 20px;
+	width: 100px;
+	margin: 4px;
+	float: right;
+	border: none;
+}
+
+/* selector for descendant */
+.custom-dates-container .sort-form-input {
+	width: 20px;
+}
+
+.btn-sort {
+	display: block;
+	height: fit-content;
+	width: fit-content;
+	margin: 0 auto 0 auto;
+	font-size: var(--fs-6);
+}
+
+/* --------- SORT FORM CONTAINER --------- */
 
 /* --------- SUMMARY CONTAINER ----------- */
 
 .summary-container {
-  display: flex;
-  float: left;
-  width: 55%;
-  height: 110px;
-  margin: 2%;
-}
-
-.summary-container:first-child {
-  margin-right: 10px;
+	display: flex;
+	justify-content: center;
+	float: left;
+	width: 100%;
+	height: 100px;
+	padding-top: 2px;
+	margin-bottom: 20px;
 }
 
 .main-summary,
 .budget-summary {
-  flex: 1;
-  float: left;
-  width: 40%;
-  height: 98px;
-  border: 1px solid var(--color-income);
-  border-radius: 10px;
-  margin: 0 2% 0 2%;
+	flex: 1;
+	float: left;
+	width: 45%;
+	height: fit-content;
+	border: 1px solid var(--color-income);
+	border-radius: 10px;
+	margin: 0 5px 0 5px;
+	overflow: auto;
 }
 
 .summary-item {
-  display: block;
-  font-size: 1.1rem;
-  height: 33.33px;
-  transform: scale(0.9);
+	display: block;
+	font-size: var(--fs-6);
+	height: 30px;
+}
+
+.summary-item:first-child {
+	margin-top: 4px;
 }
 
 .summary-item-label {
-  margin-left: 10px;
-  display: inline;
-  float: left;
+	margin-left: 10px;
+	display: inline;
+	float: left;
 }
 
 .summary-item-value {
-  margin-right: 10px;
-  display: inline;
-  float: right;
+	margin-right: 10px;
+	display: inline;
+	float: right;
 }
 
 .edit-budget-icon {
-  margin: 5px 0 0 15px;
+	margin: 5px 0 0 15px;
 }
 
 /* --------- SUMMARY CONTAINER ----------- */
 
 /* no transaction display message */
 .no-t-div {
-  text-align: center;
-  margin-top: 5%;
-  width: 60%;
-  float: right;
-  border: 1px solid red;
+	text-align: center;
+	margin-top: 5%;
+	width: 60%;
+	float: right;
+	border: 1px solid red;
 }
 
 /* --------- TABLE CONTAINER ----------- */
 
 .table-container {
-  max-height: 350px;
-  /* to enable scrolling over the table */
-  overflow-y: auto;
-
-  width: 60%;
-  float: left;
-  display: block;
-  margin: 0 0 0 2%;
+	max-height: 250px;
+	/* to enable scrolling over the table */
+	overflow-y: auto;
+	width: 100%;
+	float: left;
+	display: block;
+	font-size: var(--fs-7);
+	margin-bottom: 8%;
 }
 
 .t-table {
-  margin: 0 auto 0 auto;
-  width: 100%;
+	margin: 0 auto 0 auto;
+	width: 100%;
 }
 
 th,
 td {
-  padding: 8px;
-  text-align: center;
-  border-radius: 4px;
-  background-color: var(--bg-color-table);
+	padding: 8px;
+	text-align: center;
+	border-radius: 4px;
+	background-color: var(--eerie-black-1);
+	overflow: hidden;
 }
 
 /* to make table headers sticky on scroll */
 table th {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background-color: var(--bg-color-table);
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: var(--eerie-black-1);
 }
 
 .bg-th {
-  background-color: var(--bg-color);
-  width: 16px;
+	background-color: var(--eerie-black-2);
+	width: 16px;
 }
 
 .no-bg-td {
-  background: none;
+	background: none;
 }
 
 /* --------- TABLE CONTAINER ----------- */
 
 /* show range container */
 .show-range-container {
-  display: block;
-  float: left;
-  margin: 3% 0 0 4%;
-  height: 30px;
-  width: fit-content;
+	display: block;
+	float: left;
+	margin: 3% 0 0 4%;
+	height: 30px;
+	width: fit-content;
 }
 
 /* sub summary */
 .sub-summary {
-  display: block;
-  float: left;
-  margin: 0 0 0 4%;
-  height: 30px;
+	display: block;
+	float: left;
+	margin: 0 0 0 4%;
+	height: 30px;
 }
 
 .sub-summary-item,
 .sub-summary-item-label,
 .sub-summary-item-value {
-  display: inline;
+	display: inline;
 }
 
 .sub-summary-item {
-  margin: 10px;
+	margin: 10px;
 }
 
-/* --------- SORT FORM CONTAINER --------- */
+/* --------- SETTINGS CONTAINER ----------- */
 
-.no-t-div + .sort-form-container {
-  width: 15%;
-  height: 150px;
-  margin: 5% auto 0 auto;
+.settings .article-title {
+	margin-bottom: 15px;
 }
 
-.sort-form-container {
-  display: inline-block;
-  margin: 3% 0 0 5px;
-  width: 15%;
-  height: 150px;
-  padding: 0 10px 0 20px;
+.btn-set {
+	margin: 0 auto 0 auto;
 }
 
-.sort-form-item,
-.custom-dates-container {
-  height: 30px;
-  width: 100%;
-  margin-bottom: 3%;
-}
-
-.custom-dates-container {
-  display: flex;
-}
-
-.sort-form-item {
-  display: block;
-}
-
-
-
-
-
-/* selector for direct child */
-.custom-dates-container > .sort-form-item {
-  flex: 1;
-  display: inline;
-  height: 30px;
-}
-
-.custom-dates-container > .sort-form-item:first-child {
-  margin-right: 20px;
-}
-
-
-
-
-.sort-form-item-label {
-  margin: 4px;
-}
-
-
-
-
-
-.sort-form-input {
-  height: 20px;
-  width: 100px;
-  margin: 4px;
-  float: right;
-  border: none;
-}
-
-
-
-/* selector for descendant */
-.custom-dates-container .sort-form-input {
-  width: 20px;
-}
-
-
-
-
-
-
-
-
-
-.btn-sort {
-  display: block;
-  height: fit-content;
-  margin: 0 auto 0 auto;
-}
-
-/* --------- SORT FORM CONTAINER --------- */
-
-/* --------- MAIN CONTAINER ----------- */
+/* --------- SETTINGS CONTAINER ----------- */
 
 /* --------- PSEUDO CLASSES ----------- */
 
 .t {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 /* to display transaction type with color */
 .t-type-income {
-  color: var(--color-income);
+	color: var(--color-income);
 }
 
 .t-type-expense {
-  color: var(--color-expense);
+	color: var(--color-expense);
 }
 
 .hidden {
-  display: none;
+	display: none;
 }
 
 /* pseudo class for updated t */
 .updated-t {
-  background-color: var(--white);
-  opacity: 0.8;
-  color: var(--bg-color);
+	background-color: var(--white);
+	opacity: 0.8;
+	color: var(--bg-color);
 }
 
 /* for deletion */
 .strike {
-  color: var(--red);
+	color: var(--red);
 }
 
 .strike-text {
-  color: var(--text-color);
+	color: var(--text-color);
 }
 
 /* icons */
 .icon:hover {
-  cursor: pointer;
-  transform: scale(1.2);
+	cursor: pointer;
+	transform: scale(1.2);
 }
 
 .icon:active {
-  cursor: pointer;
-  transform: translateY(2px);
+	cursor: pointer;
+	transform: translateY(2px);
 }
 
 /* --------- PSEUDO CLASSES ----------- */

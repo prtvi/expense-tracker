@@ -75,10 +75,10 @@ func Home(c echo.Context) error {
 		"IfTransactions": IfTransactions,
 
 		// main summary
-		"Income":              allTSummary.Income,
-		"Expense":             allTSummary.Expense,
-		"Balance":             allTSummary.Balance,
-		"SummaryBalanceClass": utils.GetClassNameByValue(allTSummary.Balance),
+		"Income":              allTSummary.TotalIncome,
+		"Expense":             allTSummary.TotalExpense,
+		"Balance":             allTSummary.TotalBalance,
+		"SummaryBalanceClass": utils.GetClassNameByValue(allTSummary.TotalBalance),
 
 		// budget
 		"Budget":               budget.Budget,
@@ -96,10 +96,10 @@ func Home(c echo.Context) error {
 
 		// sub-summary (for filtered transactions)
 		"IfSubSummary":       ifSubSummary,
-		"SubIncome":          tsForViewSummary.Income,
-		"SubExpense":         tsForViewSummary.Expense,
-		"SubDifference":      tsForViewSummary.Balance,
-		"SubDifferenceClass": utils.GetClassNameByValue(tsForViewSummary.Balance),
+		"SubIncome":          tsForViewSummary.TotalIncome,
+		"SubExpense":         tsForViewSummary.TotalExpense,
+		"SubDifference":      tsForViewSummary.TotalBalance,
+		"SubDifferenceClass": utils.GetClassNameByValue(tsForViewSummary.TotalBalance),
 
 		// sort-form options
 		"ViewID":            config.ViewID,
