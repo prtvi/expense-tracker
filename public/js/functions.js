@@ -24,7 +24,7 @@
 	mode ? (modeEl.value = 'PhonePe') : (modeEl.value = 'Google Pay');
 
 	type ? (typeIncomeEl.checked = true) : (typeExpenseEl.checked = true);
-})();
+});
 
 // const toggleElement = ele => ele.classList.toggle(cActive);
 const showModal = () => (modal.style.display = 'block');

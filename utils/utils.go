@@ -2,7 +2,6 @@ package utils
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -14,32 +13,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-// convert primitive.M to model.Transaction object
-
-func BsonDocToTransaction(doc bson.M) model.Transaction {
-	var transaction model.Transaction
-	docByte, _ := json.Marshal(doc)
-	json.Unmarshal(docByte, &transaction)
-
-	return transaction
-}
-
-func BsonDocToSummary(doc bson.M) model.Summary {
-	var summary model.Summary
-	docByte, _ := json.Marshal(doc)
-	json.Unmarshal(docByte, &summary)
-
-	return summary
-}
-
-func BsonDocToBudget(doc bson.M) model.Budget {
-	var budget model.Budget
-	docByte, _ := json.Marshal(doc)
-	json.Unmarshal(docByte, &budget)
-
-	return budget
-}
 
 // constructor for generating model.ResponseMessage objects
 
@@ -67,48 +40,6 @@ func FormatDateWords(d time.Time) string {
 // date object to date string with format: Wed, 25 May 2022
 func FormatDateLong(d time.Time) string {
 	return d.Format(time.RFC1123Z)[0:config.FORMAT_DATE_STR_LEN_LONG]
-}
-
-// converts a single transaction from model.Transaction to model.TransactionFormatted (not for view, to be loaded on t-form)
-func FormatTransaction(t model.Transaction) model.TransactionFormatted {
-	// date object to format: 2022-05-25
-	return model.TransactionFormatted{
-		ID:     t.ID,
-		Date:   FormatDateShort(t.Date),
-		Desc:   t.Desc,
-		Amount: t.Amount,
-		Mode:   t.Mode,
-		Type:   t.Type,
-		PaidTo: t.PaidTo,
-	}
-}
-
-// formats a single transaction for view, model.Transaction to model.TransactionFormatted (format for view)
-// truncate desc text to MAX_DESC_LEN & format date to format: Wed, 25 May
-// to view only on table
-func FormatTransactionForView(t model.Transaction) model.TransactionFormatted {
-	T := FormatTransaction(t)
-
-	// 1. format date to format into: Wed, 25 May
-	T.Date = FormatDateWords(t.Date)
-
-	// 2. truncating desc text
-	if len(t.Desc) > config.MAX_DESC_LEN {
-		T.Desc = t.Desc[0:config.MAX_DESC_LEN] + "..."
-	}
-
-	return T
-}
-
-// specifically for "/get" route, to format an array of model.Transaction to array of model.TransactionFormatted, format for view
-func FormatTransactionsForView(allTransactions []model.Transaction) []model.TransactionFormatted {
-	formattedTransactions := make([]model.TransactionFormatted, len(allTransactions))
-
-	for i, t := range allTransactions {
-		formattedTransactions[i] = FormatTransactionForView(t)
-	}
-
-	return formattedTransactions
 }
 
 // convert 2022-05-30 string to date obj

@@ -25,7 +25,6 @@ func Home(c echo.Context) error {
 	var tsForView []model.Transaction
 	var tsForViewSummary model.Summary
 
-	IfTransactions := (utils.CountTransactions() != 0)
 	ifSubSummary := false
 
 	allTs := utils.GetAllTransactions(sort)
@@ -48,12 +47,14 @@ func Home(c echo.Context) error {
 	formattedTransactions := utils.FormatTransactionsForView(tsForView)
 
 	// budget
-	utils.SetBudget(20000)
-
 	budget := utils.EvalBudget()
 
+	// modes and currency
+	Currency, Modes := utils.GetCurrencyAndModesOfPayment()
+
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
-		// element ids
+		// ADD page
+
 		// t-form
 		"DateID":             config.DateID,             // 1
 		"DescID":             config.DescID,             // 2
@@ -63,36 +64,49 @@ func Home(c echo.Context) error {
 		"PaidToID":           config.PaidToID,           // 6
 
 		// t-form "mode" (4) input values & text
-		"Modes": config.Modes,
+		"Modes": Modes,
 
 		// t-form "type" (5) ids & values
 		"TypeIncomeID":  config.TypeIncomeID,
 		"TypeExpenseID": config.TypeExpenseID,
 
-		"Currency": "₹",
+		"Currency": Currency,
 
-		// is true if there are 0 transactions in the entire db
-		"IfTransactions": IfTransactions,
+		//
+		//
+
+		// REPORT page
+
+		// sort-form options
+		"ViewID":      config.ViewID,
+		"ViewOptions": config.ViewOptions,
+
+		// type select for asc/des sort
+		"SortID":    config.Sort,
+		"SortAscID": config.SortAscID,
+		"SortDesID": config.SortDesID,
+
+		// custom dates container
+		"CustomDateStartID": config.CustomDateStartID,
+		"CustomDateEndID":   config.CustomDateEndID,
 
 		// main summary
-		"Income":              allTSummary.TotalIncome,
-		"Expense":             allTSummary.TotalExpense,
-		"Balance":             allTSummary.TotalBalance,
+		"TotalIncome":         allTSummary.TotalIncome,
+		"TotalExpense":        allTSummary.TotalExpense,
+		"TotalBalance":        allTSummary.TotalBalance,
 		"SummaryBalanceClass": utils.GetClassNameByValue(allTSummary.TotalBalance),
 
-		// budget
+		// budget summary
 		"Budget":               budget.Budget,
 		"Spent":                budget.Spent,
 		"Remaining":            budget.Remaining,
 		"BudgetRemainingClass": utils.GetClassNameByValue(budget.Remaining),
 
-		// transactions to show
+		// if no transactions to show
 		"IfNoTransactionToView": len(tsForView) == 0,
-		"Transactions":          formattedTransactions,
 
-		// for filtered, dates
-		"ShowingFromDate": utils.FormatDateLong(viewStartDate),
-		"ShowingToDate":   utils.FormatDateLong(viewEndDate),
+		// table
+		"Transactions": formattedTransactions,
 
 		// sub-summary (for filtered transactions)
 		"IfSubSummary":       ifSubSummary,
@@ -101,15 +115,16 @@ func Home(c echo.Context) error {
 		"SubDifference":      tsForViewSummary.TotalBalance,
 		"SubDifferenceClass": utils.GetClassNameByValue(tsForViewSummary.TotalBalance),
 
-		// sort-form options
-		"ViewID":            config.ViewID,
-		"ViewOptions":       config.ViewOptions,
-		"CustomDateStartID": config.CustomDateStartID,
-		"CustomDateEndID":   config.CustomDateEndID,
+		// for show range container - filtered, dates
+		"ShowingFromDate": utils.FormatDateLong(viewStartDate),
+		"ShowingToDate":   utils.FormatDateLong(viewEndDate),
 
-		// type select for asc/des sort
-		"SortID":    config.Sort,
-		"SortAscID": config.SortAscID,
-		"SortDesID": config.SortDesID,
+		//
+		//
+
+		// SETTINGS page
+		"CurrencyID":       config.CurrencyID,
+		"ModesOfPaymentID": config.ModesOfPaymentID,
+		"MonthlyBudgetID":  config.MonthlyBudgetID,
 	})
 }

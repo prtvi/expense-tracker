@@ -57,7 +57,7 @@
 					</ul>
 				</nav>
 
-				<!-- ADD TRANSACTION -->
+				<!-- ADD PAGE -->
 				<article class="add active" data-page="add">
 					<header>
 						<h2 class="h2 article-title t-form-heading">Add transaction</h2>
@@ -186,7 +186,7 @@
 					</div>
 				</article>
 
-				<!-- REPORT -->
+				<!-- REPORT PAGE -->
 				<article class="report" data-page="report">
 					<header>
 						<h2 class="h2 article-title">Report</h2>
@@ -282,21 +282,21 @@
 								<div class="summary-item">
 									<p class="summary-item-label">Total income:</p>
 									<span class="summary-item-value t-type-income"
-										>{{ .Currency }} {{ .Income }}</span
+										>{{ .Currency }} {{ .TotalIncome }}</span
 									>
 								</div>
 
 								<div class="summary-item">
 									<p class="summary-item-label">Total expense:</p>
 									<span class="summary-item-value t-type-expense"
-										>{{ .Currency }} {{ .Expense }}</span
+										>{{ .Currency }} {{ .TotalExpense }}</span
 									>
 								</div>
 
 								<div class="summary-item">
 									<p class="summary-item-label">Current balance:</p>
 									<span class="summary-item-value {{ .SummaryBalanceClass }}"
-										>{{ .Currency }} {{ .Balance }}</span
+										>{{ .Currency }} {{ .TotalBalance }}</span
 									>
 								</div>
 							</div>
@@ -442,7 +442,7 @@
 					</div>
 				</article>
 
-				<!-- SETTINGS -->
+				<!-- SETTINGS PAGE -->
 				<article class="settings" data-page="settings">
 					<header>
 						<h2 class="h2 article-title">Settings</h2>
@@ -451,29 +451,16 @@
 					<!-- SETTINGS FORM CONTAINER -->
 					<div class="article-content settings-form-container">
 						<form id="set-form">
-							<!-- 0 Username -->
-							<div class="form-item">
-								<label class="form-item-label" for="username">Username</label>
-								<input
-									class="form-input"
-									type="text"
-									name="username"
-									id="username"
-									placeholder="Enter your username"
-									required
-								/>
-							</div>
-
 							<!-- 1 Currency -->
 							<div class="form-item">
-								<label class="form-item-label" for="currency"
+								<label class="form-item-label" for="{{ .CurrencyID }}"
 									>Currency (symbol)</label
 								>
 								<input
 									class="form-input"
 									type="text"
-									name="currency"
-									id="currency"
+									name="{{ .CurrencyID }}"
+									id="{{ .CurrencyID }}"
 									value="₹"
 									placeholder="Currency"
 									required
@@ -482,29 +469,29 @@
 
 							<!-- 2 Modes -->
 							<div class="form-item">
-								<label class="form-item-label" for="modes_of_payment"
+								<label class="form-item-label" for="{{ .ModesOfPaymentID }}"
 									>Modes of payment</label
 								>
 								<input
 									class="form-input"
 									type="text"
-									name="modes_of_payment"
-									id="modes_of_payment"
-									placeholder="Enter your mode of transactions - comma separated (eg. PhonePe,Cash,Google Pay,Bhim UPI)"
+									name="{{ .ModesOfPaymentID }}"
+									id="{{ .ModesOfPaymentID }}"
+									placeholder="Enter comma separated (eg. PhonePe,Cash,Google Pay,Bhim UPI)"
 									required
 								/>
 							</div>
 
-							<!-- 2 Monthly budget -->
+							<!-- 3 Monthly budget -->
 							<div class="form-item">
-								<label class="form-item-label" for="budget"
+								<label class="form-item-label" for="{{ .MonthlyBudgetID }}"
 									>Monthly budget</label
 								>
 								<input
 									class="form-input"
 									type="number"
-									name="budget"
-									id="budget"
+									name="{{ .MonthlyBudgetID }}"
+									id="{{ .MonthlyBudgetID }}"
 									placeholder="Enter your monthly budget"
 									required
 								/>

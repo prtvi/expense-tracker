@@ -33,5 +33,7 @@ func EstablishConnection() {
 
 	Budget = *client.Database(os.Getenv("DB_NAME")).Collection(os.Getenv("BUDGET"))
 
+	Settings = *client.Database(os.Getenv("DB_NAME")).Collection(os.Getenv("SETTINGS"))
+
 	fmt.Println("Database connected")
 }

@@ -59,6 +59,7 @@ const sortFormEL = function (e) {
 	- submit form by adding the form params into url rather than making a request to "/" route
 	- this is done to use sort middleware rather than making a get request to a route and waiting for content to arrive on that route
 	- here the middleware picks the request params from the url and renders the page using only "/" route
+    - the middleware is added to avoid another route and to keep the user at the home page
 	*/
 	e.preventDefault();
 	window.location.href = generateQueryUrl(sortForm, HOME_ENDPOINT);
@@ -73,7 +74,7 @@ const viewEL = function (e) {
 
 const sortParamsAndPageLoader = function (e) {
 	const currPage = sessionStorage.getItem(currentPage);
-	switchPage(currPage);
+	if (currPage) switchPage(currPage);
 
 	// on sort-form submission preserve the sort option and display the same
 	const sortParams = new URLSearchParams(window.location.search);
@@ -115,6 +116,11 @@ const navbarEL = function () {
 	sessionStorage.setItem(currentPage, this.dataset.navLink.trim());
 };
 
+const settingsFormEL = function (e) {
+	e.preventDefault();
+	sendFormData(this, SETTINGS_ENDPOINT);
+};
+
 // modal close event handlers
 window.addEventListener('click', hideModalOnClick);
 window.addEventListener('keydown', hideModalOnKeydown);
@@ -143,3 +149,6 @@ customDateStartEl.addEventListener('input', () =>
 
 // to switch pages
 navigationLinks.forEach(navLink => navLink.addEventListener('click', navbarEL));
+
+// settings form EL
+settingsForm.addEventListener('submit', settingsFormEL);

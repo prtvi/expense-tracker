@@ -6,6 +6,7 @@ import "go.mongodb.org/mongo-driver/mongo"
 var Transactions mongo.Collection
 var Summary mongo.Collection
 var Budget mongo.Collection
+var Settings mongo.Collection
 
 // for date formatting
 const MAX_DESC_LEN = 20
@@ -32,9 +33,6 @@ const ModeID = "mode"             // 4. mode-of-t              (type select drop
 const TypeInputGroupName = "type" // 5. t-type, income|expense (type radio group)
 const PaidToID = "paid_to"        // 6. amount paid to         (type text)
 
-// t-form "mode" (4) input values & text
-var Modes = []string{"PhonePe", "Google Pay", "Cash", "PayTM", "Card"}
-
 // t-form "type" (5) ids & values
 // if changed, then gotta change the value for line with content "{{ if eq .Type "income" }}" in index.html
 const TypeIncomeID = "income"
@@ -57,7 +55,6 @@ const ViewThisMonth = "4"
 const ViewLastMonth = "5"
 
 // for when view element is chosen as "custom"
-
 const ViewCustom = "6"
 
 const CustomDateStartID = "date_start"
@@ -87,3 +84,9 @@ var ViewOptions map[string]string = map[string]string{
 	ViewLastMonth:  "Last month",
 	ViewCustom:     "Custom",
 }
+
+// settings page
+
+const CurrencyID = "currency"
+const ModesOfPaymentID = "modes_of_payment"
+const MonthlyBudgetID = "monthly_budget"

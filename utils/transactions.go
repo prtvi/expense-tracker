@@ -2,6 +2,7 @@ package utils
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
@@ -14,6 +15,58 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+// convert primitive.M to model.Transaction object
+
+func BsonDocToTransaction(doc bson.M) model.Transaction {
+	var transaction model.Transaction
+	docByte, _ := json.Marshal(doc)
+	json.Unmarshal(docByte, &transaction)
+
+	return transaction
+}
+
+// converts a single transaction from model.Transaction to model.TransactionFormatted (not for view, to be loaded on t-form)
+func FormatTransaction(t model.Transaction) model.TransactionFormatted {
+	// date object to format: 2022-05-25
+	return model.TransactionFormatted{
+		ID:     t.ID,
+		Date:   FormatDateShort(t.Date),
+		Desc:   t.Desc,
+		Amount: t.Amount,
+		Mode:   t.Mode,
+		Type:   t.Type,
+		PaidTo: t.PaidTo,
+	}
+}
+
+// formats a single transaction for view, model.Transaction to model.TransactionFormatted (format for view)
+// truncate desc text to MAX_DESC_LEN & format date to format: Wed, 25 May
+// to view only on table
+func FormatTransactionForView(t model.Transaction) model.TransactionFormatted {
+	T := FormatTransaction(t)
+
+	// 1. format date to format into: Wed, 25 May
+	T.Date = FormatDateWords(t.Date)
+
+	// 2. truncating desc text
+	if len(t.Desc) > config.MAX_DESC_LEN {
+		T.Desc = t.Desc[0:config.MAX_DESC_LEN] + "..."
+	}
+
+	return T
+}
+
+// specifically for "/get" route, to format an array of model.Transaction to array of model.TransactionFormatted, format for view
+func FormatTransactionsForView(allTransactions []model.Transaction) []model.TransactionFormatted {
+	formattedTransactions := make([]model.TransactionFormatted, len(allTransactions))
+
+	for i, t := range allTransactions {
+		formattedTransactions[i] = FormatTransactionForView(t)
+	}
+
+	return formattedTransactions
+}
 
 // create a new transaction (primitive.D) document from request url data
 

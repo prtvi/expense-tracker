@@ -2,6 +2,7 @@ package utils
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -12,6 +13,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+func BsonDocToBudget(doc bson.M) model.Budget {
+	var budget model.Budget
+	docByte, _ := json.Marshal(doc)
+	json.Unmarshal(docByte, &budget)
+
+	return budget
+}
 
 // to set budget on the first go, else to update the budget value
 func SetBudget(budgetToBeSet float32) error {

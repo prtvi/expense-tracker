@@ -2,6 +2,7 @@ package utils
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	config "prtvi/expense-tracker/config"
@@ -10,6 +11,14 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+func BsonDocToSummary(doc bson.M) model.Summary {
+	var summary model.Summary
+	docByte, _ := json.Marshal(doc)
+	json.Unmarshal(docByte, &summary)
+
+	return summary
+}
 
 // Create a model.Summary object for given transactions
 func GetSummary(ts []model.Transaction) model.Summary {

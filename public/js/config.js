@@ -58,6 +58,8 @@ const errText = document.querySelector('.error-text');
 
 let currEditTID = '';
 
+const table = document.querySelector('.t-table');
+
 //
 //
 //
@@ -104,7 +106,17 @@ const sortDesEl = document.getElementById(sortDesID);
 
 const sortBtn = document.querySelector('.btn-sort');
 
-const table = document.querySelector('.t-table');
+//
+//
+//
+
+// settings page
+const currencyID = 'currency';
+const modesOfPaymentID = 'modes';
+const monthlyBudgetID = 'monthly_budget';
+
+const settingsForm = document.getElementById('set-form');
+const setBtn = document.querySelector('.btn-set');
 
 //
 //
@@ -113,8 +125,14 @@ const table = document.querySelector('.t-table');
 // CONFIG variables
 // endpoints
 
-const [HOME_ENDPOINT, GET_ENDPOINT, ADD_ENDPOINT, EDIT_ENDPOINT, DEL_ENDPOINT] =
-	['/', '/get', '/add', '/edit', '/del'];
+const [
+	HOME_ENDPOINT,
+	GET_ENDPOINT,
+	ADD_ENDPOINT,
+	EDIT_ENDPOINT,
+	DEL_ENDPOINT,
+	SETTINGS_ENDPOINT,
+] = ['/', '/get', '/add', '/edit', '/del', '/settings'];
 
 // session storage keys
 // to preserve the curr page on reload
