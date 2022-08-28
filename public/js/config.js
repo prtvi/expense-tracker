@@ -6,14 +6,27 @@
 // main dom elements
 
 // modal
-const modal = document.querySelector('.modal');
-const modalContent = document.querySelector('.modal-content');
-const modalClose = document.querySelector('.close-modal-span');
+const modalContainer = document.querySelector('.modal-container');
+const modalCloseBtn = document.querySelector('.modal-close-btn');
+const overlay = document.querySelector('.overlay');
+
+// modal variables
+const modalTitle = document.querySelector('.modal-title');
+const modalDate = document.querySelector('.modal-date');
+const modalTextContainer = document.querySelector('.modal-text-container');
+
+//
+//
+//
 
 // navbar
 const navigationLinks = document.querySelectorAll('[data-nav-link]');
 const pages = document.querySelectorAll('[data-page]');
-const pageNames = ['add', 'report', 'settings'];
+
+// page names
+const addPage = 'add';
+const reportPage = 'report';
+const settingsPage = 'settings';
 
 //
 //
@@ -52,9 +65,11 @@ const typeExpenseEl = document.getElementById(typeExpenseID);
 const submitBtn = document.querySelector('.btn-add');
 const clearBtn = document.querySelector('.btn-clear');
 
-// error on form submission
-const errDiv = document.querySelector('.error-div');
-const errText = document.querySelector('.error-text');
+// error on form submissions
+
+const errDivAddPage = document.querySelector('.error-add-page');
+const errDivReportPage = document.querySelector('.error-report-page');
+const errDivSettingsPage = document.querySelector('.error-settings-page');
 
 let currEditTID = '';
 
@@ -151,9 +166,9 @@ const cTTypeExpense = 't-type-expense';
 const cUpdatedT = 'updated-t';
 
 const cModalTitle = 'modal-title';
-const cModalTFieldDiv = 'modal-t-field-div';
-const cModalTFieldLabel = 'modal-t-field-label';
-const cModalTFieldValue = 'modal-t-field-value';
+const cModalFieldDiv = 'modal-field';
+const cModalFieldLabel = 'modal-field-label';
+const cModalFieldValue = 'modal-field-value';
 
 const cT = 't';
 const cViewIcon = 'view-icon';
@@ -165,13 +180,13 @@ const errShowTimeout = 2500;
 const updateTTimeout = 500;
 const updateTTimeout2 = 1000;
 const deleteTTimeout = 1000;
-const clearUrlTimeout = 3000;
 
 // text (messages/errors)
 const errInsertT = 'Error inserting the transaction!';
 const errUpdateT = 'Error updating the transaction!';
 const errLoadT = 'Error loading the transaction!';
 const errDeleteT = 'Error deleting the transaction!';
+const errSaveSettings = 'Error saving your settings!';
 
 // form titles
 const formTitleOnAddExpense = 'Add expense';

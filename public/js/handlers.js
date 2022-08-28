@@ -5,14 +5,10 @@
 
 // EVENT LISTENERS
 
-const hideModalOnClick = function (e) {
-	// modal here is the bg that is darkened
-	if (e.target === modal && modal.style.display === 'block') hideModal();
-};
-
 const hideModalOnKeydown = function (e) {
 	// looking for escape key pressed to hide modal
-	if (e.key === 'Escape' && modal.style.display === 'block') hideModal();
+	if (e.key === 'Escape' && modalContainer.classList.contains(cActive))
+		toggleModal();
 };
 
 const tableEL = function (e) {
@@ -25,7 +21,7 @@ const tableEL = function (e) {
 	// looking for edit event
 	if (e.target.classList.contains(cEditIcon)) {
 		getAndLoadTForEdit(tID, GET_ENDPOINT);
-		switchPage(pageNames[0]);
+		switchPage(addPage);
 	}
 
 	// delete event
@@ -45,6 +41,7 @@ const tFormEL = function (e) {
 	// if btn text-content is for adding transaction then send form data wo update options
 	if (submitBtn.textContent.trim() === btnTextAddT)
 		sendFormData(tForm, ADD_ENDPOINT);
+	//
 	// else send form data with currEditTID
 	else if (submitBtn.textContent.trim() === btnTextUpdateT) {
 		sendFormData(tForm, EDIT_ENDPOINT, true, currEditTID);
@@ -121,10 +118,10 @@ const settingsFormEL = function (e) {
 	sendFormData(this, SETTINGS_ENDPOINT);
 };
 
-// modal close event handlers
-window.addEventListener('click', hideModalOnClick);
+// // modal close event handlers
+modalCloseBtn.addEventListener('click', toggleModal);
+overlay.addEventListener('click', toggleModal);
 window.addEventListener('keydown', hideModalOnKeydown);
-modalClose.addEventListener('click', hideModal);
 
 // table
 table && ['click', 'dblclick'].forEach(e => table.addEventListener(e, tableEL));

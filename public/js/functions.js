@@ -24,28 +24,25 @@
 	mode ? (modeEl.value = 'PhonePe') : (modeEl.value = 'Google Pay');
 
 	type ? (typeIncomeEl.checked = true) : (typeExpenseEl.checked = true);
-});
+})();
 
-// const toggleElement = ele => ele.classList.toggle(cActive);
-const showModal = () => (modal.style.display = 'block');
-const hideModal = () => (modal.style.display = 'none');
+// modal toggle function
+const toggleModal = function () {
+	overlay.classList.toggle('active');
+	modalContainer.classList.toggle('active');
+};
 
 /**
  * Render error poput with given "errMsg"
  * @param {string} errMsg Error message to display
  */
-const showError = function (errMsg) {
+const showError = function (errDiv, errMsg) {
+	const errText = errDiv.querySelector('.error-text');
+
 	errText.textContent = errMsg;
+
 	errDiv.classList.remove(cHidden);
 	setTimeout(() => errDiv.classList.add(cHidden), errShowTimeout);
-};
-
-/**
- * On success event from form submission
- * @param {boolean} reload If true, then reload page
- */
-const onFormSubmitSuccess = reload => {
-	reload ? window.location.reload() : console.log('debugging (no reload)');
 };
 
 /**
@@ -53,8 +50,10 @@ const onFormSubmitSuccess = reload => {
  * @param {string} endpoint Error based on endpoint
  */
 const onFormSubmitFailure = function (endpoint) {
-	if (endpoint === ADD_ENDPOINT) showError(errInsertT);
-	if (endpoint === EDIT_ENDPOINT) showError(errUpdateT);
+	if (endpoint === ADD_ENDPOINT) showError(errDivAddPage, errInsertT);
+	if (endpoint === EDIT_ENDPOINT) showError(errDivAddPage, errUpdateT);
+	if (endpoint === SETTINGS_ENDPOINT)
+		showError(errDivSettingsPage, errSaveSettings);
 };
 
 /**
@@ -77,7 +76,9 @@ const getStrikeSpanMarkup = (currMarkup, spanClass) => {
 const makeFetchRequest = async function (url) {
 	const res = await fetch(url);
 	const resJson = await res.json();
-	return resJson;
+
+	if (res.ok) return resJson;
+	return false;
 };
 
 /**
@@ -125,7 +126,7 @@ const sendFormData = async function (
 	const res = await makeFetchRequest(reqUrl);
 
 	// if success then reload window to reload transactions
-	if (res.success) onFormSubmitSuccess(true);
+	if (res.success) window.location.reload();
 	// else render errors accordingly
 	else onFormSubmitFailure(endpoint);
 };
@@ -155,7 +156,7 @@ const getAndLoadTForEdit = async function (tID, endpoint) {
 	const url = `${endpoint}?id=${tID}`;
 	const res = await makeFetchRequest(url);
 
-	if (!res.date) return showError(errLoadT);
+	if (!res.date) return showError(errDivAddPage, errLoadT);
 
 	// load values to form
 	dateEl.value = res.date;
@@ -198,7 +199,7 @@ const initiateDeleteT = function (tRow, tID, endpoint) {
 	const reqUrl = `${endpoint}?id=${tID}`;
 	setTimeout(async () => {
 		const res = await makeFetchRequest(reqUrl);
-		if (!res.success) return showError(errDeleteT);
+		if (!res.success) return showError(errDivReportPage, errDeleteT);
 
 		window.location.reload();
 	}, deleteTTimeout);
@@ -226,45 +227,51 @@ const formatDate = function (dateStr) {
  * @returns None
  */
 const displayTModal = async function (tID, endpoint) {
+	const maxModalTitleLength = 20;
+
 	const url = `${endpoint}?id=${tID}`;
 	const res = await makeFetchRequest(url);
 
-	if (!res.date) return showError(errLoadT);
+	if (!res.date) return showError(errDivReportPage, errLoadT);
 
 	// format date in readable format
 	const formattedDate = formatDate(res.date);
-
-	// TODO: add currency symbol here
-	// TODO: truncated desc
-
 	const typeUpper = res.type.slice(0, 1).toUpperCase() + res.type.slice(1);
+
+	const markupForType = `<span class="${
+		res.type === 'expense' ? cTTypeExpense : cTTypeIncome
+	}">${typeUpper}</span>`;
+
+	modalDate.textContent = formattedDate;
+	modalTitle.textContent =
+		res.desc.length >= maxModalTitleLength
+			? res.desc.slice(0, maxModalTitleLength) + '...'
+			: res.desc;
+
+	const symbol = document
+		.querySelector('.summary-item-value')
+		.textContent.slice(0, 1);
 
 	// map to create modal content
 	const modalContentMap = new Map([
-		['Date', formattedDate],
 		['Description', res.desc],
-		['Amount', res.amount],
+		['Amount', `${symbol}${res.amount}`],
 		['Mode', res.mode],
-		['Type of transaction', typeUpper],
+		['Type of transaction', markupForType],
 		['Paid to', res.paid_to],
 	]);
 
 	// generate dom for modal content
 	let fieldContainers = '';
 	modalContentMap.forEach((value, key) => {
-		fieldContainers += `<div class="${cModalTFieldDiv}">
-	<label class="${cModalTFieldLabel}">${key}</label>
-	<p class="${cModalTFieldValue}">${value}</p>
-	</div>`;
+		fieldContainers += `<div class="modal-field"><label class="${cModalFieldLabel}">${key}</label><p class="${cModalFieldValue}">${value}</p></div>`;
 	});
 
 	// attach title & modal content
-	modalContent.innerHTML =
-		`<h3 class="${cModalTitle}">${res.desc} on ${formattedDate}</h3>` +
-		fieldContainers;
+	modalTextContainer.innerHTML = fieldContainers;
 
 	// display modal
-	showModal();
+	toggleModal();
 };
 
 /**

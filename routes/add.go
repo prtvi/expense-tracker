@@ -13,17 +13,18 @@ import (
 
 func AddT(c echo.Context) error {
 	transaction, err := utils.InitTransaction(c)
+
+	res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
+
 	if err != nil {
-		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
 		return c.JSON(http.StatusBadRequest, res)
 	}
 
 	err = utils.InsertTransaction(transaction)
 	if err != nil {
-		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
 		return c.JSON(http.StatusBadRequest, res)
 	}
 
-	res := utils.CreateResponseMessage(http.StatusOK, true, "Success")
+	res = utils.CreateResponseMessage(http.StatusOK, true, "Success")
 	return c.JSON(http.StatusOK, res)
 }

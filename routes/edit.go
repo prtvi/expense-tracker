@@ -13,19 +13,19 @@ import (
 
 func EditT(c echo.Context) error {
 	updatedTransaction, err := utils.InitTransaction(c)
+
+	res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
+
 	if err != nil {
-		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
 		return c.JSON(http.StatusBadRequest, res)
 	}
 
 	id := c.QueryParam("id")
-
 	err = utils.UpdateTransaction(id, updatedTransaction)
 	if err != nil {
-		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
 		return c.JSON(http.StatusBadRequest, res)
 	}
 
-	res := utils.CreateResponseMessage(http.StatusOK, true, "Success")
+	res = utils.CreateResponseMessage(http.StatusOK, true, "Success")
 	return c.JSON(http.StatusOK, res)
 }

@@ -215,67 +215,127 @@ main {
 
 /* --------- MODAL CONTAINER ----------- */
 
-.modal {
-	display: none;
+.modal-container {
 	position: fixed;
-	z-index: 2;
-	left: 0;
 	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
-	overflow: auto;
-	background-color: var(--black);
-	background-color: var(--black-a);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	z-index: 20;
+	pointer-events: none;
+	visibility: hidden;
 }
 
-/* to only contain the cross for closing the modal */
-.modal-container {
-	background-color: var(--modal-bg-color);
-	margin: 15% auto;
-	padding: 20px;
-	border: 1px solid var(--modal-border);
-	border-radius: 5px;
-	width: 35%;
+.modal-container::-webkit-scrollbar {
+	display: none;
 }
 
-.close-modal-span {
-	color: var(--modal-close);
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
+.modal-container.active {
+	pointer-events: all;
+	visibility: visible;
 }
 
-.close-modal-span:hover,
-.close-modal-span:focus {
-	color: var(--bg-color);
-	text-decoration: none;
-	cursor: pointer;
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background: hsl(0, 0%, 5%);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	z-index: 1;
+	transition: var(--transition-1);
 }
 
-/* main container for changing and holding content inside the modal */
-.modal-content {
-	color: var(--bg-color);
+.overlay.active {
+	opacity: 0.8;
+	visibility: visible;
+	pointer-events: all;
 }
 
-/* dynamic */
+.modal {
+	background: var(--eerie-black-2);
+	position: relative;
+	padding: 15px;
+	margin: 15px 12px;
+	border: 1px solid var(--jet);
+	border-radius: 14px;
+	box-shadow: var(--shadow-5);
+	transform: scale(1.2);
+	opacity: 0;
+	transition: var(--transition-1);
+	z-index: 2;
+	width: 60%;
+}
+
+.modal-container.active .modal {
+	transform: scale(1);
+	opacity: 1;
+}
+
+.modal-close-btn {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	background: var(--onyx);
+	border-radius: 8px;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--white-2);
+	font-size: 18px;
+	opacity: 0.7;
+}
+
+.modal-close-btn:hover,
+.modal-close-btn:focus {
+	opacity: 1;
+}
+
 .modal-title {
-	margin: 0 2% 5% 0;
+	margin-bottom: 4px;
 }
 
-.modal-t-field-div {
-	margin: 1% 5% 1% 5%;
+.modal-content time {
+	font-size: var(--fs-6);
+	color: var(--light-gray-70);
+	font-weight: var(--fw-300);
+	margin-bottom: 10px;
 }
 
-.modal-t-field-label {
-	color: var(--modal-border);
+.modal-content p {
+	color: var(--light-gray);
+	font-size: var(--fs-6);
+	font-weight: var(--fw-300);
+	line-height: 1.6;
 }
 
-.modal-t-field-value {
-	display: inline;
+.modal-text-container {
+	margin-top: 15px;
+}
+
+.modal-field {
+	display: block;
+	/* width: inherit; */
+	height: 25px;
+}
+
+.modal-field-label {
+	float: left;
+}
+
+.modal-field-value {
 	float: right;
-	color: var(--bg-color);
 }
-/* dynamic */
 
 /* --------- MODAL CONTAINER ----------- */
 
@@ -398,6 +458,10 @@ select {
 
 .error-text {
 	color: var(--color-error-text);
+}
+
+.error-report-page {
+	margin-bottom: 15px;
 }
 
 .t-btns-div {
