@@ -95,7 +95,14 @@ const [
 	viewThisMonth,
 	viewLastMonth,
 	viewCustom,
-] = ['1', '2', '3', '4', '5', '6'];
+] = [
+	'1_all',
+	'2_last7',
+	'3_last30',
+	'4_this_month',
+	'5_last_month',
+	'6_custom',
+];
 
 // for when view element is chosen as "custom"
 const customDateStartID = 'date_start';
@@ -133,6 +140,16 @@ const monthlyBudgetID = 'monthly_budget';
 const settingsForm = document.getElementById('set-form');
 const setBtn = document.querySelector('.btn-set');
 
+const allModesOfPayment = new Map([
+	// value: shown on UI
+	['1_cash', 'Cash'],
+	['2_phonepe', 'PhonePe'],
+	['3_googlepay', 'Google Pay'],
+	['4_paytm', 'PayTM'],
+	['5_card', 'Card'],
+	['6_other', 'Other'],
+]);
+
 //
 //
 //
@@ -157,16 +174,9 @@ const currentPage = 'currPage';
 const cHidden = 'hidden';
 const cActive = 'active';
 
-const cStrike = 'strike';
-const cStrikeText = 'strike-text';
-
 const cTTypeIncome = 't-type-income';
 const cTTypeExpense = 't-type-expense';
 
-const cUpdatedT = 'updated-t';
-
-const cModalTitle = 'modal-title';
-const cModalFieldDiv = 'modal-field';
 const cModalFieldLabel = 'modal-field-label';
 const cModalFieldValue = 'modal-field-value';
 
@@ -177,9 +187,6 @@ const cDeleteIcon = 'delete-icon';
 
 // timeouts (ms)
 const errShowTimeout = 2500;
-const updateTTimeout = 500;
-const updateTTimeout2 = 1000;
-const deleteTTimeout = 1000;
 
 // text (messages/errors)
 const errInsertT = 'Error inserting the transaction!';

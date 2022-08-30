@@ -50,7 +50,10 @@ func Home(c echo.Context) error {
 	budget := utils.EvalBudget()
 
 	// modes and currency
-	Currency, Modes := utils.GetCurrencyAndModesOfPayment()
+	// ModesOfPaymentFiltered -> with model.ModeValues{Value, IsChecked: true|false}
+	Currency, ModesOfPaymentFiltered := utils.GetCurrencyAndModesOfPayment()
+
+	// fmt.Println(len(ModesOfPayment))
 
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
 		// ADD page
@@ -64,7 +67,7 @@ func Home(c echo.Context) error {
 		"PaidToID":           config.PaidToID,           // 6
 
 		// t-form "mode" (4) input values & text
-		"Modes": Modes,
+		"ModesOfPayment": ModesOfPaymentFiltered,
 
 		// t-form "type" (5) ids & values
 		"TypeIncomeID":  config.TypeIncomeID,
@@ -123,8 +126,11 @@ func Home(c echo.Context) error {
 		//
 
 		// SETTINGS page
+
 		"CurrencyID":       config.CurrencyID,
-		"ModesOfPaymentID": config.ModesOfPaymentID,
 		"MonthlyBudgetID":  config.MonthlyBudgetID,
+		"ModesOfPaymentID": config.ModesOfPaymentID,
+
+		"AllModesOfPayment": ModesOfPaymentFiltered,
 	})
 }

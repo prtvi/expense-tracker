@@ -7,7 +7,6 @@ import (
 	config "prtvi/expense-tracker/config"
 	model "prtvi/expense-tracker/model"
 	"strconv"
-	"strings"
 
 	"go.mongodb.org/mongo-driver/mongo/options"
 
@@ -24,18 +23,23 @@ func BsonDocToSettings(doc bson.M) model.Settings {
 }
 
 func ParseSettingsUrlParams(c echo.Context) model.Settings {
-
 	currency := c.QueryParam(config.CurrencyID)
-	modesOfPayment := strings.Split(c.QueryParam(config.ModesOfPaymentID), ",")
-	for i := range modesOfPayment {
-		modesOfPayment[i] = strings.ToLower(strings.TrimSpace(modesOfPayment[i]))
-	}
 	monthlyBudget, _ := strconv.ParseFloat(c.QueryParam(config.MonthlyBudgetID), 32)
+
+	modesOfPayment := config.AllModesOfPayment
+
+	for key := range c.QueryParams() {
+		if key == config.CurrencyID || key == config.MonthlyBudgetID {
+			continue
+		}
+
+		modesOfPayment[key] = model.ModeValues{Value: modesOfPayment[key].Value, IsChecked: true}
+	}
 
 	return model.Settings{Currency: currency, ModesOfPayment: modesOfPayment, CurrentMonthBudget: float32(monthlyBudget)}
 }
 
-func GetCurrencyAndModesOfPayment() (string, []string) {
+func GetCurrencyAndModesOfPayment() (string, map[string]model.ModeValues) {
 	cursor := config.Settings.FindOne(context.TODO(), bson.D{})
 
 	fetchedDoc := bson.M{}
@@ -46,7 +50,24 @@ func GetCurrencyAndModesOfPayment() (string, []string) {
 
 	settings := BsonDocToSettings(fetchedDoc)
 
-	return settings.Currency, settings.ModesOfPayment
+	// duplicating the original const
+	mopFiltered := make(map[string]model.ModeValues, len(config.AllModesOfPayment))
+
+	for key, value := range config.AllModesOfPayment {
+		mopFiltered[key] = value
+	}
+
+	// if the value.IsChecked is true then add to map else delete that key
+	for key, value := range settings.ModesOfPayment {
+		modeValues := value
+
+		if value.IsChecked {
+			modeValues.IsChecked = true
+			mopFiltered[key] = modeValues
+		}
+	}
+
+	return settings.Currency, mopFiltered
 }
 
 func UpdateSettings(settings model.Settings) bool {

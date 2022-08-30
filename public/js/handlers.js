@@ -70,9 +70,11 @@ const viewEL = function (e) {
 };
 
 const sortParamsAndPageLoader = function (e) {
+	// SWITCH TO existing PAGE on reload
 	const currPage = sessionStorage.getItem(currentPage);
 	if (currPage) switchPage(currPage);
 
+	// LOAD SORT FORM PARAMS
 	// on sort-form submission preserve the sort option and display the same
 	const sortParams = new URLSearchParams(window.location.search);
 

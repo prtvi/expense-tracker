@@ -10,7 +10,6 @@ import (
 	model "prtvi/expense-tracker/model"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -22,57 +21,36 @@ func BsonDocToBudget(doc bson.M) model.Budget {
 	return budget
 }
 
-// to set budget on the first go, else to update the budget value
+// sets all values whenever called
 func SetBudget(budgetToBeSet float32) error {
-	var budget bson.M
+	// if found then update only the new budgetToBeSet
+	now := time.Now()
+	currentYear, currentMonth, _ := now.Date()
 
-	// find for budget doc in db
-	err := config.Budget.FindOne(context.TODO(), bson.M{}).Decode(&budget)
-
-	// if not found then insert new budget doc in db
-	if err != nil && err == mongo.ErrNoDocuments {
-
-		now := time.Now()
-		currentYear, currentMonth, _ := now.Date()
-
-		newBudget := bson.D{
+	// create filter, update and options for querying
+	filter := bson.M{}
+	update := bson.M{
+		"$set": bson.D{
 			{Key: "budget", Value: budgetToBeSet},
 			{Key: "month", Value: currentMonth},
 			{Key: "year", Value: currentYear},
 			{Key: "spent", Value: 0},
 			{Key: "remaining", Value: budgetToBeSet},
-		}
-
-		_, err2 := config.Budget.InsertOne(context.TODO(), newBudget)
-		if err2 != nil {
-			return err2
-		}
-
-		return nil
-	} else {
-		// if found then update only the new budgetToBeSet
-
-		// create filter, update and options for querying
-		filter := bson.M{}
-		update := bson.M{
-			"$set": bson.D{
-				{Key: "budget", Value: budgetToBeSet},
-			},
-		}
-		upsert := true
-		after := options.After
-		opt := options.FindOneAndUpdateOptions{
-			ReturnDocument: &after,
-			Upsert:         &upsert,
-		}
-
-		cursor := config.Budget.FindOneAndUpdate(context.TODO(), filter, update, &opt)
-		if cursor.Err() != nil {
-			return cursor.Err()
-		}
-
-		return nil
+		},
 	}
+	upsert := true
+	after := options.After
+	opt := options.FindOneAndUpdateOptions{
+		ReturnDocument: &after,
+		Upsert:         &upsert,
+	}
+
+	cursor := config.Budget.FindOneAndUpdate(context.TODO(), filter, update, &opt)
+	if cursor.Err() != nil {
+		return cursor.Err()
+	}
+
+	return nil
 }
 
 func FetchBudget() model.Budget {

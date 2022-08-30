@@ -119,8 +119,12 @@
 									id="{{ .ModeID }}"
 									required
 								>
-									{{ range .Modes }}
-									<option value="{{ . }}">{{ . }}</option>
+									{{ range $key, $val := .ModesOfPayment }}
+									<!-- checking if the value is opted by user or not -->
+									{{ if eq $val.IsChecked true }}
+									<option value="{{ $key }}">{{ $val.Value }}</option>
+									{{ end }}
+									<!--  -->
 									{{ end }}
 								</select>
 							</div>
@@ -208,8 +212,8 @@
 										id="{{ .ViewID }}"
 										required
 									>
-										{{ range $key, $value := .ViewOptions }}
-										<option value="{{ $key }}">{{ $value }}</option>
+										{{ range $key, $val := .ViewOptions }}
+										<option value="{{ $key }}">{{ $val }}</option>
 										{{ end }}
 									</select>
 								</div>
@@ -465,25 +469,42 @@
 									type="text"
 									name="{{ .CurrencyID }}"
 									id="{{ .CurrencyID }}"
-									value="₹"
-									placeholder="Currency"
+									value="{{ .Currency }}"
+									placeholder="Currency symbol"
 									required
 								/>
 							</div>
 
 							<!-- 2 Modes -->
-							<div class="form-item">
+							<div class="form-item form-item-checkbox">
 								<label class="form-item-label" for="{{ .ModesOfPaymentID }}"
 									>Modes of payment</label
 								>
-								<input
-									class="form-input"
-									type="text"
-									name="{{ .ModesOfPaymentID }}"
-									id="{{ .ModesOfPaymentID }}"
-									placeholder="Enter comma separated (eg. PhonePe,Cash,Google Pay,Bhim UPI)"
-									required
-								/>
+								<div class="form-input">
+									{{ range $key, $val := .AllModesOfPayment }}
+
+									<div class="form-input-checkbox">
+										{{ if eq $val.IsChecked true }}
+										<input
+											type="checkbox"
+											id="{{ $key }}"
+											name="{{ $key }}"
+											value="{{ $key }}"
+											checked
+										/>
+										{{ else }}
+										<input
+											type="checkbox"
+											id="{{ $key }}"
+											name="{{ $key }}"
+											value="{{ $key }}"
+										/>
+										{{ end }}
+										<label for="{{ $key }}">{{ $val.Value }}</label>
+									</div>
+
+									{{ end }}
+								</div>
 							</div>
 
 							<!-- 3 Monthly budget -->
@@ -497,6 +518,7 @@
 									name="{{ .MonthlyBudgetID }}"
 									id="{{ .MonthlyBudgetID }}"
 									placeholder="Enter your monthly budget"
+									value="{{ .Budget }}"
 									required
 								/>
 							</div>

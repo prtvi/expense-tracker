@@ -18,10 +18,6 @@
 	--modal-border: #888;
 	--modal-close: #aaa;
 
-	/* ---------------------------------------------
-      colors
-    --------------------------------------------- */
-
 	/* gradients */
 
 	--border-gradient-onyx: linear-gradient(
@@ -50,15 +46,7 @@
 	--light-gray-70: hsla(0, 0%, 84%, 0.7);
 	--bittersweet-shimmer: hsl(0, 43%, 51%);
 
-	/* 
-      typography
-    */
-
-	/* font-family */
-
 	--ff-poppins: 'Poppins', sans-serif;
-
-	/* font-size */
 
 	--fs-1: 24px;
 	--fs-2: 18px;
@@ -69,23 +57,13 @@
 	--fs-7: 13px;
 	--fs-8: 11px;
 
-	/* font-weight */
-
 	--fw-300: 300;
 	--fw-400: 400;
 	--fw-500: 500;
 	--fw-600: 600;
 
-	/*
-      shadow
-    */
-
 	--shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.25);
 	--shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.25);
-
-	/*
-      transition
-    */
 
 	--transition-1: 0.25s ease;
 }
@@ -675,6 +653,17 @@ table th {
 	background: none;
 }
 
+/* delete confirmation modal */
+
+.del-btn-container {
+	margin: 0 auto 0 auto;
+	text-align: center;
+}
+
+.btn-del-modal {
+	display: inline;
+}
+
 /* --------- TABLE CONTAINER ----------- */
 
 /* show range container */
@@ -712,6 +701,21 @@ table th {
 
 .btn-set {
 	margin: 0 auto 0 auto;
+}
+
+input[type='checkbox'] {
+	width: fit-content;
+	display: inline;
+}
+
+.form-item-checkbox {
+	height: 90px;
+}
+
+.form-input-checkbox {
+	display: inline-block;
+	margin-right: 5px;
+	overflow: auto;
 }
 
 /* --------- SETTINGS CONTAINER ----------- */

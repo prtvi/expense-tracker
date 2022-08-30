@@ -1,6 +1,10 @@
 package config
 
-import "go.mongodb.org/mongo-driver/mongo"
+import (
+	"prtvi/expense-tracker/model"
+
+	"go.mongodb.org/mongo-driver/mongo"
+)
 
 // Global mongo collection connection
 var Transactions mongo.Collection
@@ -48,14 +52,14 @@ const TypeExpenseID = "expense"
 const ViewID = "view"
 
 // sort-form select option element values (view)
-const ViewAll = "1"
-const ViewLast7Days = "2"
-const ViewLast30Days = "3"
-const ViewThisMonth = "4"
-const ViewLastMonth = "5"
+const ViewAll = "1_all"
+const ViewLast7Days = "2_last7"
+const ViewLast30Days = "3_last30"
+const ViewThisMonth = "4_this_month"
+const ViewLastMonth = "5_last_month"
 
 // for when view element is chosen as "custom"
-const ViewCustom = "6"
+const ViewCustom = "6_custom"
 
 const CustomDateStartID = "date_start"
 const CustomDateEndID = "date_end"
@@ -88,5 +92,22 @@ var ViewOptions map[string]string = map[string]string{
 // settings page
 
 const CurrencyID = "currency"
-const ModesOfPaymentID = "modes_of_payment"
 const MonthlyBudgetID = "monthly_budget"
+const ModesOfPaymentID = "modes_of_payment"
+
+const Cash = "1_cash"
+const Phonepe = "2_phonepe"
+const Googlepay = "3_googlepay"
+const Paytm = "4_paytm"
+const Card = "5_card"
+const Other = "6_other"
+
+var AllModesOfPayment map[string]model.ModeValues = map[string]model.ModeValues{
+	// select option element value : text shown on elements on UI
+	Cash:      {Value: "Cash", IsChecked: false},
+	Phonepe:   {Value: "PhonePe", IsChecked: false},
+	Googlepay: {Value: "Google Pay", IsChecked: false},
+	Paytm:     {Value: "PayTM", IsChecked: false},
+	Card:      {Value: "Card", IsChecked: false},
+	Other:     {Value: "Other", IsChecked: false},
+}

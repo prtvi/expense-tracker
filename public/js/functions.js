@@ -21,12 +21,11 @@
 	amountEl.value = amount;
 	paidToEl.value = paidTo;
 
-	mode ? (modeEl.value = 'PhonePe') : (modeEl.value = 'Google Pay');
+	mode ? (modeEl.value = '1_cash') : (modeEl.value = '2_phonepe');
 
 	type ? (typeIncomeEl.checked = true) : (typeExpenseEl.checked = true);
 })();
 
-// modal toggle function
 const toggleModal = function () {
 	overlay.classList.toggle('active');
 	modalContainer.classList.toggle('active');
@@ -54,17 +53,6 @@ const onFormSubmitFailure = function (endpoint) {
 	if (endpoint === EDIT_ENDPOINT) showError(errDivAddPage, errUpdateT);
 	if (endpoint === SETTINGS_ENDPOINT)
 		showError(errDivSettingsPage, errSaveSettings);
-};
-
-/**
- * Generate new markup for strikethrough text on table while deleting transaction
- *
- * @param {string} currMarkup Existing markup of row element in table
- * @param {string} spanClass Class name of the span class that will be added to the new markup
- * @returns {string} New markup with strikethrough text
- */
-const getStrikeSpanMarkup = (currMarkup, spanClass) => {
-	return `<s class="${cStrike}"><span class="${spanClass}">${currMarkup}</span></s>`;
 };
 
 /**
@@ -131,12 +119,17 @@ const sendFormData = async function (
 	else onFormSubmitFailure(endpoint);
 };
 
+/**
+ *
+ * @param {boolean} add Change form titles depending on page
+ */
 const changeFormLabels = function (add = true) {
 	// if ADD
 	if (add) {
 		formTitle.textContent = formTitleOnAddExpense;
 		submitBtn.textContent = btnTextAddT;
 		clearBtn.textContent = btnTextClear;
+		switchPage(reportPage);
 	} else {
 		// if UPDATE
 		formTitle.textContent = formTitleOnUpdateExpense;
@@ -176,6 +169,16 @@ const getAndLoadTForEdit = async function (tID, endpoint) {
 };
 
 /**
+ *
+ * @param {String} desc the input text
+ * @param {Number} maxLen maximum length of desc returned
+ * @returns the truncated string
+ */
+const truncateDesc = function (desc, maxLen) {
+	return desc.length >= maxLen ? desc.slice(0, maxLen) + '...' : desc;
+};
+
+/**
  * Delete transaction
  *
  * @param {object} tRow Transaction row from html - table
@@ -183,26 +186,34 @@ const getAndLoadTForEdit = async function (tID, endpoint) {
  * @param {string} endpoint Endpoint to which request will be made
  */
 const initiateDeleteT = function (tRow, tID, endpoint) {
-	// get child elements from tRow (transaction) who have no children and strike them before deleting that transaction
-	Array.from(tRow.children).forEach(field => {
-		if (field.children.length > 0) return;
+	const maxDescLen = 15;
 
-		// to keep the amount text color same as the original
-		if (field.classList.contains(cTTypeIncome))
-			field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cTTypeIncome);
-		else if (field.classList.contains(cTTypeExpense))
-			field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cTTypeExpense);
-		else field.innerHTML = getStrikeSpanMarkup(field.innerHTML, cStrikeText);
-	});
+	// first confirm deletion
+	loadModalData(
+		`Delete ${truncateDesc(tRow.children[1].textContent, maxDescLen)}?`,
+		'',
+		`<div class="del-btn-container">
+		<button class="btn btn-del-modal yes">Yes</button>
+		<button class="btn btn-del-modal cancel">Cancel</button>
+	</div>`
+	);
 
-	// make ajax call to delete the transaction after a timeout
-	const reqUrl = `${endpoint}?id=${tID}`;
-	setTimeout(async () => {
+	toggleModal();
+
+	const btnYes = document.querySelector('.yes');
+	const btnCancel = document.querySelector('.cancel');
+
+	btnCancel.addEventListener('click', toggleModal);
+
+	btnYes.addEventListener('click', async function () {
+		// make ajax call to delete the transaction
+		const reqUrl = `${endpoint}?id=${tID}`;
 		const res = await makeFetchRequest(reqUrl);
+
 		if (!res.success) return showError(errDivReportPage, errDeleteT);
 
 		window.location.reload();
-	}, deleteTTimeout);
+	});
 };
 
 /**
@@ -242,12 +253,6 @@ const displayTModal = async function (tID, endpoint) {
 		res.type === 'expense' ? cTTypeExpense : cTTypeIncome
 	}">${typeUpper}</span>`;
 
-	modalDate.textContent = formattedDate;
-	modalTitle.textContent =
-		res.desc.length >= maxModalTitleLength
-			? res.desc.slice(0, maxModalTitleLength) + '...'
-			: res.desc;
-
 	const symbol = document
 		.querySelector('.summary-item-value')
 		.textContent.slice(0, 1);
@@ -256,7 +261,7 @@ const displayTModal = async function (tID, endpoint) {
 	const modalContentMap = new Map([
 		['Description', res.desc],
 		['Amount', `${symbol}${res.amount}`],
-		['Mode', res.mode],
+		['Mode', allModesOfPayment.get(res.mode)],
 		['Type of transaction', markupForType],
 		['Paid to', res.paid_to],
 	]);
@@ -268,7 +273,11 @@ const displayTModal = async function (tID, endpoint) {
 	});
 
 	// attach title & modal content
-	modalTextContainer.innerHTML = fieldContainers;
+	const title = truncateDesc(res.desc, maxModalTitleLength);
+	const date = formattedDate;
+	const textContent = fieldContainers;
+
+	loadModalData(title, date, textContent);
 
 	// display modal
 	toggleModal();
@@ -309,4 +318,16 @@ const switchPage = function (page) {
 	pages.forEach(pg => {
 		if (pg.dataset.page === page) pg.classList.add(cActive);
 	});
+};
+
+/**
+ *
+ * @param {String} title Title for the modal
+ * @param {String} date Date for the modal
+ * @param {String | HTML} textContent HTML/String content for modal
+ */
+const loadModalData = function (title, date, textContent) {
+	modalDate.textContent = date;
+	modalTitle.textContent = title;
+	modalTextContainer.innerHTML = textContent;
 };
