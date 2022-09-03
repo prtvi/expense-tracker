@@ -120,7 +120,7 @@ const sendFormData = async function (
 };
 
 /**
- *
+ * Change form labels as per form submission
  * @param {boolean} add Change form titles depending on page
  */
 const changeFormLabels = function (add = true) {
@@ -189,13 +189,15 @@ const initiateDeleteT = function (tRow, tID, endpoint) {
 	const maxDescLen = 15;
 
 	// first confirm deletion
+	const deleteModalMarkup = `<div class="del-btn-container">
+	<button class="btn btn-del-modal yes">Yes</button>
+	<button class="btn btn-del-modal cancel">Cancel</button>
+	</div>`;
+
 	loadModalData(
 		`Delete ${truncateDesc(tRow.children[1].textContent, maxDescLen)}?`,
 		'',
-		`<div class="del-btn-container">
-		<button class="btn btn-del-modal yes">Yes</button>
-		<button class="btn btn-del-modal cancel">Cancel</button>
-	</div>`
+		deleteModalMarkup
 	);
 
 	toggleModal();
@@ -230,6 +232,46 @@ const formatDate = function (dateStr) {
 	return `${weekday}, ${date} ${month} ${year}`;
 };
 
+const getCurrencySymbol = function () {
+	const symbolText = document.querySelector(
+		`[data-currency-symbol]`
+	).textContent;
+	const [start, end] = [symbolText.indexOf('('), symbolText.indexOf(')')];
+
+	return symbolText.slice(start + 1, end);
+};
+
+const markupForExpenseOrIncome = function (elementVal, typeT) {
+	return `<span class="${
+		typeT === typeExpenseID ? cTTypeExpense : cTTypeIncome
+	}">${elementVal}</span>`;
+};
+
+const generateTModalMarkup = function (res) {
+	const markupForAmount = markupForExpenseOrIncome(
+		`${getCurrencySymbol()} ${res.amount}`,
+		res.type
+	);
+	const markupForType = markupForExpenseOrIncome(res.type, res.type);
+
+	// map to create modal content
+	const modalContentMap = new Map([
+		['Description', res.desc],
+		['Amount', markupForAmount],
+		['Mode', allModesOfPayment.get(res.mode)],
+		['Type of transaction', markupForType],
+		['Paid to', res.paid_to],
+	]);
+
+	// generate dom for modal content
+	let fieldContainers = '';
+	modalContentMap.forEach((value, key) => {
+		fieldContainers += `<div class="modal-field"><label class="${cModalFieldLabel}">${key}</label><p class="${cModalFieldValue}">${value}</p></div>`;
+	});
+
+	return fieldContainers;
+};
+
 /**
  * Displays a modal with the data from the selected transaction, after fetching it from database
  *
@@ -245,41 +287,12 @@ const displayTModal = async function (tID, endpoint) {
 
 	if (!res.date) return showError(errDivReportPage, errLoadT);
 
-	// format date in readable format
-	const formattedDate = formatDate(res.date);
-	const typeUpper = res.type.slice(0, 1).toUpperCase() + res.type.slice(1);
-
-	const markupForType = `<span class="${
-		res.type === 'expense' ? cTTypeExpense : cTTypeIncome
-	}">${typeUpper}</span>`;
-
-	const symbol = document
-		.querySelector('.summary-item-value')
-		.textContent.slice(0, 1);
-
-	// map to create modal content
-	const modalContentMap = new Map([
-		['Description', res.desc],
-		['Amount', `${symbol}${res.amount}`],
-		['Mode', allModesOfPayment.get(res.mode)],
-		['Type of transaction', markupForType],
-		['Paid to', res.paid_to],
-	]);
-
-	// generate dom for modal content
-	let fieldContainers = '';
-	modalContentMap.forEach((value, key) => {
-		fieldContainers += `<div class="modal-field"><label class="${cModalFieldLabel}">${key}</label><p class="${cModalFieldValue}">${value}</p></div>`;
-	});
-
 	// attach title & modal content
 	const title = truncateDesc(res.desc, maxModalTitleLength);
-	const date = formattedDate;
-	const textContent = fieldContainers;
+	const date = formatDate(res.date);
+	const textContent = generateTModalMarkup(res);
 
 	loadModalData(title, date, textContent);
-
-	// display modal
 	toggleModal();
 };
 
@@ -330,4 +343,9 @@ const loadModalData = function (title, date, textContent) {
 	modalDate.textContent = date;
 	modalTitle.textContent = title;
 	modalTextContainer.innerHTML = textContent;
+};
+
+const enableNavLinks = function (enable = true) {
+	if (enable) navigationLinks.forEach(nl => (nl.disabled = false));
+	else navigationLinks.forEach(nl => (nl.disabled = true));
 };

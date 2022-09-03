@@ -97,7 +97,10 @@
 
 							<!-- (3) Amount -->
 							<div class="form-item">
-								<label class="form-item-label" for="{{ .AmountID }}"
+								<label
+									data-currency-symbol="{{ .Currency }}"
+									class="form-item-label"
+									for="{{ .AmountID }}"
 									>Amount ({{ .Currency }})</label
 								>
 								<input
@@ -337,15 +340,31 @@
 							</div>
 						</div>
 
-						<!--  -->
-						{{ if .IfNoTransactionToView }}
+						{{ if .IfNoTransactionsInRange }}
 
-						<!-- no transactions to view div -->
-						<div class="no-t-div">
-							<p>No transactions found for the specified range!</p>
+						<!--  -->
+						{{ if .IfSetup }}
+
+						<div class="no-t-div no-ts">
+							<p>Come on! Don't be shy, add a transaction</p>
+
+							<button onclick="switchPage(addPage)" class="btn btn-goto-add">
+								Add a transaction!
+							</button>
 						</div>
 
-						<!-- ELSE for IfNoTransactionToView -->
+						<!-- else for IfSetup -->
+						{{ else }}
+
+						<!-- no transactions found in range div -->
+						<div class="no-t-div no-t-in-range">
+							<p>No transactions found in the specified range!</p>
+						</div>
+
+						<!-- end for IfSetup -->
+						{{ end }}
+
+						<!-- ELSE for IfNoTransactionsInRange -->
 						{{ else }}
 
 						<!----------- TABLE CONTAINER ----------->
@@ -403,6 +422,15 @@
 						</div>
 
 						{{ if .IfSubSummary }}
+						<!--------- SHOW-RANGE CONTAINER --------->
+						<div class="show-range-container">
+							<p>
+								Showing results from
+								<strong> {{ .ShowingFromDate }} </strong> -
+								<strong> {{ .ShowingToDate }} </strong>
+							</p>
+						</div>
+
 						<!--------- SUB-SUMMARY CONTAINER ------->
 						<div
 							class="sub-summary"
@@ -433,20 +461,6 @@
 
 						<!-- END for IfNoTransactionToView -->
 						{{ end }}
-
-						<!--------- SHOW-RANGE CONTAINER --------->
-						<div class="show-range-container hidden">
-							<p>
-								Showing results from
-								<strong> {{ .ShowingFromDate }} </strong> -
-								<strong> {{ .ShowingToDate }} </strong>
-							</p>
-						</div>
-
-						<!-- TODO -->
-						<div class="no-t-div hidden">
-							<p>Come on! Don't be shy, add a transaction</p>
-						</div>
 					</div>
 				</article>
 

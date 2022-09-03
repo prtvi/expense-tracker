@@ -74,6 +74,22 @@ const sortParamsAndPageLoader = function (e) {
 	const currPage = sessionStorage.getItem(currentPage);
 	if (currPage) switchPage(currPage);
 
+	// SWITCH to settings page to set up app
+	if (modeEl.value === '') {
+		switchPage(settingsPage);
+
+		loadModalData(
+			'Set up your application',
+			'',
+			`<button onclick="toggleModal()" class="btn ok">Let's begin!</button>`
+		);
+		toggleModal();
+
+		enableNavLinks(false);
+
+		sessionStorage.setItem(currentPage, addPage);
+	}
+
 	// LOAD SORT FORM PARAMS
 	// on sort-form submission preserve the sort option and display the same
 	const sortParams = new URLSearchParams(window.location.search);

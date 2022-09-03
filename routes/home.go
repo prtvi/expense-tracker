@@ -28,6 +28,8 @@ func Home(c echo.Context) error {
 	ifSubSummary := false
 
 	allTs := utils.GetAllTransactions(sort)
+	IfSetup := len(allTs) == 0
+
 	allTSummary := utils.UpdateMainSummary(allTs)
 
 	if view == config.ViewAll {
@@ -56,6 +58,7 @@ func Home(c echo.Context) error {
 	// fmt.Println(len(ModesOfPayment))
 
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
+		"IfSetup": IfSetup,
 		// ADD page
 
 		// t-form
@@ -106,7 +109,7 @@ func Home(c echo.Context) error {
 		"BudgetRemainingClass": utils.GetClassNameByValue(budget.Remaining),
 
 		// if no transactions to show
-		"IfNoTransactionToView": len(tsForView) == 0,
+		"IfNoTransactionsInRange": len(tsForView) == 0,
 
 		// table
 		"Transactions": formattedTransactions,

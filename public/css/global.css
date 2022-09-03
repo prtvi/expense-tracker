@@ -1,7 +1,6 @@
 :root {
 	--bg-color: #0d1116;
 	--text-color: #c9d1d9;
-	--bg-color-table: #040b10;
 
 	--color-income: #39d353;
 	--color-expense: #e16637;
@@ -9,42 +8,23 @@
 	--color-error: #f26524;
 	--color-error-text: #000;
 
-	--black-a: rgba(0, 0, 0, 0.4);
-	--black: #000;
-	--white: #fff;
-	--red: #ff0000;
+	--jet: hsl(0, 0%, 22%);
+	--onyx: hsl(240, 1%, 17%);
+	--eerie-black-1: hsl(240, 2%, 13%);
 
-	--modal-bg-color: #fefefe;
-	--modal-border: #888;
-	--modal-close: #aaa;
-
-	/* gradients */
+	/* bg for article */
+	--eerie-black-2: hsl(240, 2%, 12%);
+	--smoky-black: hsl(0, 0%, 7%);
+	--white-2: hsl(0, 0%, 98%);
+	--light-gray: hsl(0, 0%, 84%);
+	--light-gray-70: hsla(0, 0%, 84%, 0.7);
+	--orange-yellow-crayola: #57a6ff;
 
 	--border-gradient-onyx: linear-gradient(
 		to bottom right,
 		hsl(0, 0%, 25%) 0%,
 		hsla(0, 0%, 25%, 0) 50%
 	);
-	--text-gradient-yellow: linear-gradient(
-		to right,
-		hsl(45, 100%, 72%),
-		hsl(35, 100%, 68%)
-	);
-
-	/* solids */
-
-	--jet: hsl(0, 0%, 22%);
-	--onyx: hsl(240, 1%, 17%);
-	--eerie-black-1: hsl(240, 2%, 13%);
-	--eerie-black-2: hsl(240, 2%, 12%);
-	--smoky-black: hsl(0, 0%, 7%);
-	--white-1: hsl(0, 0%, 100%);
-	--white-2: hsl(0, 0%, 98%);
-	--orange-yellow-crayola: hsl(45, 100%, 72%);
-	--vegas-gold: hsl(45, 54%, 58%);
-	--light-gray: hsl(0, 0%, 84%);
-	--light-gray-70: hsla(0, 0%, 84%, 0.7);
-	--bittersweet-shimmer: hsl(0, 43%, 51%);
 
 	--ff-poppins: 'Poppins', sans-serif;
 
@@ -181,7 +161,7 @@ h3 {
 	left: 0;
 	width: 30px;
 	height: 3px;
-	background: var(--text-gradient-yellow);
+	background: var(--orange-yellow-crayola);
 	border-radius: 3px;
 }
 
@@ -578,7 +558,7 @@ select {
 }
 
 .summary-item:first-child {
-	margin-top: 4px;
+	margin-top: 5px;
 }
 
 .summary-item-label {
@@ -602,13 +582,21 @@ select {
 /* no transaction display message */
 .no-t-div {
 	text-align: center;
-	margin-top: 5%;
-	width: 60%;
-	float: right;
-	border: 1px solid red;
+	width: 90%;
+	margin: 30% auto 0 auto;
+	height: fit-content;
+}
+
+.btn-goto-add {
+	margin: 20px auto 0 auto;
+	width: fit-content;
 }
 
 /* --------- TABLE CONTAINER ----------- */
+
+.t {
+	cursor: pointer;
+}
 
 .table-container {
 	max-height: 250px;
@@ -618,7 +606,7 @@ select {
 	float: left;
 	display: block;
 	font-size: var(--fs-7);
-	margin-bottom: 8%;
+	margin-bottom: 5%;
 }
 
 .t-table {
@@ -668,19 +656,23 @@ table th {
 
 /* show range container */
 .show-range-container {
-	display: block;
-	float: left;
-	margin: 3% 0 0 4%;
+	display: inline-block;
+	margin: 0 auto 4% auto;
+	text-align: center;
+	width: 100%;
 	height: 30px;
-	width: fit-content;
 }
 
 /* sub summary */
 .sub-summary {
 	display: block;
-	float: left;
-	margin: 0 0 0 4%;
-	height: 30px;
+	margin: 0 auto 0 auto;
+	text-align: center;
+	width: 90%;
+	height: 46px;
+	border: 1px solid var(--color-income);
+	border-radius: 10px;
+	overflow: auto;
 }
 
 .sub-summary-item,
@@ -691,6 +683,7 @@ table th {
 
 .sub-summary-item {
 	margin: 10px;
+	display: inline-block;
 }
 
 /* --------- SETTINGS CONTAINER ----------- */
@@ -722,10 +715,6 @@ input[type='checkbox'] {
 
 /* --------- PSEUDO CLASSES ----------- */
 
-.t {
-	cursor: pointer;
-}
-
 /* to display transaction type with color */
 .t-type-income {
 	color: var(--color-income);
@@ -737,22 +726,6 @@ input[type='checkbox'] {
 
 .hidden {
 	display: none;
-}
-
-/* pseudo class for updated t */
-.updated-t {
-	background-color: var(--white);
-	opacity: 0.8;
-	color: var(--bg-color);
-}
-
-/* for deletion */
-.strike {
-	color: var(--red);
-}
-
-.strike-text {
-	color: var(--text-color);
 }
 
 /* icons */
