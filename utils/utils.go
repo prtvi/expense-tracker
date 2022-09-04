@@ -129,3 +129,10 @@ func FirstAndLastDayOfMonth(year, month int, loc *time.Location) (time.Time, tim
 func LastSecondOfTheDay(t time.Time) time.Time {
 	return t.AddDate(0, 0, 1).Add(-time.Nanosecond)
 }
+
+func GetCurrentMonthAndYear() (int, int) {
+	now := time.Now()
+	currentYear, currentMonth, _ := now.Date()
+
+	return int(currentMonth), currentYear
+}

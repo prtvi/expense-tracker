@@ -1,26 +1,25 @@
 :root {
-	--bg-color: #0d1116;
+	--bg-color: #0f0e0e;
 	--text-color: #c9d1d9;
 
-	--color-income: #39d353;
-	--color-expense: #e16637;
+	--color-income: #3ccf4e;
+	--color-expense: #f77e21;
 
-	--color-error: #f26524;
+	--color-error: rgba(211, 38, 38, 0.75);
 	--color-error-text: #000;
 
-	--jet: hsl(0, 0%, 22%);
-	--onyx: hsl(240, 1%, 17%);
-	--eerie-black-1: hsl(240, 2%, 13%);
+	--accent-color: hsl(212, 100%, 67%);
+	--accent-color-60: hsla(212, 100%, 67%, 0.6);
 
-	/* bg for article */
-	--eerie-black-2: hsl(240, 2%, 12%);
-	--smoky-black: hsl(0, 0%, 7%);
+	--article-bg: #141010;
+	--article-border: #222222;
+
+	--modal-close-btn: hsl(240, 1%, 17%);
 	--white-2: hsl(0, 0%, 98%);
 	--light-gray: hsl(0, 0%, 84%);
 	--light-gray-70: hsla(0, 0%, 84%, 0.7);
-	--orange-yellow-crayola: #57a6ff;
-
-	--border-gradient-onyx: linear-gradient(
+	--smoky-black: hsl(0, 0%, 7%);
+	--btn-bg-gradient: linear-gradient(
 		to bottom right,
 		hsl(0, 0%, 25%) 0%,
 		hsla(0, 0%, 25%, 0) 50%
@@ -39,8 +38,6 @@
 
 	--fw-300: 300;
 	--fw-400: 400;
-	--fw-500: 500;
-	--fw-600: 600;
 
 	--shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.25);
 	--shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.25);
@@ -92,12 +89,12 @@ textarea {
 }
 
 ::selection {
-	background: var(--orange-yellow-crayola);
+	background: var(--accent-color);
 	color: var(--smoky-black);
 }
 
 :focus {
-	outline-color: var(--orange-yellow-crayola);
+	outline-color: var(--accent-color);
 }
 
 html {
@@ -112,8 +109,8 @@ body {
 /* REUSED STYLE */
 
 article {
-	background: var(--eerie-black-2);
-	border: 1px solid var(--jet);
+	background: var(--article-bg);
+	border: 1px solid var(--article-border);
 	border-radius: 20px;
 	padding: 15px;
 	box-shadow: var(--shadow-1);
@@ -143,6 +140,7 @@ h3 {
 
 .h2 {
 	font-size: var(--fs-1);
+	font-weight: var(--fw-400);
 }
 
 .h3 {
@@ -161,7 +159,7 @@ h3 {
 	left: 0;
 	width: 30px;
 	height: 3px;
-	background: var(--orange-yellow-crayola);
+	background: var(--accent-color);
 	border-radius: 3px;
 }
 
@@ -219,11 +217,11 @@ main {
 }
 
 .modal {
-	background: var(--eerie-black-2);
+	background: var(--article-bg);
 	position: relative;
 	padding: 15px;
 	margin: 15px 12px;
-	border: 1px solid var(--jet);
+	border: 1px solid var(--article-border);
 	border-radius: 14px;
 	box-shadow: var(--shadow-5);
 	transform: scale(1.2);
@@ -242,7 +240,7 @@ main {
 	position: absolute;
 	top: 15px;
 	right: 15px;
-	background: var(--onyx);
+	background: var(--modal-close-btn);
 	border-radius: 8px;
 	width: 32px;
 	height: 32px;
@@ -283,7 +281,6 @@ main {
 
 .modal-field {
 	display: block;
-	/* width: inherit; */
 	height: 25px;
 }
 
@@ -304,9 +301,9 @@ main {
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	background: hsla(240, 1%, 17%, 0.75);
+	background: var(--article-bg);
 	backdrop-filter: blur(10px);
-	border: 1px solid var(--jet);
+	border: 1px solid var(--article-border);
 	border-radius: 12px 12px 0 0;
 	box-shadow: var(--shadow-2);
 	z-index: 5;
@@ -322,7 +319,7 @@ main {
 
 .navbar-link {
 	color: var(--light-gray);
-	font-size: var(--fs-8);
+	font-size: var(--fs-6);
 	padding: 20px 7px;
 	transition: color var(--transition-1);
 }
@@ -333,7 +330,7 @@ main {
 }
 
 .navbar-link.active {
-	color: var(--orange-yellow-crayola);
+	color: var(--accent-color);
 }
 
 /* --------- NAVBAR --------- */
@@ -360,12 +357,11 @@ main {
 
 .form-item {
 	display: block;
-	margin: 3% 0 5% 0;
-	height: 50px;
+	height: 80px;
 }
 
 .form-item-label {
-	font-size: 1.1rem;
+	font-size: var(--fs-2);
 	padding: 0 2% 0 2%;
 }
 
@@ -412,6 +408,7 @@ select {
 	line-height: 30px;
 	text-align: center;
 	border-radius: 5px;
+	margin-bottom: 40px;
 }
 
 .error-text {
@@ -427,7 +424,7 @@ select {
 	flex-direction: row;
 	flex-wrap: wrap;
 	width: 100%;
-	margin: 40px auto 0 auto;
+	margin: 10px auto 0 auto;
 	justify-content: center;
 }
 
@@ -435,14 +432,14 @@ select {
 
 .btn {
 	text-align: center;
-	height: 75%;
+	height: 50px;
 	border-width: 1px;
 	border-radius: 8px;
 	padding: 4px 8px 4px 8px;
 	margin-left: 10px;
 	width: 40%;
-	color: var(--orange-yellow-crayola);
-	background: var(--border-gradient-onyx);
+	color: var(--accent-color);
+	background: var(--btn-bg-gradient);
 	box-shadow: var(--shadow-2);
 	transition: var(--transition-1);
 }
@@ -468,7 +465,7 @@ select {
 .sort-form-container {
 	display: inline-block;
 	width: 100%;
-	height: 90px;
+	height: 80px;
 	margin-bottom: 10px;
 }
 
@@ -481,10 +478,9 @@ select {
 .sort-form-item,
 .custom-dates-container {
 	float: left;
-	height: 30px;
+	height: 40px;
 	width: 50%;
 	padding: 0 20px 0 20px;
-	margin-bottom: 3%;
 }
 
 .custom-dates-container {
@@ -536,7 +532,7 @@ select {
 	width: 100%;
 	height: 100px;
 	padding-top: 2px;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 .main-summary,
@@ -545,7 +541,7 @@ select {
 	float: left;
 	width: 45%;
 	height: fit-content;
-	border: 1px solid var(--color-income);
+	border: 1px solid var(--accent-color-60);
 	border-radius: 10px;
 	margin: 0 5px 0 5px;
 	overflow: auto;
@@ -599,14 +595,15 @@ select {
 }
 
 .table-container {
-	max-height: 250px;
 	/* to enable scrolling over the table */
 	overflow-y: auto;
+	max-height: 250px;
 	width: 100%;
 	float: left;
 	display: block;
 	font-size: var(--fs-7);
 	margin-bottom: 5%;
+	box-shadow: var(--shadow-2);
 }
 
 .t-table {
@@ -619,8 +616,12 @@ td {
 	padding: 8px;
 	text-align: center;
 	border-radius: 4px;
-	background-color: var(--eerie-black-1);
+	background-color: var(--article-bg);
 	overflow: hidden;
+}
+
+th {
+	font-weight: var(--fw-400);
 }
 
 /* to make table headers sticky on scroll */
@@ -629,11 +630,11 @@ table th {
 	position: sticky;
 	top: 0;
 	z-index: 1;
-	background-color: var(--eerie-black-1);
+	background-color: var(--article-bg);
 }
 
 .bg-th {
-	background-color: var(--eerie-black-2);
+	background-color: var(--article-bg);
 	width: 16px;
 }
 
@@ -656,8 +657,9 @@ table th {
 
 /* show range container */
 .show-range-container {
+	font-size: var(--fs-6);
 	display: inline-block;
-	margin: 0 auto 4% auto;
+	margin: 0 auto 10px auto;
 	text-align: center;
 	width: 100%;
 	height: 30px;
@@ -665,12 +667,13 @@ table th {
 
 /* sub summary */
 .sub-summary {
+	font-size: var(--fs-5);
 	display: block;
 	margin: 0 auto 0 auto;
 	text-align: center;
-	width: 90%;
+	width: fit-content;
 	height: 46px;
-	border: 1px solid var(--color-income);
+	border: 1px solid var(--accent-color-60);
 	border-radius: 10px;
 	overflow: auto;
 }
@@ -702,12 +705,12 @@ input[type='checkbox'] {
 }
 
 .form-item-checkbox {
-	height: 90px;
+	height: 150px;
 }
 
 .form-input-checkbox {
 	display: inline-block;
-	margin-right: 5px;
+	margin-right: 15px;
 	overflow: auto;
 }
 

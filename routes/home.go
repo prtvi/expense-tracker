@@ -55,7 +55,8 @@ func Home(c echo.Context) error {
 	// ModesOfPaymentFiltered -> with model.ModeValues{Value, IsChecked: true|false}
 	Currency, ModesOfPaymentFiltered := utils.GetCurrencyAndModesOfPayment()
 
-	// fmt.Println(len(ModesOfPayment))
+	Month, _ := utils.GetCurrentMonthAndYear()
+	MonthLong := time.Month(Month)
 
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
 		"IfSetup": IfSetup,
@@ -132,6 +133,7 @@ func Home(c echo.Context) error {
 
 		"CurrencyID":       config.CurrencyID,
 		"MonthlyBudgetID":  config.MonthlyBudgetID,
+		"CurrentMonth":     MonthLong,
 		"ModesOfPaymentID": config.ModesOfPaymentID,
 
 		"AllModesOfPayment": ModesOfPaymentFiltered,

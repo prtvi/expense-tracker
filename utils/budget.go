@@ -24,8 +24,7 @@ func BsonDocToBudget(doc bson.M) model.Budget {
 // sets all values whenever called
 func SetBudget(budgetToBeSet float32) error {
 	// if found then update only the new budgetToBeSet
-	now := time.Now()
-	currentYear, currentMonth, _ := now.Date()
+	currentMonth, currentYear := GetCurrentMonthAndYear()
 
 	// create filter, update and options for querying
 	filter := bson.M{}

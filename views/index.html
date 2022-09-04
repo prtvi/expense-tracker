@@ -12,9 +12,12 @@
 			href="/public/images/icon.png"
 			type="image/x-icon"
 		/>
-		<style>
-			@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
-		</style>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap"
+			rel="stylesheet"
+		/>
 		<title>Expense Tracker</title>
 	</head>
 	<body>
@@ -275,7 +278,7 @@
 									</div>
 								</div>
 
-								<button class="btn btn-sort" type="submit">SORT</button>
+								<button class="btn btn-sort" type="submit">Sort</button>
 							</form>
 						</div>
 
@@ -315,7 +318,7 @@
 							<!-- budget summary div -->
 							<div
 								class="budget-summary"
-								title="Your monthly budget statistics"
+								title="Your monthly budget statistics for {{ .CurrentMonth }}"
 							>
 								<div class="summary-item">
 									<p class="summary-item-label">Monthly budget:</p>
@@ -524,7 +527,7 @@
 							<!-- 3 Monthly budget -->
 							<div class="form-item">
 								<label class="form-item-label" for="{{ .MonthlyBudgetID }}"
-									>Monthly budget</label
+									>Monthly budget ({{ .CurrentMonth }})</label
 								>
 								<input
 									class="form-input"
