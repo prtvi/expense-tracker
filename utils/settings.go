@@ -45,7 +45,7 @@ func GetCurrencyAndModesOfPayment() (string, map[string]model.ModeValues) {
 	fetchedDoc := bson.M{}
 	decodeErr := cursor.Decode(&fetchedDoc)
 	if decodeErr != nil {
-		fmt.Println("decode error")
+		fmt.Println("No settings document found! Returning empty uninitialized document.")
 	}
 
 	settings := BsonDocToSettings(fetchedDoc)
@@ -57,7 +57,7 @@ func GetCurrencyAndModesOfPayment() (string, map[string]model.ModeValues) {
 		mopFiltered[key] = value
 	}
 
-	// if the value.IsChecked is true then add to map else delete that key
+	// if the value.IsChecked is true then add to map
 	for key, value := range settings.ModesOfPayment {
 		modeValues := value
 
@@ -70,7 +70,7 @@ func GetCurrencyAndModesOfPayment() (string, map[string]model.ModeValues) {
 	return settings.Currency, mopFiltered
 }
 
-func UpdateSettings(settings model.Settings) bool {
+func InitAndUpdateSettings(settings model.Settings) error {
 	// create filter, update and options for querying
 	filter := bson.M{}
 	update := bson.M{
@@ -90,8 +90,8 @@ func UpdateSettings(settings model.Settings) bool {
 	cursor := config.Settings.FindOneAndUpdate(context.TODO(), filter, update, &opt)
 
 	if cursor.Err() != nil {
-		return false
+		return cursor.Err()
 	}
 
-	return true
+	return nil
 }

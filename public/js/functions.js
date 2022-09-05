@@ -349,3 +349,72 @@ const enableNavLinks = function (enable = true) {
 	if (enable) navigationLinks.forEach(nl => (nl.disabled = false));
 	else navigationLinks.forEach(nl => (nl.disabled = true));
 };
+
+const getCColor = function (value) {
+	return value >= 0 ? cTTypeIncome : cTTypeExpense;
+};
+
+const generateSummaryModalDates = function (dateString) {
+	const startDate = formatDate(
+		dateString.slice(dateString.indexOf('start=') + 1, dateString.indexOf('&'))
+	);
+	const endDate = formatDate(dateString.slice(dateString.indexOf('end=') + 1));
+
+	return `${startDate} to ${endDate}`;
+};
+
+const generateSummaryModalMarkup = function (res, includeMainSummary = false) {
+	let tRows = ``;
+	for (const [key, value] of allModesOfPayment) {
+		const data = res.indi_mode_sums[key];
+
+		if (data.income || data.expense) {
+			const balance = data.income - data.expense;
+			tRows += `
+			<tr>
+			<td>${value}</td>
+			<td>${data.income}</td>
+			<td>${data.expense}</td>
+			<td class="last-col ${getCColor(balance)}">${balance}</td>
+			</tr>`;
+		}
+	}
+
+	let markup = `
+	<div class="modal-table">
+
+	${
+		includeMainSummary
+			? `<table class="modal-main-summary">
+				<tr>
+					<th>Total income</th>
+					<th>Total expense</th>
+					<th>Total balance</th>
+				</tr>
+				<tr>
+					<td class="${cTTypeIncome}">${res.total_income}</td>
+					<td class="${cTTypeExpense}">${res.total_expense}</td>
+					<td class="${getCColor(res.total_balance)}">${res.total_balance}</td>
+				</tr>
+			</table>`
+			: ``
+	}
+		<table class="modal-split-summary">
+			<tr>
+				<th>Mode</th>
+				<th class="${cTTypeIncome}">Income</th>
+				<th class="${cTTypeExpense}">Expense</th>
+				<th class="last-col">Balance</th>
+			</tr>
+			${tRows}
+			<tr class="last-row">
+				<td>Total</td>
+				<td class="${cTTypeIncome}">${res.total_income}</td>
+				<td class="${cTTypeExpense}">${res.total_expense}</td>
+				<td class="last-col ${getCColor(res.total_balance)}">${res.total_balance}</td>
+			</tr>
+		</table>
+	</div>`;
+
+	return markup;
+};

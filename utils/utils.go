@@ -68,7 +68,7 @@ func DateStringToDateObj(dateStr string, insert bool) time.Time {
 	return time.Date(year, month, day, 0, 0, 0, 0, time.Local)
 }
 
-func GetNewestAndOldestTDates() (time.Time, time.Time, error) {
+func GetNewestAndOldestTDates(year int) (time.Time, time.Time, error) {
 	// for oldest
 	findOptions := options.Find()
 	findOptions.SetSort(bson.M{config.DateID: 1})
@@ -76,12 +76,12 @@ func GetNewestAndOldestTDates() (time.Time, time.Time, error) {
 
 	cursor, err := config.Transactions.Find(context.TODO(), bson.M{}, findOptions)
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("No oldest transaction found!", err.Error())
 	}
 
 	var results []bson.M
 	if err = cursor.All(context.TODO(), &results); err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("No oldest transaction found!", err.Error())
 	}
 
 	oldestT := make([]model.Transaction, len(results))
@@ -97,11 +97,11 @@ func GetNewestAndOldestTDates() (time.Time, time.Time, error) {
 
 	cursor, err = config.Transactions.Find(context.TODO(), bson.M{}, findOptions)
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("No newest transaction found!", err.Error())
 	}
 
 	if err = cursor.All(context.TODO(), &results); err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("No newest transaction found!", err.Error())
 	}
 
 	newestT := make([]model.Transaction, len(results))
@@ -111,7 +111,7 @@ func GetNewestAndOldestTDates() (time.Time, time.Time, error) {
 	}
 
 	if len(oldestT) == 0 || len(newestT) == 0 {
-		return time.Time{}, time.Time{}, fmt.Errorf("no documents found")
+		return GetDateObj(year), GetDateObj(year), fmt.Errorf("No oldest or newest documents found!")
 	}
 
 	return oldestT[0].Date, newestT[0].Date, nil
@@ -135,4 +135,8 @@ func GetCurrentMonthAndYear() (int, int) {
 	currentYear, currentMonth, _ := now.Date()
 
 	return int(currentMonth), currentYear
+}
+
+func GetDateObj(year int) time.Time {
+	return time.Date(year, 1, 1, 0, 0, 0, 0, time.Local)
 }

@@ -22,7 +22,7 @@ func BsonDocToBudget(doc bson.M) model.Budget {
 }
 
 // sets all values whenever called
-func SetBudget(budgetToBeSet float32) error {
+func InitAndSetBudget(budgetToBeSet float32) error {
 	// if found then update only the new budgetToBeSet
 	currentMonth, currentYear := GetCurrentMonthAndYear()
 
@@ -70,7 +70,8 @@ func EvalBudget() model.Budget {
 	// find for budget doc in db
 	err := config.Budget.FindOne(context.TODO(), bson.M{}).Decode(&budget)
 	if err != nil {
-		fmt.Println("err")
+		fmt.Println("No budget document found!")
+		return model.Budget{}
 	}
 
 	// convert to budget obj
@@ -120,7 +121,8 @@ func EvalBudget() model.Budget {
 
 	cursor := config.Budget.FindOneAndUpdate(context.TODO(), filter, update, &opt)
 	if cursor.Err() != nil {
-		fmt.Println("err")
+		fmt.Println("No budget document found to update")
+		return model.Budget{}
 	}
 
 	return newBudget

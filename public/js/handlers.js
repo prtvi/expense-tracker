@@ -81,10 +81,10 @@ const sortParamsAndPageLoader = function (e) {
 		loadModalData(
 			'Set up your application',
 			'',
-			`<button onclick="toggleModal()" class="btn ok">Let's begin!</button>`
+			`<button style="margin: 0 auto" onclick="toggleModal()" class="btn ok">Let's begin!</button>`
 		);
-		toggleModal();
 
+		toggleModal();
 		enableNavLinks(false);
 
 		sessionStorage.setItem(currentPage, addPage);
@@ -136,6 +136,37 @@ const settingsFormEL = function (e) {
 	sendFormData(this, SETTINGS_ENDPOINT);
 };
 
+// main summary EL
+const mainSummaryEL = async function (e) {
+	const getDated = this.getAttribute('data-date-main-summary');
+
+	console.log('main summary dates', getDated);
+
+	const res = await makeFetchRequest(`${SUMMARY_ENDPOINT}?${getDated}`);
+	if (!res) return showError(errDivReportPage, errLoadSummary);
+
+	const markup = generateSummaryModalMarkup(res, true);
+	const date = generateSummaryModalDates(getDated);
+
+	loadModalData('Stats', date, markup);
+	toggleModal();
+};
+
+const subSummaryEL = async function (e) {
+	const getDated = this.getAttribute('data-date-sub-summary');
+
+	console.log('sub summary dates', getDated);
+
+	const res = await makeFetchRequest(`${SUMMARY_ENDPOINT}?${getDated}`);
+	if (!res) return showError(errDivReportPage, errLoadSummary);
+
+	const markup = generateSummaryModalMarkup(res);
+	const date = generateSummaryModalDates(getDated);
+
+	loadModalData('Stats', date, markup);
+	toggleModal();
+};
+
 // // modal close event handlers
 modalCloseBtn.addEventListener('click', toggleModal);
 overlay.addEventListener('click', toggleModal);
@@ -167,3 +198,7 @@ navigationLinks.forEach(navLink => navLink.addEventListener('click', navbarEL));
 
 // settings form EL
 settingsForm.addEventListener('submit', settingsFormEL);
+
+// summary event handlers
+mainSummary.addEventListener('click', mainSummaryEL);
+subSummary && subSummary.addEventListener('click', subSummaryEL);

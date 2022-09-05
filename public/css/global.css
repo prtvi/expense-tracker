@@ -292,6 +292,31 @@ main {
 	float: right;
 }
 
+/* modal summary view */
+
+.modal-main-summary,
+.modal-split-summary {
+	margin: 0 auto 0 auto;
+	margin-bottom: 20px;
+}
+
+.modal-main-summary th,
+.modal-split-summary th {
+	border-bottom: 1px solid var(--accent-color-60);
+	border-radius: 0;
+	font-weight: var(--fw-400);
+}
+
+.last-row td {
+	border-top: 1px solid var(--accent-color-60);
+	border-radius: 0;
+}
+
+.last-col {
+	border-left: 1px solid var(--accent-color-60);
+	border-radius: 0;
+}
+
 /* --------- MODAL CONTAINER ----------- */
 
 /* --------- NAVBAR --------- */

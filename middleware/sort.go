@@ -32,6 +32,10 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 			view = config.ViewAll
 		}
 
+		if sort == "" {
+			sort = config.SortAscID
+		}
+
 		switch view {
 		// last 7 days
 		case config.ViewLast7Days:
@@ -68,7 +72,7 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 
 		default:
 			var err error
-			viewStartDate, viewEndDate, err = utils.GetNewestAndOldestTDates()
+			viewStartDate, viewEndDate, err = utils.GetNewestAndOldestTDates(currentYear)
 			if err != nil {
 				break
 			}

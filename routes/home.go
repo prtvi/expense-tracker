@@ -14,52 +14,54 @@ import (
 // "/" route, gets all transactions (formatted for view) and makes a summary to render on page
 
 func Home(c echo.Context) error {
-	// get filter params from sort middleware
+	// GET VALUES FROM MIDDLEWARE
 	sort := c.Get(config.Sort).(string)
 
-	// view params from range of dates
 	view := c.Get(config.View).(string)
 	viewStartDate := c.Get(config.ViewStartDate).(time.Time)
 	viewEndDate := c.Get(config.ViewEndDate).(time.Time)
 
+	//
+
 	var tsForView []model.Transaction
 	var tsForViewSummary model.Summary
 
-	ifSubSummary := false
+	var allTSummary model.Summary
+	var FormattedTs []model.TransactionFormatted
+
+	var IfSubSummary bool = false
 
 	allTs := utils.GetAllTransactions(sort)
-	IfSetup := len(allTs) == 0
+	IfTransactions := len(allTs) > 0
 
-	allTSummary := utils.UpdateMainSummary(allTs)
+	Budget := utils.EvalBudget()
+	Month, Year := utils.GetCurrentMonthAndYear()
+	Currency, MopFiltered := utils.GetCurrencyAndModesOfPayment()
 
-	if view == config.ViewAll {
-		tsForView = allTs
-	} else {
-		tsForView = utils.GetTransactionsByDate(viewStartDate, viewEndDate, sort)
-		tsForViewSummary = utils.GetSummary(tsForView)
+	OldestT := utils.GetDateObj(Year)
+	NewestT := utils.GetDateObj(Year)
 
-		if len(tsForView) != 0 {
-			ifSubSummary = true
+	if IfTransactions {
+		allTSummary, OldestT, NewestT = utils.UpdateMainSummary()
+
+		if view == config.ViewAll {
+			tsForView = allTs
+		} else {
+			tsForView = utils.GetTransactionsByDate(viewStartDate, viewEndDate, sort)
+			tsForViewSummary = utils.GetSummary(viewStartDate, viewEndDate, sort)
+
+			allTSummary = utils.FetchMainSummary()
+
+			if len(tsForView) != 0 {
+				IfSubSummary = true
+			}
 		}
 
-		allTSummary = utils.FetchMainSummary()
+		FormattedTs = utils.FormatTransactionsForView(tsForView)
 	}
 
-	// format the transactions for view (to display on UI)
-	formattedTransactions := utils.FormatTransactionsForView(tsForView)
-
-	// budget
-	budget := utils.EvalBudget()
-
-	// modes and currency
-	// ModesOfPaymentFiltered -> with model.ModeValues{Value, IsChecked: true|false}
-	Currency, ModesOfPaymentFiltered := utils.GetCurrencyAndModesOfPayment()
-
-	Month, _ := utils.GetCurrentMonthAndYear()
-	MonthLong := time.Month(Month)
-
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
-		"IfSetup": IfSetup,
+		"IfTransactions": IfTransactions,
 		// ADD page
 
 		// t-form
@@ -71,7 +73,7 @@ func Home(c echo.Context) error {
 		"PaidToID":           config.PaidToID,           // 6
 
 		// t-form "mode" (4) input values & text
-		"ModesOfPayment": ModesOfPaymentFiltered,
+		"ModesOfPayment": MopFiltered,
 
 		// t-form "type" (5) ids & values
 		"TypeIncomeID":  config.TypeIncomeID,
@@ -103,24 +105,32 @@ func Home(c echo.Context) error {
 		"TotalBalance":        allTSummary.TotalBalance,
 		"SummaryBalanceClass": utils.GetClassNameByValue(allTSummary.TotalBalance),
 
+		// main summary data-date attributes
+		"DateStartSummary": utils.FormatDateShort(OldestT),
+		"DateEndSummary":   utils.FormatDateShort(NewestT),
+
 		// budget summary
-		"Budget":               budget.Budget,
-		"Spent":                budget.Spent,
-		"Remaining":            budget.Remaining,
-		"BudgetRemainingClass": utils.GetClassNameByValue(budget.Remaining),
+		"Budget":               Budget.Budget,
+		"Spent":                Budget.Spent,
+		"Remaining":            Budget.Remaining,
+		"BudgetRemainingClass": utils.GetClassNameByValue(Budget.Remaining),
 
 		// if no transactions to show
 		"IfNoTransactionsInRange": len(tsForView) == 0,
 
 		// table
-		"Transactions": formattedTransactions,
+		"Transactions": FormattedTs,
 
 		// sub-summary (for filtered transactions)
-		"IfSubSummary":       ifSubSummary,
+		"IfSubSummary":       IfSubSummary,
 		"SubIncome":          tsForViewSummary.TotalIncome,
 		"SubExpense":         tsForViewSummary.TotalExpense,
 		"SubDifference":      tsForViewSummary.TotalBalance,
 		"SubDifferenceClass": utils.GetClassNameByValue(tsForViewSummary.TotalBalance),
+
+		// sub summary data-date attributes
+		"DateStartSubSummary": utils.FormatDateShort(viewStartDate),
+		"DateEndSubSummary":   utils.FormatDateShort(viewEndDate),
 
 		// for show range container - filtered, dates
 		"ShowingFromDate": utils.FormatDateLong(viewStartDate),
@@ -131,11 +141,10 @@ func Home(c echo.Context) error {
 
 		// SETTINGS page
 
-		"CurrencyID":       config.CurrencyID,
-		"MonthlyBudgetID":  config.MonthlyBudgetID,
-		"CurrentMonth":     MonthLong,
-		"ModesOfPaymentID": config.ModesOfPaymentID,
-
-		"AllModesOfPayment": ModesOfPaymentFiltered,
+		"CurrencyID":        config.CurrencyID,
+		"MonthlyBudgetID":   config.MonthlyBudgetID,
+		"CurrentMonth":      Month,
+		"ModesOfPaymentID":  config.ModesOfPaymentID,
+		"AllModesOfPayment": MopFiltered,
 	})
 }

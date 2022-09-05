@@ -292,6 +292,7 @@
 							<div
 								class="main-summary"
 								title="Overall summary of all transactions added"
+								data-date-main-summary="start={{ .DateStartSummary }}&end={{ .DateEndSummary }}"
 							>
 								<div class="summary-item">
 									<p class="summary-item-label">Total income:</p>
@@ -346,7 +347,7 @@
 						{{ if .IfNoTransactionsInRange }}
 
 						<!--  -->
-						{{ if .IfSetup }}
+						{{ if eq .IfTransactions false }}
 
 						<div class="no-t-div no-ts">
 							<p>Come on! Don't be shy, add a transaction</p>
@@ -356,7 +357,7 @@
 							</button>
 						</div>
 
-						<!-- else for IfSetup -->
+						<!-- else for IfNoTs -->
 						{{ else }}
 
 						<!-- no transactions found in range div -->
@@ -364,7 +365,7 @@
 							<p>No transactions found in the specified range!</p>
 						</div>
 
-						<!-- end for IfSetup -->
+						<!-- end for IfNoTs -->
 						{{ end }}
 
 						<!-- ELSE for IfNoTransactionsInRange -->
@@ -424,7 +425,6 @@
 							</table>
 						</div>
 
-						{{ if .IfSubSummary }}
 						<!--------- SHOW-RANGE CONTAINER --------->
 						<div class="show-range-container">
 							<p>
@@ -434,10 +434,13 @@
 							</p>
 						</div>
 
+						{{ if .IfSubSummary }}
+
 						<!--------- SUB-SUMMARY CONTAINER ------->
 						<div
 							class="sub-summary"
 							title="Transaction summary for the range of dates shown above"
+							data-date-sub-summary="start={{ .DateStartSubSummary }}&end={{ .DateEndSubSummary }}"
 						>
 							<div class="sub-summary-item">
 								<p class="sub-summary-item-label">Income:</p>

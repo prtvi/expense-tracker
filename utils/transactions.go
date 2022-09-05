@@ -142,12 +142,14 @@ func GetAllTransactions(sort string) []model.Transaction {
 
 	cursor, err := config.Transactions.Find(context.TODO(), bson.D{}, findOptions)
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("No transactions found!", err.Error())
+		return []model.Transaction{}
 	}
 
 	var results []bson.M
 	if err = cursor.All(context.TODO(), &results); err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("No transactions found!", err.Error())
+		return []model.Transaction{}
 	}
 
 	allTransactions := make([]model.Transaction, len(results))

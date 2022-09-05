@@ -128,6 +128,10 @@ const sortDesEl = document.getElementById(sortDesID);
 
 const sortBtn = document.querySelector('.btn-sort');
 
+// summary containers
+const mainSummary = document.querySelector('.main-summary');
+const subSummary = document.querySelector('.sub-summary');
+
 //
 //
 //
@@ -164,7 +168,8 @@ const [
 	EDIT_ENDPOINT,
 	DEL_ENDPOINT,
 	SETTINGS_ENDPOINT,
-] = ['/', '/get', '/add', '/edit', '/del', '/settings'];
+	SUMMARY_ENDPOINT,
+] = ['/', '/get', '/add', '/edit', '/del', '/settings', '/summary'];
 
 // session storage keys
 // to preserve the curr page on reload
@@ -194,6 +199,7 @@ const errUpdateT = 'Error updating the transaction!';
 const errLoadT = 'Error loading the transaction!';
 const errDeleteT = 'Error deleting the transaction!';
 const errSaveSettings = 'Error saving your settings!';
+const errLoadSummary = 'Error loading summary statistics';
 
 // form titles
 const formTitleOnAddExpense = 'Add expense';
