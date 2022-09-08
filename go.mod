@@ -1,4 +1,4 @@
-module prtvi/expense-tracker
+module github.com/prtvi/expense-tracker
 
 go 1.18
 

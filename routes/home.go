@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"time"
 
-	config "prtvi/expense-tracker/config"
-	model "prtvi/expense-tracker/model"
-	utils "prtvi/expense-tracker/utils"
+	config "github.com/prtvi/expense-tracker/config"
+	model "github.com/prtvi/expense-tracker/model"
+	utils "github.com/prtvi/expense-tracker/utils"
 
 	"github.com/labstack/echo/v4"
 )

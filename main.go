@@ -1,30 +1,30 @@
 package main
 
 import (
-	config "prtvi/expense-tracker/config"
-	middleware "prtvi/expense-tracker/middleware"
-	model "prtvi/expense-tracker/model"
-	routes "prtvi/expense-tracker/routes"
+	cfg "github.com/prtvi/expense-tracker/config"
+	mw "github.com/prtvi/expense-tracker/middleware"
+	uModel "github.com/prtvi/expense-tracker/model/utils"
+	r "github.com/prtvi/expense-tracker/routes"
 
 	"github.com/labstack/echo/v4"
 )
 
 func main() {
-	config.EstablishConnection()
+	cfg.EstablishConnection()
 
 	e := echo.New()
-	e.Renderer = model.T
+	e.Renderer = uModel.T
 	e.Static("/public", "public")
 
-	e.GET("/", routes.Home, middleware.Logger, middleware.Sort)
+	e.GET("/", r.Home, mw.Logger, mw.Sort)
 
 	// routes for javascript to make requests
-	e.GET("/get", routes.ReturnT, middleware.Logger)
-	e.GET("/add", routes.AddT, middleware.Logger)
-	e.GET("/edit", routes.EditT, middleware.Logger)
-	e.GET("/del", routes.DeleteT, middleware.Logger)
-	e.GET("/settings", routes.Settings, middleware.Logger)
-	e.GET("/summary", routes.Summary, middleware.Logger)
+	e.GET("/get", r.ReturnT, mw.Logger)
+	e.GET("/add", r.AddT, mw.Logger)
+	e.GET("/edit", r.EditT, mw.Logger)
+	e.GET("/del", r.DeleteT, mw.Logger)
+	e.GET("/settings", r.Settings, mw.Logger)
+	e.GET("/summary", r.Summary, mw.Logger)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

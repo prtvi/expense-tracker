@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	utils "prtvi/expense-tracker/utils"
+	utils "github.com/prtvi/expense-tracker/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -16,8 +16,8 @@ func ReturnT(c echo.Context) error {
 
 	transaction, err := utils.GetDocumentById(id)
 	if err != nil {
-		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
-		return c.JSON(http.StatusBadRequest, res)
+		res := utils.GetResponseMessage(false)
+		return c.JSON(res.StatusCode, res)
 	}
 
 	// format transaction to be loaded on t-form (not for view)

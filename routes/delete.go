@@ -1,9 +1,7 @@
 package routes
 
 import (
-	"net/http"
-
-	utils "prtvi/expense-tracker/utils"
+	utils "github.com/prtvi/expense-tracker/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -16,10 +14,10 @@ func DeleteT(c echo.Context) error {
 
 	err := utils.DeleteTransaction(id)
 	if err != nil {
-		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
-		return c.JSON(http.StatusBadRequest, res)
+		res := utils.GetResponseMessage(false)
+		return c.JSON(res.StatusCode, res)
 	}
 
-	res := utils.CreateResponseMessage(http.StatusOK, true, "Success")
-	return c.JSON(http.StatusOK, res)
+	res := utils.GetResponseMessage(true)
+	return c.JSON(res.StatusCode, res)
 }

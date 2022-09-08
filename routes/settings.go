@@ -1,8 +1,7 @@
 package routes
 
 import (
-	"net/http"
-	"prtvi/expense-tracker/utils"
+	utils "github.com/prtvi/expense-tracker/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -11,28 +10,26 @@ import (
 
 func Settings(c echo.Context) error {
 	settings := utils.ParseSettingsUrlParams(c)
+	res := utils.GetResponseMessage(false)
 
 	// init/update user settings
 	err := utils.InitAndUpdateSettings(settings)
 	if err != nil {
-		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
-		return c.JSON(http.StatusBadRequest, res)
+		return c.JSON(res.StatusCode, res)
 	}
 
 	// init user budget
 	err = utils.InitAndSetBudget(float32(settings.CurrentMonthBudget))
 	if err != nil {
-		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
-		return c.JSON(http.StatusBadRequest, res)
+		return c.JSON(res.StatusCode, res)
 	}
 
 	// init user summary
 	err = utils.InitSummary()
 	if err != nil {
-		res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
-		return c.JSON(http.StatusBadRequest, res)
+		return c.JSON(res.StatusCode, res)
 	}
 
-	res := utils.CreateResponseMessage(http.StatusOK, true, "Success")
-	return c.JSON(http.StatusOK, res)
+	res = utils.GetResponseMessage(true)
+	return c.JSON(res.StatusCode, res)
 }

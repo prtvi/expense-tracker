@@ -3,21 +3,22 @@ package utils
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
-	config "prtvi/expense-tracker/config"
-	model "prtvi/expense-tracker/model"
+	config "github.com/prtvi/expense-tracker/config"
+	model "github.com/prtvi/expense-tracker/model"
+	utilModel "github.com/prtvi/expense-tracker/model/utils"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// constructor for generating model.ResponseMessage objects
-
-func CreateResponseMessage(statusCode int, success bool, message string) model.ResponseMsg {
-	return model.ResponseMsg{StatusCode: statusCode, Success: success, Message: message}
+func createResponseMessage(statusCode int, success bool, message string) utilModel.ResponseMsg {
+	// constructor for generating utilModel.ResponseMessage objects
+	return utilModel.ResponseMsg{StatusCode: statusCode, Success: success, Message: message}
 }
 
 func GetClassNameByValue(value float32) string {
@@ -27,24 +28,23 @@ func GetClassNameByValue(value float32) string {
 	return config.ClassTTypeExpense
 }
 
-// date object to date string with format: 2022-05-25
 func FormatDateShort(d time.Time) string {
+	// date object to date string with format: 2022-05-25
 	return d.String()[0:config.FORMAT_DATE_STR_LEN]
 }
 
-// date object to date string with format: Wed, 25 May
 func FormatDateWords(d time.Time) string {
+	// date object to date string with format: Wed, 25 May
 	return d.Format(time.RFC1123Z)[0:config.FORMAT_DATE_STR_LEN_WORDS]
 }
 
-// date object to date string with format: Wed, 25 May 2022
 func FormatDateLong(d time.Time) string {
+	// date object to date string with format: Wed, 25 May 2022
 	return d.Format(time.RFC1123Z)[0:config.FORMAT_DATE_STR_LEN_LONG]
 }
 
-// convert 2022-05-30 string to date obj
-func DateStringToDateObj(dateStr string, insert bool) time.Time {
-	dateParts := strings.Split(dateStr, "-")
+func parseDateStr(s string) (int, time.Month, int) {
+	dateParts := strings.Split(s, "-")
 	datePartsInt := make([]int, len(dateParts))
 
 	for i, value := range dateParts {
@@ -52,20 +52,25 @@ func DateStringToDateObj(dateStr string, insert bool) time.Time {
 		datePartsInt[i] = intValue
 	}
 
-	year, month, day := datePartsInt[0], time.Month(datePartsInt[1]), datePartsInt[2]
+	return datePartsInt[0], time.Month(datePartsInt[1]), datePartsInt[2]
+}
 
-	if insert {
-		// if the converted time is to be inserted into the db, then add time to the date as well
+func DateStringToDateObj(dateStr string) time.Time {
+	// convert 2022-05-30 string to date obj
+	year, month, day := parseDateStr(dateStr)
 
-		now := time.Now()
-		currentLocation := now.Location()
-		hour, min, sec := now.Hour(), now.Minute(), now.Second()
-
-		return time.Date(year, month, day, hour, min, sec, 0, currentLocation)
-	}
-
-	// else do not add time to date
 	return time.Date(year, month, day, 0, 0, 0, 0, time.Local)
+}
+
+func DateStringToDatetimeObj(dateStr string) time.Time {
+	// convert 2022-05-30 string to date obj with time as well
+	year, month, day := parseDateStr(dateStr)
+
+	now := time.Now()
+	currentLocation := now.Location()
+	hour, min, sec := now.Hour(), now.Minute(), now.Second()
+
+	return time.Date(year, month, day, hour, min, sec, 0, currentLocation)
 }
 
 func GetNewestAndOldestTDates(year int) (time.Time, time.Time, error) {
@@ -117,16 +122,16 @@ func GetNewestAndOldestTDates(year int) (time.Time, time.Time, error) {
 	return oldestT[0].Date, newestT[0].Date, nil
 }
 
-// get the first & last day of the month, without time (time->0)
 func FirstAndLastDayOfMonth(year, month int, loc *time.Location) (time.Time, time.Time) {
+	// get the first & last day of the month, without time (time->0)
 	firstOfMonth := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, loc)
 	lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
 
 	return firstOfMonth, lastOfMonth
 }
 
-// convert a time from 00:00:00 to 23:59:59.9999
-func LastSecondOfTheDay(t time.Time) time.Time {
+func GoToLastSecondOfTheDay(t time.Time) time.Time {
+	// convert a time from 00:00:00 to 23:59:59.9999
 	return t.AddDate(0, 0, 1).Add(-time.Nanosecond)
 }
 
@@ -139,4 +144,12 @@ func GetCurrentMonthAndYear() (int, int) {
 
 func GetDateObj(year int) time.Time {
 	return time.Date(year, 1, 1, 0, 0, 0, 0, time.Local)
+}
+
+func GetResponseMessage(success bool) utilModel.ResponseMsg {
+	if success {
+		return createResponseMessage(http.StatusOK, true, "Success")
+	} else {
+		return createResponseMessage(http.StatusBadRequest, false, "Operation failed")
+	}
 }

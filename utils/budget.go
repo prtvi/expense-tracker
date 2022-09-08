@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	config "prtvi/expense-tracker/config"
-	model "prtvi/expense-tracker/model"
+	config "github.com/prtvi/expense-tracker/config"
+	model "github.com/prtvi/expense-tracker/model"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -88,7 +88,7 @@ func EvalBudget() model.Budget {
 
 	// get the month begin & end date for quering the transactions between that month
 	monthBeginDate, monthEndDate := FirstAndLastDayOfMonth(budgetObj.Year, budgetObj.Month, time.Local)
-	monthEndDate = LastSecondOfTheDay(monthEndDate)
+	monthEndDate = GoToLastSecondOfTheDay(monthEndDate)
 
 	// get transactions for that month
 	transactionsThisMonth := GetTransactionsByDate(monthBeginDate, monthEndDate, config.SortAscID)

@@ -3,8 +3,8 @@ package middleware
 import (
 	"time"
 
-	config "prtvi/expense-tracker/config"
-	utils "prtvi/expense-tracker/utils"
+	config "github.com/prtvi/expense-tracker/config"
+	utils "github.com/prtvi/expense-tracker/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -63,8 +63,8 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 		case config.ViewCustom:
 			dateStart, dateEnd := c.QueryParam(config.CustomDateStartID), c.QueryParam(config.CustomDateEndID)
 
-			viewStartDate = utils.DateStringToDateObj(dateStart, false)
-			viewEndDate = utils.DateStringToDateObj(dateEnd, false)
+			viewStartDate = utils.DateStringToDateObj(dateStart)
+			viewEndDate = utils.DateStringToDateObj(dateEnd)
 
 		// all
 		case config.ViewAll:
@@ -82,7 +82,7 @@ func Sort(next echo.HandlerFunc) echo.HandlerFunc {
 		// for sorting dates "lesser than equal to" endDate
 
 		if view != config.ViewAll {
-			viewEndDate = utils.LastSecondOfTheDay(viewEndDate)
+			viewEndDate = utils.GoToLastSecondOfTheDay(viewEndDate)
 		}
 
 		c.Set(config.View, view)

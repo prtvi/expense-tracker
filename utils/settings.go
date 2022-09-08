@@ -4,14 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	config "prtvi/expense-tracker/config"
-	model "prtvi/expense-tracker/model"
 	"strconv"
 
-	"go.mongodb.org/mongo-driver/mongo/options"
+	config "github.com/prtvi/expense-tracker/config"
+	model "github.com/prtvi/expense-tracker/model"
 
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func BsonDocToSettings(doc bson.M) model.Settings {

@@ -2,8 +2,9 @@ package routes
 
 import (
 	"net/http"
-	"prtvi/expense-tracker/config"
-	utils "prtvi/expense-tracker/utils"
+
+	config "github.com/prtvi/expense-tracker/config"
+	utils "github.com/prtvi/expense-tracker/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -11,8 +12,9 @@ import (
 func Summary(c echo.Context) error {
 	start, end := c.QueryParam("start"), c.QueryParam("end")
 
-	startTime := utils.DateStringToDateObj(start, true)
-	endTime := utils.DateStringToDateObj(end, true)
+	startTime := utils.DateStringToDateObj(start)
+	endTime := utils.DateStringToDateObj(end)
+	endTime = utils.GoToLastSecondOfTheDay(endTime)
 
 	summary := utils.GetSummary(startTime, endTime, config.SortAscID)
 

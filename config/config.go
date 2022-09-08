@@ -1,7 +1,7 @@
 package config
 
 import (
-	"prtvi/expense-tracker/model"
+	model "github.com/prtvi/expense-tracker/model"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )

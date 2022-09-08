@@ -1,9 +1,7 @@
 package routes
 
 import (
-	"net/http"
-
-	utils "prtvi/expense-tracker/utils"
+	utils "github.com/prtvi/expense-tracker/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -12,20 +10,19 @@ import (
 // updates the document with input form data
 
 func EditT(c echo.Context) error {
+	id := c.QueryParam("id")
+	res := utils.GetResponseMessage(false)
+
 	updatedTransaction, err := utils.InitTransaction(c)
-
-	res := utils.CreateResponseMessage(http.StatusBadRequest, false, "Operation failed")
-
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, res)
+		return c.JSON(res.StatusCode, res)
 	}
 
-	id := c.QueryParam("id")
 	err = utils.UpdateTransaction(id, updatedTransaction)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, res)
+		return c.JSON(res.StatusCode, res)
 	}
 
-	res = utils.CreateResponseMessage(http.StatusOK, true, "Success")
-	return c.JSON(http.StatusOK, res)
+	res = utils.GetResponseMessage(true)
+	return c.JSON(res.StatusCode, res)
 }

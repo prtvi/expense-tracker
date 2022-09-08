@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	config "prtvi/expense-tracker/config"
-	model "prtvi/expense-tracker/model"
+	config "github.com/prtvi/expense-tracker/config"
+	model "github.com/prtvi/expense-tracker/model"
 
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/bson"
@@ -90,9 +90,10 @@ func InitTransaction(c echo.Context) (bson.D, error) {
 			continue
 		}
 
+		// TODO: for update process, change date only, not time of insertion
 		// to enter time.Date object into db
 		if key == config.DateID {
-			date := DateStringToDateObj(value[0], true)
+			date := DateStringToDatetimeObj(value[0])
 
 			transaction = append(transaction, bson.E{Key: key, Value: date})
 			continue
