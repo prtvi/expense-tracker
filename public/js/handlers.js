@@ -140,8 +140,6 @@ const settingsFormEL = function (e) {
 const mainSummaryEL = async function (e) {
 	const getDated = this.getAttribute('data-date-main-summary');
 
-	console.log('main summary dates', getDated);
-
 	const res = await makeFetchRequest(`${SUMMARY_ENDPOINT}?${getDated}`);
 	if (!res) return showError(errDivReportPage, errLoadSummary);
 
@@ -154,8 +152,6 @@ const mainSummaryEL = async function (e) {
 
 const subSummaryEL = async function (e) {
 	const getDated = this.getAttribute('data-date-sub-summary');
-
-	console.log('sub summary dates', getDated);
 
 	const res = await makeFetchRequest(`${SUMMARY_ENDPOINT}?${getDated}`);
 	if (!res) return showError(errDivReportPage, errLoadSummary);

@@ -16,23 +16,21 @@ import (
 func Home(c echo.Context) error {
 	// GET VALUES FROM MIDDLEWARE
 	sort := c.Get(config.Sort).(string)
-
 	view := c.Get(config.View).(string)
 	viewStartDate := c.Get(config.ViewStartDate).(time.Time)
 	viewEndDate := c.Get(config.ViewEndDate).(time.Time)
 
-	//
+	// INIT global varibles
 
 	var tsForView []model.Transaction
 	var tsForViewSummary model.Summary
 
+	allTs := utils.GetAllTransactions(sort)
 	var allTSummary model.Summary
 	var FormattedTs []model.TransactionFormatted
 
+	var IfTransactions bool = len(allTs) > 0
 	var IfSubSummary bool = false
-
-	allTs := utils.GetAllTransactions(sort)
-	IfTransactions := len(allTs) > 0
 
 	Budget := utils.EvalBudget()
 	Month, Year := utils.GetCurrentMonthAndYear()
@@ -61,7 +59,8 @@ func Home(c echo.Context) error {
 	}
 
 	return c.Render(http.StatusOK, "index", map[string]interface{}{
-		"IfTransactions": IfTransactions,
+		// ------------- CONSTANTS -------------
+
 		// ADD page
 
 		// t-form
@@ -72,14 +71,9 @@ func Home(c echo.Context) error {
 		"TypeInputGroupName": config.TypeInputGroupName, // 5
 		"PaidToID":           config.PaidToID,           // 6
 
-		// t-form "mode" (4) input values & text
-		"ModesOfPayment": MopFiltered,
-
 		// t-form "type" (5) ids & values
 		"TypeIncomeID":  config.TypeIncomeID,
 		"TypeExpenseID": config.TypeExpenseID,
-
-		"Currency": Currency,
 
 		//
 		//
@@ -98,6 +92,36 @@ func Home(c echo.Context) error {
 		// custom dates container
 		"CustomDateStartID": config.CustomDateStartID,
 		"CustomDateEndID":   config.CustomDateEndID,
+
+		//
+		//
+
+		// SETTINGS page
+
+		"CurrencyID":       config.CurrencyID,
+		"MonthlyBudgetID":  config.MonthlyBudgetID,
+		"ModesOfPaymentID": config.ModesOfPaymentID,
+
+		//
+		//
+		//
+		//
+		//
+
+		// ------------- VARIABLES -------------
+
+		"IfTransactions": IfTransactions,
+
+		// ADD page
+
+		// t-form "mode" (4) input values & text
+		"ModesOfPayment": MopFiltered,
+		"Currency":       Currency,
+
+		//
+		//
+
+		// REPORT page
 
 		// main summary
 		"TotalIncome":         allTSummary.TotalIncome,
@@ -141,10 +165,7 @@ func Home(c echo.Context) error {
 
 		// SETTINGS page
 
-		"CurrencyID":        config.CurrencyID,
-		"MonthlyBudgetID":   config.MonthlyBudgetID,
-		"CurrentMonth":      Month,
-		"ModesOfPaymentID":  config.ModesOfPaymentID,
+		"CurrentMonth":      time.Month(Month),
 		"AllModesOfPayment": MopFiltered,
 	})
 }

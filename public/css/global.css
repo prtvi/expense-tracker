@@ -560,6 +560,11 @@ select {
 	margin-bottom: 10px;
 }
 
+.main-summary:hover,
+.sub-summary:hover {
+	cursor: pointer;
+}
+
 .main-summary,
 .budget-summary {
 	flex: 1;

@@ -402,15 +402,15 @@ const generateSummaryModalMarkup = function (res, includeMainSummary = false) {
 		<table class="modal-split-summary">
 			<tr>
 				<th>Mode</th>
-				<th class="${cTTypeIncome}">Income</th>
-				<th class="${cTTypeExpense}">Expense</th>
+				<th>Income</th>
+				<th>Expense</th>
 				<th class="last-col">Balance</th>
 			</tr>
 			${tRows}
 			<tr class="last-row">
 				<td>Total</td>
-				<td class="${cTTypeIncome}">${res.total_income}</td>
-				<td class="${cTTypeExpense}">${res.total_expense}</td>
+				<td>${res.total_income}</td>
+				<td>${res.total_expense}</td>
 				<td class="last-col ${getCColor(res.total_balance)}">${res.total_balance}</td>
 			</tr>
 		</table>
