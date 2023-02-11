@@ -24,7 +24,7 @@
 	mode ? (modeEl.value = '1_cash') : (modeEl.value = '2_phonepe');
 
 	type ? (typeIncomeEl.checked = true) : (typeExpenseEl.checked = true);
-})();
+});
 
 const toggleModal = function () {
 	overlay.classList.toggle('active');
