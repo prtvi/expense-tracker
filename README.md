@@ -4,7 +4,7 @@ Your very own expense tracker built in Golang
 
 ## Features
 
-### Every transaction contains
+### Every transaction added contains
 
 - Date
 - Description
@@ -13,14 +13,14 @@ Your very own expense tracker built in Golang
 - Type of transaction
 - Paid to
 
-### App features
+### Application features
 
 - Edit/Delete transaction
 - Monthly budget setup
 - Monthly expenditure summary
 - Sort expenses with custom dates
 
-### Report on transactions
+### Report of all transactions
 
 - Shows monthly budget
 - Shows spent and remaining amount
