@@ -44,3 +44,7 @@ Your very own expense tracker built in Golang
 3. Summary/statistics
 
 <img src="out/3.png" alt="Summary or statistics for month" width="500"/>
+
+## Other links
+
+Click [here](https://prtvi.github.io/allprojects.html) to check out my other projects
